@@ -13,8 +13,38 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#1a4a8a] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="relative bg-[#1a4a8a] text-white overflow-hidden">
+      {/* Background Textures */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Slanting line pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 16px)',
+          }}
+        />
+
+        {/* Corner dot-fade textures */}
+        <div
+          className="absolute -left-32 -top-24 h-80 w-80 rounded-full opacity-20"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(255,140,0,0.2) 1.1px, transparent 1.1px), radial-gradient(circle at center, rgba(255,140,0,0.12) 0%, rgba(255,140,0,0.04) 50%, transparent 74%)',
+            backgroundSize: '14px 14px, 100% 100%',
+          }}
+        />
+        <div
+          className="absolute -right-32 -bottom-24 h-80 w-80 rounded-full opacity-20"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(100,200,255,0.18) 1.1px, transparent 1.1px), radial-gradient(circle at center, rgba(100,200,255,0.1) 0%, rgba(100,200,255,0.03) 50%, transparent 74%)',
+            backgroundSize: '14px 14px, 100% 100%',
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <img
