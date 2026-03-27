@@ -64,7 +64,35 @@ const Testimonials = () => {
 
   return (
     <section className="relative overflow-hidden bg-white px-4 py-24 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute left-10 top-10 h-64 w-64 rounded-full border border-gray-100 opacity-50" />
+      {/* Background Textures */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Slanting line pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(135deg, rgba(37,99,235,0.05) 0px, rgba(37,99,235,0.05) 1px, transparent 1px, transparent 18px)',
+          }}
+        />
+
+        {/* Corner dot-fade textures */}
+        <div
+          className="absolute -left-24 -top-16 h-72 w-72 rounded-full opacity-35"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(249,115,22,0.22) 1.1px, transparent 1.1px), radial-gradient(circle at center, rgba(249,115,22,0.14) 0%, rgba(249,115,22,0.05) 50%, transparent 74%)',
+            backgroundSize: '13px 13px, 100% 100%',
+          }}
+        />
+        <div
+          className="absolute -right-24 -bottom-20 h-80 w-80 rounded-full opacity-35"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(37,99,235,0.2) 1px, transparent 1px), radial-gradient(circle at center, rgba(37,99,235,0.14) 0%, rgba(37,99,235,0.04) 55%, transparent 76%)',
+            backgroundSize: '14px 14px, 100% 100%',
+          }}
+        />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl text-center">
         <div className="mb-12">
