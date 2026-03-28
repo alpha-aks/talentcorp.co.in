@@ -133,10 +133,10 @@ const Testimonials = () => {
           </p>
         </div>
 
-        <div className="mb-16 inline-flex rounded-2xl border border-gray-100 bg-gray-50 p-1.5">
+        <div className="mb-16 flex w-full max-w-md flex-col rounded-2xl border border-gray-100 bg-gray-50 p-1.5 sm:mx-auto sm:inline-flex sm:w-auto sm:max-w-none sm:flex-row">
           <button
             onClick={() => setActiveTab('clients')}
-            className={`flex items-center gap-2 rounded-xl px-8 py-3 font-bold transition-all ${
+            className={`flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-bold transition-all sm:px-8 ${
               activeTab === 'clients' ? 'bg-white text-blue-600 shadow-md' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -144,7 +144,7 @@ const Testimonials = () => {
           </button>
           <button
             onClick={() => setActiveTab('employees')}
-            className={`flex items-center gap-2 rounded-xl px-8 py-3 font-bold transition-all ${
+            className={`flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-bold transition-all sm:px-8 ${
               activeTab === 'employees' ? 'bg-white text-blue-600 shadow-md' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -159,7 +159,7 @@ const Testimonials = () => {
               {visibleReviews.map((review) => (
                 <article
                   key={`${activeTab}-${review.id}`}
-                  className="testimonial-card group relative rounded-[2.5rem] border border-gray-100 bg-white p-10 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08)]"
+                  className="testimonial-card group relative rounded-[2.5rem] border border-gray-100 bg-white p-6 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08)] sm:p-10"
                 >
                   <div className="absolute right-10 top-8 text-blue-100 transition-colors group-hover:text-blue-200">
                     <Quote size={40} fill="currentColor" />
@@ -200,7 +200,7 @@ const Testimonials = () => {
             >
               <ChevronLeft size={24} />
             </button>
-            
+
             {/* Slide Indicators */}
             <div className="flex gap-2">
               {[...Array(totalSlides)].map((_, idx) => (

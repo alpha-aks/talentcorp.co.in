@@ -71,7 +71,7 @@ const JobBoard = () => {
           <p className="text-lg text-gray-500">Explore thousands of opportunities across India's leading companies</p>
         </div>
 
-        <div className="mb-12 flex flex-col items-center gap-4 lg:flex-row">
+        <div className="mb-12 flex flex-col items-stretch gap-4 lg:flex-row lg:items-center">
           <div className="relative w-full flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input
@@ -83,13 +83,13 @@ const JobBoard = () => {
             />
           </div>
 
-          <div className="w-full overflow-x-auto pb-2 lg:w-auto lg:pb-0">
-            <div className="flex gap-2">
+          <div className="w-full lg:w-auto">
+            <div className="flex flex-wrap gap-2 lg:flex-nowrap">
               {filters.map((type) => (
                 <button
                   key={type}
                   onClick={() => setFilter(type)}
-                  className={`whitespace-nowrap rounded-2xl border px-6 py-4 font-semibold transition-all ${
+                  className={`rounded-2xl border px-5 py-3.5 text-sm font-semibold transition-all sm:px-6 sm:py-4 sm:text-base ${
                     filter === type
                       ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-200'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-blue-400'

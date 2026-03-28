@@ -3,7 +3,7 @@ import { CheckCircle2, ArrowRight, Users, Building2, Settings, BarChart3, UserCi
 
 const WorkforceSection = () => {
   return (
-    <div className="relative min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="relative min-h-screen overflow-x-hidden bg-white px-4 py-16 font-sans sm:px-6 lg:px-8">
       {/* Background is now pure white with no texture for maximum clarity */}
 
       {/* Extra edge textures for a richer frame */}
@@ -52,8 +52,8 @@ const WorkforceSection = () => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="mx-auto mb-10 max-w-3xl text-center">
-          <h2 className="text-4xl font-extrabold tracking-tight text-orange-500">Solutions for Everyone</h2>
-          <p className="mt-4 text-lg leading-relaxed text-gray-600">
+          <h2 className="text-3xl font-extrabold tracking-tight text-orange-500 sm:text-4xl">Solutions for Everyone</h2>
+          <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
             Whether you're looking for your next opportunity or seeking skilled talent, we've got you covered.
           </p>
         </div>
@@ -95,7 +95,7 @@ const WorkforceSection = () => {
             </div>
 
             {/* Card Body */}
-            <div className="p-8 relative">
+            <div className="relative p-6 sm:p-8">
               {/* VISUAL DECORATION (Right Side) */}
               <div className="absolute right-8 top-12 flex flex-col items-end gap-6 text-orange-200/60 hidden lg:flex pointer-events-none">
                 <Settings size={48} className="animate-spin-slow" />
@@ -107,8 +107,8 @@ const WorkforceSection = () => {
                 <UserCircle2 size={40} />
               </div>
 
-              <h2 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">Launch Your Career</h2>
-              <p className="text-gray-500 mb-7 text-base leading-relaxed max-w-[82%]">
+              <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Launch Your Career</h2>
+              <p className="mb-7 max-w-none text-base leading-relaxed text-gray-500 lg:max-w-[82%]">
                 Get access to thousands of job opportunities with top companies. We help you build a successful career.
               </p>
 
@@ -151,7 +151,7 @@ const WorkforceSection = () => {
             </div>
 
             {/* Card Body */}
-            <div className="p-8 relative">
+            <div className="relative p-6 sm:p-8">
               {/* VISUAL DECORATION (Right Side) */}
               <div className="absolute right-8 top-12 flex flex-col items-end gap-6 text-blue-200/60 hidden lg:flex pointer-events-none">
                 <BarChart3 size={48} />
@@ -161,8 +161,8 @@ const WorkforceSection = () => {
                 <Settings size={40} className="animate-reverse-spin" />
               </div>
 
-              <h2 className="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">Build Your Team</h2>
-              <p className="text-gray-500 mb-7 text-base leading-relaxed max-w-[82%]">
+              <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Build Your Team</h2>
+              <p className="mb-7 max-w-none text-base leading-relaxed text-gray-500 lg:max-w-[82%]">
                 Access a vast pool of skilled workers. Use government schemes to reduce costs while building a talented team.
               </p>
 

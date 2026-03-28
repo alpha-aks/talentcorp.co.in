@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle, Award, ArrowRight, Briefcase, Star } from 'lucide-react';
+import Navbar from '../components/Navbar';
 import WorkforceSection from '../components/WorkforceSection';
 import StatsSection from '../components/StatsSection';
 import JobBoard from '../components/JobBoard';
@@ -22,35 +23,9 @@ const HeroSection = ({ animateWords = false }) => {
   ];
 
   return (
-    <div className="relative bg-[#0f2a4d]">
-      <section className="relative min-h-screen flex items-center overflow-visible">
-        <nav className="absolute top-0 left-0 right-0 z-20 border-b border-[#d8e7f8] bg-white/95 backdrop-blur-md">
-          <div className="container mx-auto px-6 py-3.5 flex items-center justify-between">
-            <div className="h-10 w-[155px] overflow-hidden sm:h-12 sm:w-[180px]">
-              <img
-                src="/TSPL Logo (Sarang Sir) 1.png"
-                alt="TSPL"
-                className="h-full w-full object-cover object-center scale-[1.14] drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)] contrast-125 brightness-110"
-              />
-            </div>
-            <div className="hidden lg:flex items-center gap-7 text-sm font-semibold text-[#1a4f87]">
-              <a href="#services" className="hover:text-[#0f2a4d] transition-colors">Services</a>
-              <a href="#about" className="hover:text-[#0f2a4d] transition-colors">About</a>
-              <a href="#jobs" className="hover:text-[#0f2a4d] transition-colors">Jobs</a>
-              <a href="#clients" className="hover:text-[#0f2a4d] transition-colors">Clients</a>
-              <a href="#achievements" className="hover:text-[#0f2a4d] transition-colors">Achievements</a>
-              <a href="#news-events" className="hover:text-[#0f2a4d] transition-colors">News &amp; Events</a>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <button className="bg-white hover:bg-[#f3f8ff] border border-[#b7cde6] text-[#174a7f] px-4 py-2 rounded-xl font-semibold transition-all">
-                Contact Us
-              </button>
-              <button className="bg-[#FF8C00] hover:bg-orange-600 text-white px-4 py-2 rounded-xl font-semibold transition-all">
-                Apply Job
-              </button>
-            </div>
-          </div>
-        </nav>
+    <div className="relative overflow-x-hidden bg-[#0f2a4d]">
+      <section className="relative min-h-screen flex items-center overflow-x-hidden overflow-y-visible">
+        <Navbar />
 
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0 overflow-hidden">
@@ -61,56 +36,58 @@ const HeroSection = ({ animateWords = false }) => {
           />
           <div className="absolute left-0 top-0 bottom-0 w-[72%] bg-gradient-to-r from-[#0f2a4d]/90 via-[#0f2a4d]/60 to-transparent" />
           <div className="hero-color-wash absolute right-0 top-0 bottom-0 w-[58%] bg-gradient-to-l from-cyan-500/25 via-blue-500/20 to-transparent" />
-          <div className="hero-color-blob-one absolute -right-24 top-20 h-72 w-72 rounded-full bg-orange-500/30 blur-3xl" />
-          <div className="hero-color-blob-two absolute right-20 bottom-10 h-80 w-80 rounded-full bg-indigo-500/30 blur-3xl" />
+          <div className="hero-color-blob-one absolute -right-24 top-20 hidden h-72 w-72 rounded-full bg-orange-500/30 blur-3xl md:block" />
+          <div className="hero-color-blob-two absolute right-20 bottom-10 hidden h-80 w-80 rounded-full bg-indigo-500/30 blur-3xl md:block" />
         </div>
 
         {/* Decorative Circle */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 border border-white/10 rounded-full z-0" />
+        <div className="absolute -top-24 -left-24 hidden h-96 w-96 rounded-full border border-white/10 z-0 md:block" />
 
-        <div className="container mx-auto px-6 relative z-10 py-20 pt-32 pb-20 md:pb-40">
+        <div className="container mx-auto relative z-10 px-4 py-20 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-20 md:pb-40">
           {/* Badges */}
           <div className={`${animateWords ? 'hero-content-enter' : 'hero-content-wait'} max-w-3xl`}>
-          <div className="flex flex-wrap gap-3 mb-8">
-            <div className="flex items-center gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-              <Award size={16} className="text-orange-500" />
-              <span>Government Authorized</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-              <CheckCircle size={16} className="text-emerald-500" />
-              <span>NAPS | NATS | MAPS</span>
+          <div className="mb-8">
+            <div className="flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto pb-1">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap shrink-0">
+                <Award size={14} className="text-orange-500 sm:w-4 sm:h-4" />
+                <span>Government Authorized</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap shrink-0">
+                <CheckCircle size={14} className="text-emerald-500 sm:w-4 sm:h-4" />
+                <span>NAPS | NATS | MAPS</span>
+              </div>
             </div>
           </div>
 
           {/* Main Content */}
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
+            <h1 className="mb-6 text-4xl font-bold leading-tight sm:text-5xl md:text-7xl">
               Building India's <br />
               <span className="text-[#FF8C00]">Future Workforce</span>
             </h1>
             
-            <p className="text-gray-300 text-lg md:text-xl mb-10 leading-relaxed max-w-2xl">
+            <p className="mb-10 max-w-2xl text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
               India's leading government-authorized staffing partner connecting 40,000+ skilled 
               candidates with top employers through certified apprenticeship programs.
             </p>
 
             {/* Social Proof */}
-            <div className="flex items-center gap-6 mb-12">
+            <div className="mb-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex items-center -space-x-3">
                 {partnerLogos.map((brand) => (
                   <div
                     key={brand.name}
-                    className="h-12 w-12 rounded-full border-2 border-[#0f2a4d] bg-white flex items-center justify-center overflow-hidden shadow-md"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border-2 border-[#0f2a4d] bg-white flex items-center justify-center overflow-hidden shadow-md"
                   >
                     <img
                       src={brand.src}
                       alt={`${brand.name} logo`}
-                      className={`${brand.name === 'MRF' ? 'h-8 w-8' : 'h-7 w-7'} object-contain`}
+                      className={`${brand.name === 'MRF' ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-5 w-5 sm:h-7 sm:w-7'} object-contain`}
                       loading="lazy"
                     />
                   </div>
                 ))}
               </div>
-              <div className="h-8 w-[1px] bg-white/15" />
+              <div className="hidden h-8 w-[1px] bg-white/15 sm:block" />
               <div className="flex flex-col">
                 <span className="text-sm font-medium">+400 Companies Trust Us</span>
                 <div className="flex items-center gap-1">
@@ -121,11 +98,11 @@ const HeroSection = ({ animateWords = false }) => {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-[#FF8C00] hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#FF8C00] px-8 py-4 font-semibold text-white transition-all hover:bg-orange-600 sm:w-auto">
                 Find Your Dream Job <ArrowRight size={20} />
               </button>
-              <button className="bg-white/4 hover:bg-white/8 border border-white/15 backdrop-blur-md text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all">
+              <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/4 px-8 py-4 font-semibold text-white backdrop-blur-md transition-all hover:bg-white/8 sm:w-auto">
                 <Briefcase size={20} /> Hire Skilled Talent
               </button>
             </div>
@@ -159,7 +136,7 @@ const HeroSection = ({ animateWords = false }) => {
         />
 
         <div className="relative w-full">
-          <h2 className="px-6 text-center text-2xl font-bold leading-snug text-[#103f78] md:px-10 md:text-3xl">
+          <h2 className="px-4 text-center text-xl font-bold leading-snug text-[#103f78] sm:px-6 md:px-10 md:text-3xl">
             Trusted by 400+ leading companies across India
           </h2>
 
@@ -174,7 +151,7 @@ const HeroSection = ({ animateWords = false }) => {
               {[...partnerLogos, ...partnerLogos].map((brand, idx) => (
                 <div
                   key={`${brand.name}-${idx}`}
-                  className="mx-2 flex h-20 w-44 shrink-0 items-center justify-center rounded-xl border border-[#9ec3ea] bg-[#eff6ff]/75 px-5 shadow-sm backdrop-blur-sm"
+                  className="mx-2 flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-[#9ec3ea] bg-[#eff6ff]/75 px-4 shadow-sm backdrop-blur-sm sm:w-44 sm:px-5"
                 >
                   <img
                     src={brand.src}
