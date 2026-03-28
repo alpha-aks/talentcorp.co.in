@@ -44,14 +44,16 @@ const HeroSection = ({ animateWords = false }) => {
         <div className="container mx-auto relative z-10 px-4 py-20 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-20 md:pb-40">
           {/* Badges */}
           <div className={`${animateWords ? 'hero-content-enter' : 'hero-content-wait'} max-w-3xl`}>
-          <div className="flex flex-wrap gap-3 mb-8">
-            <div className="flex items-center gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-              <Award size={16} className="text-orange-500" />
-              <span>Government Authorized</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-              <CheckCircle size={16} className="text-emerald-500" />
-              <span>NAPS | NATS | MAPS</span>
+          <div className="mb-8">
+            <div className="flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto pb-1">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap shrink-0">
+                <Award size={14} className="text-orange-500 sm:w-4 sm:h-4" />
+                <span>Government Authorized</span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-white/3 backdrop-blur-md border border-white/15 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap shrink-0">
+                <CheckCircle size={14} className="text-emerald-500 sm:w-4 sm:h-4" />
+                <span>NAPS | NATS | MAPS</span>
+              </div>
             </div>
           </div>
 
@@ -72,12 +74,12 @@ const HeroSection = ({ animateWords = false }) => {
                 {partnerLogos.map((brand) => (
                   <div
                     key={brand.name}
-                    className="h-12 w-12 rounded-full border-2 border-[#0f2a4d] bg-white flex items-center justify-center overflow-hidden shadow-md"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border-2 border-[#0f2a4d] bg-white flex items-center justify-center overflow-hidden shadow-md"
                   >
                     <img
                       src={brand.src}
                       alt={`${brand.name} logo`}
-                      className={`${brand.name === 'MRF' ? 'h-8 w-8' : 'h-7 w-7'} object-contain`}
+                      className={`${brand.name === 'MRF' ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-5 w-5 sm:h-7 sm:w-7'} object-contain`}
                       loading="lazy"
                     />
                   </div>
