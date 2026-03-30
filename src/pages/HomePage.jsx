@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState } from 'react';
 import { CheckCircle, Award, ArrowRight, Briefcase, Star } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import WorkforceSection from '../components/WorkforceSection';
 import StatsSection from '../components/StatsSection';
 import JobBoard from '../components/JobBoard';
@@ -54,20 +55,42 @@ const HeroSection = ({ animateWords = false }) => {
               ))}
             </div>
             <div className="flex items-center gap-2.5">
-              <button
+              <motion.button
                 type="button"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#b7cde6] bg-white text-[#174a7f] transition-all hover:bg-[#f3f8ff] sm:hidden"
                 aria-label="Toggle mobile menu"
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-nav-menu"
                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                whileTap={{ scale: 0.94 }}
               >
-                <span className="flex items-center gap-1" aria-hidden="true">
-                  <span className="h-1.5 w-1.5 rounded-full bg-current" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-current" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-current" />
-                </span>
-              </button>
+                <motion.span
+                  className="relative h-4 w-5"
+                  aria-hidden="true"
+                  initial={false}
+                  animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
+                  transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <motion.span
+                    className="absolute left-0 top-0 h-0.5 w-5 rounded-full bg-current"
+                    initial={false}
+                    animate={{ y: isMobileMenuOpen ? 6 : 0, rotate: isMobileMenuOpen ? 45 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                  <motion.span
+                    className="absolute left-0 top-[7px] h-0.5 w-5 rounded-full bg-current"
+                    initial={false}
+                    animate={{ opacity: isMobileMenuOpen ? 0 : 1, scaleX: isMobileMenuOpen ? 0.2 : 1 }}
+                    transition={{ duration: 0.18 }}
+                  />
+                  <motion.span
+                    className="absolute left-0 top-[14px] h-0.5 w-5 rounded-full bg-current"
+                    initial={false}
+                    animate={{ y: isMobileMenuOpen ? -8 : 0, rotate: isMobileMenuOpen ? -45 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </motion.span>
+              </motion.button>
               <button className="hidden sm:inline-flex bg-white hover:bg-[#f3f8ff] border border-[#b7cde6] text-[#174a7f] px-4 py-2 rounded-xl font-semibold transition-all">
                 Contact Us
               </button>
@@ -77,22 +100,36 @@ const HeroSection = ({ animateWords = false }) => {
             </div>
           </div>
 
-          {isMobileMenuOpen && (
-            <div id="mobile-nav-menu" className="border-t border-[#d8e7f8] bg-white px-6 py-3 sm:hidden">
-              <div className="flex flex-col gap-2 text-sm font-semibold text-[#1a4f87]">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="rounded-lg px-2 py-2 transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
+          <AnimatePresence initial={false}>
+            {isMobileMenuOpen && (
+              <motion.div
+                id="mobile-nav-menu"
+                className="overflow-hidden border-t border-[#d8e7f8] bg-white px-6 sm:hidden"
+                initial={{ height: 0, opacity: 0, y: -10, scaleY: 0.96 }}
+                animate={{ height: 'auto', opacity: 1, y: 0, scaleY: 1 }}
+                exit={{ height: 0, opacity: 0, y: -8, scaleY: 0.96 }}
+                transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformOrigin: 'top' }}
+              >
+                <div className="flex flex-col gap-2 py-3 text-sm font-semibold text-[#1a4f87]">
+                  {navLinks.map((link, index) => (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      className="rounded-lg px-2 py-2 transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.18, delay: index * 0.03 }}
+                    >
+                      {link.label}
+                    </motion.a>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
 
         {/* Background Image with Overlay */}
@@ -115,13 +152,13 @@ const HeroSection = ({ animateWords = false }) => {
           {/* Badges */}
           <div className={`${animateWords ? 'hero-content-enter' : 'hero-content-wait'} max-w-3xl`}>
           <div className="mb-8">
-            <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-1">
-            <div className="flex shrink-0 items-center gap-2 whitespace-nowrap bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-                <Award size={16} className="text-orange-500" />
+            <div className="flex flex-wrap md:flex-nowrap items-center gap-1.5 md:gap-2 overflow-visible md:overflow-x-auto pb-1">
+            <div className="flex shrink-0 items-center gap-1.5 md:gap-2 whitespace-nowrap bg-white/3 backdrop-blur-md border border-white/15 px-3 md:px-4 py-1 md:py-1.5 rounded-full text-xs md:text-sm">
+                <Award size={14} className="text-orange-500 md:h-4 md:w-4" />
                 <span>Government Authorized</span>
               </div>
-            <div className="flex shrink-0 items-center gap-2 whitespace-nowrap bg-white/3 backdrop-blur-md border border-white/15 px-4 py-1.5 rounded-full text-sm">
-                <CheckCircle size={16} className="text-emerald-500" />
+            <div className="flex shrink-0 items-center gap-1.5 md:gap-2 whitespace-nowrap bg-white/3 backdrop-blur-md border border-white/15 px-3 md:px-4 py-1 md:py-1.5 rounded-full text-xs md:text-sm">
+                <CheckCircle size={14} className="text-emerald-500 md:h-4 md:w-4" />
                 <span>NAPS | NATS | MAPS</span>
               </div>
             </div>
