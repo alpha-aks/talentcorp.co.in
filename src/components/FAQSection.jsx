@@ -116,7 +116,7 @@ const FAQSection = () => {
           
           <Link
             to="/contact-us"
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl font-bold shadow-[0_12px_24px_-8px_rgba(249,115,22,0.4)] transition-all duration-300"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl border-2 border-orange-300 font-bold shadow-[0_12px_24px_-8px_rgba(249,115,22,0.4)] transition-all duration-300"
           >
             <span
               aria-hidden="true"

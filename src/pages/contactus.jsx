@@ -6,8 +6,14 @@ import {
   Mail, 
   MapPin, 
   Building, 
-  ArrowRight
+  ArrowRight,
+  Check
 } from 'lucide-react';
+
+const STRAPI_BASE_URL =
+  import.meta.env.VITE_STRAPI_API_URL ||
+  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
+  'http://localhost:1337';
 
 const ContactUs = () => {
   const [isFormHovered, setIsFormHovered] = useState(false);
@@ -20,41 +26,34 @@ const ContactUs = () => {
     setShowSuccessPopup(false);
 
     const formData = new FormData(event.currentTarget);
-    const payload = {
-      content: 'New Contact Us form submission',
-      embeds: [
-        {
-          title: 'Contact Form Message',
-          color: 0x60a5fa,
-          fields: [
-            { name: 'Full Name', value: formData.get('fullName') || 'N/A', inline: true },
-            { name: 'Email Address', value: formData.get('email') || 'N/A', inline: true },
-            { name: 'Phone Number', value: formData.get('phone') || 'N/A', inline: true },
-            { name: 'Service Interested In', value: formData.get('service') || 'N/A', inline: false },
-            { name: 'Message', value: formData.get('message') || 'N/A', inline: false },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+    const leadPayload = {
+      data: {
+        name: formData.get('fullName') || '',
+        email: formData.get('email') || '',
+        phone: formData.get('phone') || '',
+        subject: formData.get('service') || '',
+        message: formData.get('message') || '',
+        consent: Boolean(formData.get('consent')),
+      },
     };
 
     try {
-      setShowSuccessPopup(true);
-      const webhookFormData = new FormData();
-      webhookFormData.append('payload_json', JSON.stringify(payload));
+      const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadPayload),
+      });
 
-      await fetch(
-        'https://discord.com/api/webhooks/1486657294216335484/9cYnpU4VejJ86xevzBZ-kNKhSu9pGeHVZc6lVVWWur-UZLO32krZST6CoM3U0iYTkMau',
-        {
-          method: 'POST',
-          mode: 'no-cors',
-          body: webhookFormData,
-        }
-      );
+      if (!response.ok) {
+        throw new Error('Unable to submit contact form.');
+      }
 
       event.currentTarget.reset();
-    } catch (error) {
       setShowSuccessPopup(true);
+    } catch (error) {
+      setShowSuccessPopup(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -183,6 +182,18 @@ const ContactUs = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
                 <textarea name="message" rows="4" placeholder="How can we help you?" required className="w-full px-5 py-3 border border-gray-200 rounded-[1.75rem] outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)]"></textarea>
               </div>
+              <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                <input
+                  type="checkbox"
+                  name="consent"
+                  required
+                  className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span>
+                  <Check size={14} className="mr-1 inline text-orange-500" />
+                  I agree to receive messages from TALENTCORP SOLUTIONS PRIVATE LIMITED and its representatives through WhatsApp, RCS, Email, and other communication channels.
+                </span>
+              </label>
               <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 text-white font-medium py-3 rounded-full transition-all duration-300 mt-2 active:scale-[0.99]">
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>

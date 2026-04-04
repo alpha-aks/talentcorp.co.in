@@ -141,7 +141,7 @@ const NewsSection = () => {
           </motion.div>
 
           <motion.button
-            className="group flex items-center gap-2 border-b-2 border-orange-100 pb-1 font-bold text-orange-500 transition-all hover:gap-4 whitespace-nowrap"
+            className="group flex items-center gap-2 rounded-xl border border-orange-300 px-4 py-2 font-bold text-orange-500 transition-all hover:gap-4 hover:border-orange-500 whitespace-nowrap"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -234,7 +234,7 @@ const NewsSection = () => {
                 </motion.p>
 
                 <motion.button
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
