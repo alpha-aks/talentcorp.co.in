@@ -118,6 +118,29 @@ const FAQSection = () => {
             to="/contact-us"
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl font-bold shadow-[0_12px_24px_-8px_rgba(249,115,22,0.4)] transition-all duration-300"
           >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-14 left-1/2 h-20 w-20 -translate-x-1/2 rounded-full opacity-70"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle at center, rgba(255,140,0,0.34) 0 2px, transparent 2px), radial-gradient(circle at center, rgba(30,64,175,0.16) 0 1.5px, transparent 1.5px), radial-gradient(circle at center, rgba(255,140,0,0.08) 0 1px, transparent 1px)',
+                backgroundSize: '12px 12px, 18px 18px, 7px 7px',
+                backgroundPosition: '0 0, 4px 5px, 2px 3px',
+                maskImage: 'radial-gradient(circle, black 34%, transparent 78%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 34%, transparent 78%)',
+              }}
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-8 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full opacity-35"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle at center, rgba(255,140,0,0.2) 0 1.5px, transparent 1.5px), radial-gradient(circle at center, rgba(30,64,175,0.12) 0 1.5px, transparent 1.5px)',
+                backgroundSize: '16px 16px, 26px 26px',
+                maskImage: 'radial-gradient(circle, black 18%, transparent 76%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 18%, transparent 76%)',
+              }}
+            />
             Contact us
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
