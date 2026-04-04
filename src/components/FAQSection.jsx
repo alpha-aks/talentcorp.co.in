@@ -57,13 +57,24 @@ const FAQSection = () => {
       <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-50/40 to-transparent pointer-events-none" />
       <div className="absolute -right-64 top-20 w-[500px] h-[500px] rounded-full bg-orange-50/30 blur-[120px] pointer-events-none opacity-60" />
       <div
-        className="pointer-events-none absolute right-0 top-1/2 h-[28rem] w-[28rem] -translate-y-1/2 translate-x-1/3 rounded-full opacity-35"
+        className="pointer-events-none absolute right-[-4rem] top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full opacity-60"
         style={{
           backgroundImage:
-            'radial-gradient(circle at center, rgba(255,140,0,0.22) 0 2px, transparent 2px), radial-gradient(circle at center, rgba(30,64,175,0.14) 0 2px, transparent 2px), radial-gradient(circle at center, rgba(255,140,0,0.08) 0 1px, transparent 1px)',
-          backgroundSize: '18px 18px, 28px 28px, 10px 10px',
-          maskImage: 'radial-gradient(circle, black 42%, transparent 76%)',
-          WebkitMaskImage: 'radial-gradient(circle, black 42%, transparent 76%)',
+            'radial-gradient(circle at center, rgba(255,140,0,0.30) 0 2px, transparent 2.5px), radial-gradient(circle at center, rgba(30,64,175,0.18) 0 2px, transparent 2.5px), radial-gradient(circle at center, rgba(255,140,0,0.10) 0 1px, transparent 1.5px)',
+          backgroundSize: '14px 14px, 24px 24px, 8px 8px',
+          backgroundPosition: '0 0, 6px 8px, 2px 3px',
+          maskImage: 'radial-gradient(circle, black 30%, transparent 72%)',
+          WebkitMaskImage: 'radial-gradient(circle, black 30%, transparent 72%)',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute right-[6rem] top-[58%] h-44 w-44 -translate-y-1/2 rounded-full opacity-45"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at center, rgba(255,140,0,0.24) 0 1.5px, transparent 1.5px), radial-gradient(circle at center, rgba(30,64,175,0.16) 0 1.5px, transparent 1.5px)',
+          backgroundSize: '12px 12px, 20px 20px',
+          maskImage: 'radial-gradient(circle, black 20%, transparent 72%)',
+          WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 72%)',
         }}
       />
 
