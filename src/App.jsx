@@ -4,6 +4,7 @@ import './App.css'
 import HomePage from './pages/HomePage'
 import JobDetailPage from './pages/JobDetailPage'
 import ContactUs from './pages/contactus'
+import NewsEventsPage from './pages/NewsEventsPage'
 
 const PRELOADER_DURATION_MS = 2800
 
@@ -39,6 +40,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage animateWords={!isLoading} />} />
             <Route path="/job/:jobId" element={<JobDetailPage />} />
+            <Route path="/news-events" element={<NewsEventsPage />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
           </Routes>

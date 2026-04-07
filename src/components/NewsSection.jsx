@@ -1,8 +1,11 @@
 import React, { Suspense, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import { ArrowRight, Calendar, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const MotionLink = motion(Link);
 
 const newsItems = [
   {
@@ -36,11 +39,13 @@ function NewsScene() {
           <MeshDistortMaterial
             color="#FF8C00"
             emissive="#ffb347"
-            emissiveIntensity={0.28}
+            emissiveIntensity={0.12}
             speed={1.6}
             distort={0.24}
             roughness={0.08}
             metalness={0.05}
+            transparent
+            opacity={0.1}
           />
         </Sphere>
       </Float>
@@ -50,11 +55,13 @@ function NewsScene() {
           <MeshDistortMaterial
             color="#2f80ff"
             emissive="#7ec3ff"
-            emissiveIntensity={0.34}
+            emissiveIntensity={0.14}
             speed={1.5}
             distort={0.26}
             roughness={0.1}
             metalness={0.1}
+            transparent
+            opacity={0.1}
           />
         </Sphere>
       </Float>
@@ -79,7 +86,7 @@ const NewsSection = () => {
   return (
     <section id="news-events" className="relative overflow-hidden bg-white py-10 md:py-16">
       {isDesktop && (
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-50">
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-30">
           <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 5], fov: 42 }} gl={{ antialias: true, powerPreference: 'high-performance' }}>
             <Suspense fallback={null}>
               <NewsScene />
@@ -140,8 +147,9 @@ const NewsSection = () => {
             </motion.p>
           </motion.div>
 
-          <motion.button
-            className="group flex items-center gap-2 rounded-xl border border-orange-300 px-4 py-2 font-bold text-orange-500 transition-all hover:gap-4 hover:border-orange-500 whitespace-nowrap"
+          <MotionLink
+            to="/news-events"
+            className="group inline-flex items-center gap-2 rounded-xl border border-orange-300 px-4 py-2 font-bold text-orange-500 transition-all hover:gap-4 hover:border-orange-500 whitespace-nowrap"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -149,7 +157,7 @@ const NewsSection = () => {
             whileHover={{ x: 4 }}
           >
             View All Updates <ArrowRight size={20} />
-          </motion.button>
+          </MotionLink>
         </motion.div>
 
         <motion.div

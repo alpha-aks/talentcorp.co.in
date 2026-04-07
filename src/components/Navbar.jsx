@@ -7,7 +7,7 @@ const navLinks = [
   { href: '#jobs', label: 'Jobs' },
   { href: '#clients', label: 'Clients' },
   { href: '#achievements', label: 'Achievements' },
-  { href: '#news-events', label: 'News & Events' },
+  { href: '/news-events', label: 'News & Events' },
 ];
 
 const Navbar = () => {
@@ -18,19 +18,25 @@ const Navbar = () => {
   return (
     <nav className="absolute top-0 left-0 right-0 z-20 border-b border-[#d8e7f8] bg-white/95 backdrop-blur-md">
       <div className="container mx-auto px-6 py-3.5 flex items-center justify-between">
-        <div className="h-10 w-[155px] overflow-hidden sm:h-12 sm:w-[180px]">
+        <Link to="/" className="h-10 w-[155px] overflow-hidden sm:h-12 sm:w-[180px]" aria-label="TSPL home">
           <img
             src="/TSPL Logo (Sarang Sir) 1.png"
             alt="TSPL"
             className="h-full w-full object-cover object-center scale-[1.14] drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)] contrast-125 brightness-110"
           />
-        </div>
+        </Link>
 
         <div className="hidden lg:flex items-center gap-7 text-sm font-semibold text-[#1a4f87]">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="hover:text-[#0f2a4d] transition-colors">
-              {link.label}
-            </a>
+              link.href.startsWith('/') ? (
+                <Link key={link.href} to={link.href} className="hover:text-[#0f2a4d] transition-colors">
+                  {link.label}
+                </Link>
+              ) : (
+                <a key={link.href} href={link.href} className="hover:text-[#0f2a4d] transition-colors">
+                  {link.label}
+                </a>
+              )
           ))}
         </div>
 
@@ -66,14 +72,25 @@ const Navbar = () => {
         <div className="lg:hidden border-t border-[#d8e7f8] bg-white px-6 py-5 shadow-lg">
           <div className="flex flex-col gap-4 text-base font-semibold text-[#1a4f87]">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={closeMenu}
-                className="rounded-lg px-2 py-1 hover:bg-[#f3f8ff]"
-              >
-                {link.label}
-              </a>
+              link.href.startsWith('/') ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={closeMenu}
+                  className="rounded-lg px-2 py-1 hover:bg-[#f3f8ff]"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="rounded-lg px-2 py-1 hover:bg-[#f3f8ff]"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </div>
 
