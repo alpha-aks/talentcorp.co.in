@@ -23,16 +23,18 @@ const ContactUs = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showPlaneAnimation, setShowPlaneAnimation] = useState(false);
   const [isFormFlyingAway, setIsFormFlyingAway] = useState(false);
+  const [flightManifest, setFlightManifest] = useState([]);
   const [submitError, setSubmitError] = useState('');
 
   const handleContactSubmit = async (event) => {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setIsSubmitting(true);
     setShowSuccessPopup(false);
     setShowPlaneAnimation(false);
     setSubmitError('');
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(formElement);
     const leadPayload = {
       data: {
         name: formData.get('fullName') || '',
@@ -43,6 +45,17 @@ const ContactUs = () => {
         consent: Boolean(formData.get('consent')),
       },
     };
+
+    const manifestEntries = [
+      { label: 'Name', value: String(formData.get('fullName') || '').trim() },
+      { label: 'Email', value: String(formData.get('email') || '').trim() },
+      { label: 'Phone', value: String(formData.get('phone') || '').trim() },
+      { label: 'Service', value: String(formData.get('service') || '').trim() },
+      {
+        label: 'Message',
+        value: String(formData.get('message') || '').trim().slice(0, 42),
+      },
+    ].filter((entry) => entry.value);
 
     try {
       const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
@@ -58,16 +71,21 @@ const ContactUs = () => {
         throw new Error(`Submit failed (${response.status}): ${responseText || 'no response body'}`);
       }
 
-      event.currentTarget.reset();
+      formElement.reset();
+      setFlightManifest(manifestEntries.slice(0, 5));
       setIsFormFlyingAway(true);
       setShowPlaneAnimation(true);
       setShowSuccessPopup(true);
-      window.setTimeout(() => setShowPlaneAnimation(false), 1800);
-      window.setTimeout(() => setIsFormFlyingAway(false), 2300);
+      window.setTimeout(() => {
+        setShowPlaneAnimation(false);
+        setFlightManifest([]);
+      }, 2200);
+      window.setTimeout(() => setIsFormFlyingAway(false), 2500);
     } catch (error) {
       setShowSuccessPopup(false);
       setShowPlaneAnimation(false);
       setIsFormFlyingAway(false);
+      setFlightManifest([]);
       setSubmitError(error?.message || 'Unable to submit contact form.');
     } finally {
       setIsSubmitting(false);
@@ -150,17 +168,50 @@ const ContactUs = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
+                  <div className="absolute left-4 right-4 bottom-6 top-6">
+                    {(flightManifest.length ? flightManifest : [{ label: 'Message', value: 'Delivered' }]).map((entry, index) => (
+                      <motion.div
+                        key={`${entry.label}-${index}`}
+                        className="absolute left-0 flex max-w-[80%] items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-3 py-1.5 shadow-[0_14px_30px_rgba(59,130,246,0.12)]"
+                        initial={{
+                          opacity: 0,
+                          x: -24,
+                          y: 20 + index * 40,
+                          scale: 0.98,
+                          rotate: -3,
+                        }}
+                        animate={{
+                          opacity: [0, 1, 1, 0.65, 0],
+                          x: [-24, 0, 56, 128 + index * 4, 214],
+                          y: [20 + index * 40, 20 + index * 36, 18 + index * 20, 6 - index * 8, -8],
+                          scale: [0.98, 1, 0.95, 0.68, 0.25],
+                          rotate: [-3, 0, 3, -7, -20],
+                        }}
+                        transition={{
+                          duration: 1.9,
+                          ease: 'easeInOut',
+                          delay: index * 0.08,
+                        }}
+                      >
+                        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-700">
+                          {entry.label}
+                        </span>
+                        <span className="max-w-[170px] truncate text-xs font-medium text-gray-600">{entry.value}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
                   <motion.div
                     className="absolute left-8 bottom-10 flex h-14 w-20 items-end justify-between"
                     initial={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
                     animate={{
-                      opacity: [1, 1, 0.95, 0],
-                      scale: [1, 0.96, 0.9, 0.7],
-                      x: ['0%', '8%', '26%', '58%'],
-                      y: ['0%', '-8%', '-26%', '-62%'],
-                      rotate: [0, -6, -20, -38],
+                      opacity: [0.95, 1, 0.75, 0],
+                      scale: [1, 0.9, 0.58, 0.2],
+                      x: ['0%', '10%', '18%', '24%'],
+                      y: ['0%', '-4%', '-8%', '-10%'],
+                      rotate: [0, -4, -10, -16],
                     }}
-                    transition={{ duration: 1.6, ease: 'easeInOut' }}
+                    transition={{ duration: 1.2, ease: 'easeInOut' }}
                   >
                     <motion.span
                       className="h-12 w-4 rounded-full bg-blue-200"
@@ -180,31 +231,30 @@ const ContactUs = () => {
                   </motion.div>
 
                   <motion.div
-                    className="absolute left-6 bottom-10 flex items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-4 py-2 shadow-[0_20px_50px_rgba(59,130,246,0.18)] backdrop-blur"
-                    initial={{ x: 0, y: 0, scale: 0.95, rotate: -12 }}
+                    className="absolute left-[53%] bottom-[24%] z-10 flex h-10 w-14 items-center justify-center rounded-[40%_50%_45%_48%] border border-blue-200 bg-gradient-to-br from-white via-blue-50 to-blue-100 shadow-[0_20px_60px_rgba(59,130,246,0.24)]"
+                    initial={{ x: -22, y: 40, scale: 0.45, rotate: -26, opacity: 0 }}
                     animate={{
-                      x: ['0%', '28%', '66%', '118%'],
-                      y: ['0%', '-25%', '-52%', '-92%'],
-                      rotate: [-12, -2, 10, 22],
-                      scale: [0.95, 1, 1.04, 1.08],
-                      opacity: [0, 1, 1, 0],
+                      x: [-22, 8, 54, 126, 200],
+                      y: [40, 4, -36, -86, -144],
+                      rotate: [-26, -8, 12, 24, 36],
+                      scale: [0.45, 1, 1.03, 1.05, 0.94],
+                      opacity: [0, 1, 1, 1, 0],
                     }}
-                    transition={{ duration: 1.6, ease: 'easeInOut' }}
+                    transition={{ duration: 2, ease: 'easeInOut' }}
                   >
-                    <Send size={16} className="text-blue-600" />
-                    <span className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">Sending</span>
+                    <Send size={17} className="text-blue-700" />
                   </motion.div>
 
                   <motion.div
-                    className="absolute left-8 bottom-14 h-[2px] w-24 origin-left rounded-full bg-gradient-to-r from-blue-400 via-orange-300 to-transparent"
+                    className="absolute left-[56%] bottom-[26%] h-[2px] w-24 origin-left rounded-full bg-gradient-to-r from-blue-400 via-orange-300 to-transparent"
                     initial={{ opacity: 0, scaleX: 0.2 }}
                     animate={{
                       opacity: [0, 1, 1, 0],
-                      scaleX: [0.2, 0.9, 1.2, 1.35],
-                      x: ['0%', '30%', '70%', '120%'],
-                      y: ['0%', '-16%', '-30%', '-58%'],
+                      scaleX: [0.2, 0.95, 1.25, 1.5],
+                      x: ['0%', '24%', '78%', '150%'],
+                      y: ['0%', '-10%', '-28%', '-60%'],
                     }}
-                    transition={{ duration: 1.6, ease: 'easeInOut' }}
+                    transition={{ duration: 2, ease: 'easeInOut' }}
                   />
                 </motion.div>
               )}
@@ -315,7 +365,7 @@ const ContactUs = () => {
               <div className="fixed left-1/2 top-6 z-[9999] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 rounded-[2.25rem] border border-blue-100 bg-white px-6 py-5 shadow-[0_20px_60px_rgba(59,130,246,0.18)]">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-base font-semibold text-blue-700">your message send sucessfull</p>
+                    <p className="text-base font-semibold text-blue-700">Your message was sent successfully</p>
                     <p className="mt-1 text-sm text-gray-500">We received your message and will review it shortly.</p>
                   </div>
                   <button
