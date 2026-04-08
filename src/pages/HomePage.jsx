@@ -21,7 +21,7 @@ const HeroSection = ({ animateWords = false }) => {
     { href: '#jobs', label: 'Jobs' },
     { href: '#clients', label: 'Clients' },
     { href: '#achievements', label: 'Achievements' },
-    { href: '#news-events', label: 'News & Events' },
+    { href: '/news-events', label: 'News & Events' },
   ];
 
   const partnerLogos = [
@@ -77,9 +77,15 @@ const HeroSection = ({ animateWords = false }) => {
             </div>
             <div className="hidden lg:flex items-center gap-7 text-sm font-semibold text-[#1a4f87]">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} className="hover:text-[#0f2a4d] transition-colors">
-                  {link.label}
-                </a>
+                link.href.startsWith('/') ? (
+                  <Link key={link.href} to={link.href} className="hover:text-[#0f2a4d] transition-colors">
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a key={link.href} href={link.href} className="hover:text-[#0f2a4d] transition-colors">
+                    {link.label}
+                  </a>
+                )
               ))}
             </div>
             <div className="flex items-center gap-2.5">
@@ -144,18 +150,36 @@ const HeroSection = ({ animateWords = false }) => {
               >
                 <div className="flex flex-col gap-2 py-3 text-sm font-semibold text-[#1a4f87]">
                   {navLinks.map((link, index) => (
-                    <motion.a
-                      key={link.href}
-                      href={link.href}
-                      className="rounded-lg px-2 py-2 transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      initial={{ opacity: 0, y: -6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.18, delay: index * 0.03 }}
-                    >
-                      {link.label}
-                    </motion.a>
+                    link.href.startsWith('/') ? (
+                      <motion.div
+                        key={link.href}
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.18, delay: index * 0.03 }}
+                      >
+                        <Link
+                          to={link.href}
+                          className="block rounded-lg px-2 py-2 transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ) : (
+                      <motion.a
+                        key={link.href}
+                        href={link.href}
+                        className="rounded-lg px-2 py-2 transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.18, delay: index * 0.03 }}
+                      >
+                        {link.label}
+                      </motion.a>
+                    )
                   ))}
                 </div>
               </motion.div>

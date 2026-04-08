@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Eye } from 'lucide-react';
 
 export default function Footer() {
@@ -13,7 +14,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative bg-[#1a4a8a] text-white overflow-hidden">
+    <footer className="relative left-1/2 right-1/2 w-screen max-w-none -translate-x-1/2 bg-[#1a4a8a] text-white overflow-hidden">
       {/* Background Textures */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {/* Slanting line pattern overlay */}
@@ -44,7 +45,7 @@ export default function Footer() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+      <div className="w-full px-6 py-12 relative z-10 sm:px-8 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <img
@@ -82,15 +83,24 @@ export default function Footer() {
                 { href: '#jobs', label: 'Jobs' },
                 { href: '#clients', label: 'Clients' },
                 { href: '#achievements', label: 'Achievements' },
-                { href: '#news-events', label: 'News & Events' },
+                { href: '/news-events', label: 'News & Events' },
               ].map((link) => (
                 <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-blue-200 hover:text-[#f07a1a] text-sm transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.href.startsWith('/') ? (
+                    <Link
+                      to={link.href}
+                      className="text-blue-200 hover:text-[#f07a1a] text-sm transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-blue-200 hover:text-[#f07a1a] text-sm transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

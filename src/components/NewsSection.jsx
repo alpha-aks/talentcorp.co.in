@@ -1,8 +1,11 @@
 import React, { Suspense, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import { ArrowRight, Calendar, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const MotionLink = motion(Link);
 
 const newsItems = [
   {
@@ -31,20 +34,41 @@ const newsItems = [
 function NewsScene() {
   return (
     <group>
-      <Float speed={2.8} rotationIntensity={0.5} floatIntensity={1.4}>
-        <Sphere args={[1.1, 48, 48]} position={[-4.8, -0.5, -4.0]}>
-          <MeshDistortMaterial color="#ff8c42" speed={1.8} distort={0.28} roughness={0.3} />
+      <Float speed={2.8} rotationIntensity={0.45} floatIntensity={1.2}>
+        <Sphere args={[1.08, 48, 48]} position={[-4.8, -0.45, -4.0]}>
+          <MeshDistortMaterial
+            color="#FF8C00"
+            emissive="#ffb347"
+            emissiveIntensity={0.12}
+            speed={1.6}
+            distort={0.24}
+            roughness={0.08}
+            metalness={0.05}
+            transparent
+            opacity={0.1}
+          />
         </Sphere>
       </Float>
 
-      <Float speed={3.4} rotationIntensity={0.7} floatIntensity={1.9}>
-        <Sphere args={[0.8, 48, 48]} position={[4.2, -1.8, -3.8]}>
-          <MeshDistortMaterial color="#3b82f6" speed={1.6} distort={0.32} roughness={0.35} />
+      <Float speed={3.2} rotationIntensity={0.55} floatIntensity={1.35}>
+        <Sphere args={[0.84, 48, 48]} position={[4.25, -1.7, -3.8]}>
+          <MeshDistortMaterial
+            color="#2f80ff"
+            emissive="#7ec3ff"
+            emissiveIntensity={0.14}
+            speed={1.5}
+            distort={0.26}
+            roughness={0.1}
+            metalness={0.1}
+            transparent
+            opacity={0.1}
+          />
         </Sphere>
       </Float>
 
-      <ambientLight intensity={0.5} />
-      <pointLight position={[5, 8, 6]} intensity={0.8} color="#cfe3ff" />
+      <ambientLight intensity={0.9} />
+      <pointLight position={[5, 8, 6]} intensity={0.45} color="#cfe9ff" />
+      <pointLight position={[-5, 2, 4]} intensity={0.42} color="#ffbf73" />
     </group>
   );
 }
@@ -62,7 +86,7 @@ const NewsSection = () => {
   return (
     <section id="news-events" className="relative overflow-hidden bg-white py-10 md:py-16">
       {isDesktop && (
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-60">
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-30">
           <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 5], fov: 42 }} gl={{ antialias: true, powerPreference: 'high-performance' }}>
             <Suspense fallback={null}>
               <NewsScene />
@@ -75,7 +99,7 @@ const NewsSection = () => {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           backgroundImage:
-            'linear-gradient(135deg, rgba(255,140,66,0.08) 0%, rgba(59,130,246,0.08) 100%), repeating-linear-gradient(90deg, rgba(255,140,66,0.02) 0px, rgba(255,140,66,0.02) 1px, transparent 1px, transparent 20px)',
+            'linear-gradient(135deg, rgba(255,140,0,0.06) 0%, rgba(47,128,255,0.08) 100%), repeating-linear-gradient(90deg, rgba(255,140,0,0.018) 0px, rgba(255,140,0,0.018) 1px, transparent 1px, transparent 20px)',
         }}
       />
 
@@ -95,7 +119,7 @@ const NewsSection = () => {
             transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
           >
             <motion.span
-              className="inline-block rounded-full bg-blue-50 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-blue-600"
+              className="inline-block rounded-full bg-orange-50 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-orange-600"
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -110,7 +134,7 @@ const NewsSection = () => {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Latest <span className="text-blue-600">News & Events</span>
+              Latest <span className="text-orange-500">News & Events</span>
             </motion.h2>
             <motion.p
               className="text-base md:text-lg text-gray-500"
@@ -123,8 +147,9 @@ const NewsSection = () => {
             </motion.p>
           </motion.div>
 
-          <motion.button
-            className="group flex items-center gap-2 border-b-2 border-blue-100 pb-1 font-bold text-blue-600 transition-all hover:gap-4 whitespace-nowrap"
+          <MotionLink
+            to="/news-events"
+            className="group inline-flex items-center gap-2 rounded-xl border border-orange-300 px-4 py-2 font-bold text-orange-500 transition-all hover:gap-4 hover:border-orange-500 whitespace-nowrap"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -132,7 +157,7 @@ const NewsSection = () => {
             whileHover={{ x: 4 }}
           >
             View All Updates <ArrowRight size={20} />
-          </motion.button>
+          </MotionLink>
         </motion.div>
 
         <motion.div
@@ -188,7 +213,7 @@ const NewsSection = () => {
                 transition={{ duration: 0.5, delay: i * 0.1 + 0.15 }}
               >
                 <motion.div
-                  className="mb-4 flex items-center gap-2 text-sm font-bold text-blue-500"
+                  className="mb-4 flex items-center gap-2 text-sm font-bold text-orange-500"
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -198,7 +223,7 @@ const NewsSection = () => {
                   <span>{item.date}</span>
                 </motion.div>
                 <motion.h3
-                  className="mb-4 text-xl md:text-2xl font-bold text-gray-900 transition-colors group-hover:text-blue-600 line-clamp-2"
+                  className="mb-4 text-xl md:text-2xl font-bold text-gray-900 transition-colors group-hover:text-orange-500 line-clamp-2"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -217,7 +242,7 @@ const NewsSection = () => {
                 </motion.p>
 
                 <motion.button
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gray-50 py-3 md:py-4 font-bold transition-all group-hover:bg-blue-600 group-hover:text-white text-sm md:text-base"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
