@@ -20,6 +20,7 @@ const serviceLinks = [
   { href: '/skilled', label: 'SKILLED JOB' },
   { href: '/housekeeping', label: 'HOUSEKEEPING' },
   { href: '/manpower', label: 'MANPOWER' },
+  { href: '/payroll', label: 'PAYROLL' },
 ];
 
 const Navbar = () => {
