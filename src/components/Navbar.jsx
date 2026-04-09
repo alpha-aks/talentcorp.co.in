@@ -6,7 +6,7 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/#jobs', label: 'Jobs' },
-  { href: '/#clients', label: 'Clients' },
+  { href: '/client', label: 'Clients' },
   { href: '/#achievements', label: 'Achievements' },
   { href: '/news-events', label: 'News & Events' },
 ];
@@ -22,6 +22,7 @@ const serviceLinks = [
   { href: '/manpower', label: 'MANPOWER' },
   { href: '/contract', label: 'CONTRACT' },
   { href: '/b2b', label: 'B2B' },
+  { href: '/compliance', label: 'COMPLIANCE' },
   { href: '/payroll', label: 'PAYROLL' },
 ];
 
