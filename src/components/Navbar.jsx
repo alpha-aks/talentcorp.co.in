@@ -91,15 +91,15 @@ const Navbar = () => {
           </div>
 
           {navLinks.map((link) => (
-              link.href.startsWith('/') ? (
-                <Link key={link.href} to={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
-                  {link.label}
-                </Link>
-              ) : (
-                <a key={link.href} href={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
-                  {link.label}
-                </a>
-              )
+            link.href.startsWith('/') ? (
+              <Link key={link.href} to={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
+                {link.label}
+              </Link>
+            ) : (
+              <a key={link.href} href={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
+                {link.label}
+              </a>
+            )
           ))}
         </div>
 
