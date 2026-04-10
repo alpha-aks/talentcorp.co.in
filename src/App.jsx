@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
+import GlobalTextureOverlay from './components/GlobalTextureOverlay'
 import HomePage from './pages/HomePage'
 import JobDetailPage from './pages/JobDetailPage'
 import ContactUs from './pages/contactus'
@@ -39,6 +40,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="page-shell">
+        <GlobalTextureOverlay />
         {isLoading && (
           <div className="preloader" role="status" aria-label="Loading TSPL website">
             <div className="preloader-layer preloader-layer--orange" aria-hidden="true" />

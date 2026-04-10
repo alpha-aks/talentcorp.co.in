@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 import { 
   CheckCircle2, Globe2, ShieldCheck, Trophy, 
   Award, Star, Users, MapPin, Building2 
 } from 'lucide-react';
+import { fetchHomeHighlights, fetchHomeStats } from '../utils/strapi';
 
 // Counter Component
-export const CountUpNumber = ({ target, duration = 1.5 }) => {
+export const CountUpNumber = ({ target, duration = 1.5, suffix = '+' }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px 0px" });
@@ -33,12 +34,39 @@ export const CountUpNumber = ({ target, duration = 1.5 }) => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isInView, target, duration]);
 
-  return <span ref={ref}>{count.toLocaleString()}+</span>;
+  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
+};
+
+const fallbackMiniStats = [
+  { value: 10, suffix: '+', label: 'Years', icon: 'Award' },
+  { value: 25, suffix: '+', label: 'States', icon: 'MapPin' },
+  { value: 50, suffix: '+', label: 'Sectors', icon: 'Building2' },
+];
+
+const fallbackHighlights = [
+  { text: 'Pan-India presence across 25+ states', icon: 'MapPin' },
+  { text: 'Direct partnerships with government bodies', icon: 'Building2' },
+  { text: 'Dedicated compliance & support teams', icon: 'ShieldCheck' },
+  { text: 'Real-time tracking & reporting dashboards', icon: 'Globe2' },
+];
+
+const iconMap = {
+  Award,
+  MapPin,
+  Building2,
+  ShieldCheck,
+  Globe2,
+  Trophy,
+  Users,
+  Star,
+  CheckCircle2,
 };
 
 const StatsSection = () => {
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const [miniStats, setMiniStats] = useState(fallbackMiniStats);
+  const [highlights, setHighlights] = useState(fallbackHighlights);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -59,6 +87,34 @@ const StatsSection = () => {
       },
     },
   };
+
+  useEffect(() => {
+    const loadStats = async () => {
+      const [statsData, highlightsData] = await Promise.all([fetchHomeStats(), fetchHomeHighlights()]);
+
+      if (statsData.length > 0) {
+        setMiniStats(
+          statsData.map((item) => ({
+            value: Number(item.value) || 0,
+            suffix: item.suffix || '+',
+            label: item.label || '',
+            icon: item.icon || 'Award',
+          }))
+        );
+      }
+
+      if (highlightsData.length > 0) {
+        setHighlights(
+          highlightsData.map((item) => ({
+            text: item.text || '',
+            icon: item.icon || 'CheckCircle2',
+          }))
+        );
+      }
+    };
+
+    loadStats();
+  }, []);
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -136,8 +192,8 @@ const StatsSection = () => {
               transition={{ duration: 0.28, ease: 'easeOut' }}
             >
               <img
-                src="/happy-excited-executive-business-team-600nw-2424450635.jpg.webp"
-                alt="Happy partners"
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800"
+                alt="Successful diverse team celebrating success"
                 className="w-full h-[500px] object-cover transition-transform duration-500 group-hover:scale-[1.02]"
               />
               {/* Overlay for Image readability */}
@@ -225,12 +281,9 @@ const StatsSection = () => {
             </h2>
 
             <div className="space-y-4 relative z-10">
-              {[
-                { text: "Pan-India presence across 25+ states", icon: <MapPin size={18} /> },
-                { text: "Direct partnerships with government bodies", icon: <Building2 size={18} /> },
-                { text: "Dedicated compliance & support teams", icon: <ShieldCheck size={18} /> },
-                { text: "Real-time tracking & reporting dashboards", icon: <Globe2 size={18} /> },
-              ].map((item, i) => (
+              {highlights.map((item, i) => {
+                const Icon = iconMap[item.icon] || CheckCircle2;
+                return (
                 <motion.div
                   key={i}
                   className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-transparent hover:border-blue-100 hover:bg-white transition-all group"
@@ -239,20 +292,18 @@ const StatsSection = () => {
                   transition={{ delay: i * 0.1, duration: 0.6 }}
                 >
                   <div className="bg-white p-2 rounded-lg text-blue-600 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-all">
-                    {item.icon}
+                    <Icon size={18} />
                   </div>
                   <span className="font-semibold text-gray-700">{item.text}</span>
                 </motion.div>
-              ))}
+              );})}
             </div>
 
             {/* Mini Grid */}
             <div className="grid grid-cols-3 gap-4 pt-6 relative z-10">
-              {[
-                { val: 10, lab: "Years", icon: <Trophy className="text-blue-600" /> },
-                { val: 25, lab: "States", icon: <MapPin className="text-blue-600" /> },
-                { val: 50, lab: "Sectors", icon: <Building2 className="text-blue-600" /> },
-              ].map((stat, i) => (
+              {miniStats.map((stat, i) => {
+                const Icon = iconMap[stat.icon] || Award;
+                return (
                 <motion.div
                   key={i}
                   className="bg-blue-50/50 p-6 rounded-[2rem] text-center border border-blue-100"
@@ -260,13 +311,13 @@ const StatsSection = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.1, duration: 0.6 }}
                 >
-                  <div className="flex justify-center mb-2">{stat.icon}</div>
+                  <div className="flex justify-center mb-2 text-blue-600"><Icon size={18} /></div>
                   <p className="text-2xl font-black text-gray-900">
-                    <CountUpNumber target={stat.val} duration={1.2} />
+                    <CountUpNumber target={stat.value} duration={1.2} suffix={stat.suffix || '+'} />
                   </p>
-                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{stat.lab}</p>
+                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{stat.label}</p>
                 </motion.div>
-              ))}
+              );})}
             </div>
           </motion.div>
         </div>

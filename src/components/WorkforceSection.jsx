@@ -1,206 +1,123 @@
-import React from 'react';
-import { CheckCircle2, ArrowRight, Users, Building2, Settings, BarChart3, UserCircle2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { fetchWorkforceCards, extractMediaUrl } from '../utils/strapi';
+
+const fallbackCards = [
+  {
+    cardType: 'job-seeker',
+    eyebrow: 'For Job Seekers',
+    title: 'Launch Your Career',
+    highlight: 'Career',
+    description: 'Get access to thousands of job opportunities with top companies. We help you build a successful career.',
+    buttonLabel: 'Apply Now',
+    buttonLink: '/contact-us',
+    points: 'We help you find your job easily.\nGet recognized training that works.\nBuild your skills and get a paper.\nMeet great employers directly.',
+    image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80',
+  },
+  {
+    cardType: 'employer',
+    eyebrow: 'For Employers',
+    title: 'Build Your Team',
+    highlight: 'Team',
+    description: 'Access a vast pool of skilled workers. Use government schemes to reduce costs while building a talented team.',
+    buttonLabel: 'Hire Now',
+    buttonLink: '/contact-us',
+    points: 'Find pre-screened people, fast.\nWe manage all paperwork for you.\nGet money-saving stipend benefits.\nFind flexible staff just for you.',
+    image: 'https://images.unsplash.com/photo-1542744173-8e7e5381bbb2?auto=format&fit=crop&q=80',
+  },
+];
 
 const WorkforceSection = () => {
+  const [cards, setCards] = useState(fallbackCards);
+
+  useEffect(() => {
+    const loadCards = async () => {
+      const data = await fetchWorkforceCards();
+      if (data.length > 0) {
+        setCards(
+          data.map((item, index) => ({
+            cardType: item.cardType || (index === 0 ? 'job-seeker' : 'employer'),
+            eyebrow: item.eyebrow || fallbackCards[index]?.eyebrow || '',
+            title: item.title || fallbackCards[index]?.title || '',
+            highlight: item.highlight || fallbackCards[index]?.highlight || '',
+            description: item.description || fallbackCards[index]?.description || '',
+            buttonLabel: item.buttonLabel || fallbackCards[index]?.buttonLabel || 'Learn More',
+            buttonLink: item.buttonLink || fallbackCards[index]?.buttonLink || '/contact-us',
+            points: item.points || fallbackCards[index]?.points || '',
+            image: item.image ? extractMediaUrl(item.image) : fallbackCards[index]?.image || '',
+          }))
+        );
+      }
+    };
+
+    loadCards();
+  }, []);
+
   return (
-    <div className="relative w-full overflow-x-hidden bg-white px-4 py-8 sm:py-12 font-sans sm:px-6 lg:px-8">
-      {/* Background is now pure white with no texture for maximum clarity */}
+    <section className="relative overflow-hidden bg-white px-6 py-20 md:px-12">
+      <div className="mx-auto max-w-6xl relative">
+        <div className="grid items-stretch gap-8 lg:grid-cols-2">
+          {cards.map((card, index) => {
+            const accentClass = index === 0 ? 'bg-orange-500/18' : 'bg-blue-600/16';
+            const pillClass = index === 0 ? 'bg-orange-500' : 'bg-blue-600';
+            const textClass = index === 0 ? 'text-orange-500' : 'text-blue-600';
+            const listClass = index === 0 ? 'text-orange-500' : 'text-blue-600';
+            const actionClass = index === 0 ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700';
+            const lines = (card.points || '').split('\n').map((item) => item.trim()).filter(Boolean);
 
-      {/* Extra edge textures for a richer frame */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-24 h-10 w-80 -rotate-12 rounded-full bg-gradient-to-r from-orange-200/55 via-orange-100/40 to-transparent blur-sm" />
-        <div className="absolute -right-24 bottom-24 h-10 w-96 rotate-12 rounded-full bg-gradient-to-l from-blue-300/55 via-blue-100/45 to-transparent blur-sm" />
+            return (
+              <div key={card.cardType} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white shadow-xl shadow-slate-200/50 transition-all duration-500 hover:shadow-2xl">
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="absolute inset-0 h-full w-full object-cover object-center grayscale-[0.05] contrast-[1.03] brightness-[0.94] transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/88 via-white/62 to-black/56" />
+                <div className={`absolute inset-0 ${accentClass}`} />
 
-        <div
-          className="absolute -left-20 -top-16 h-64 w-64 rounded-full opacity-40"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(249,115,22,0.28) 1.1px, transparent 1.1px), radial-gradient(circle at center, rgba(249,115,22,0.18) 0%, rgba(249,115,22,0.05) 52%, transparent 74%)',
-            backgroundSize: '13px 13px, 100% 100%',
-          }}
-        />
-        <div
-          className="absolute -right-24 -top-10 h-72 w-72 rounded-full opacity-40"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(37,99,235,0.24) 1.1px, transparent 1.1px), radial-gradient(circle at center, rgba(37,99,235,0.16) 0%, rgba(37,99,235,0.06) 50%, transparent 74%)',
-            backgroundSize: '13px 13px, 100% 100%',
-          }}
-        />
-        <div
-          className="absolute -left-24 -bottom-20 h-72 w-72 rounded-full opacity-35"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(249,115,22,0.22) 1px, transparent 1px), radial-gradient(circle at center, rgba(249,115,22,0.14) 0%, rgba(249,115,22,0.04) 55%, transparent 76%)',
-            backgroundSize: '14px 14px, 100% 100%',
-          }}
-        />
-        <div
-          className="absolute -right-24 -bottom-24 h-80 w-80 rounded-full opacity-35"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(37,99,235,0.2) 1px, transparent 1px), radial-gradient(circle at center, rgba(37,99,235,0.14) 0%, rgba(37,99,235,0.04) 56%, transparent 78%)',
-            backgroundSize: '14px 14px, 100% 100%',
-          }}
-        />
-
-        <div className="absolute left-10 top-1/3 h-5 w-5 rotate-45 rounded-[4px] border border-orange-200/80 bg-orange-100/60" />
-        <div className="absolute right-14 top-[38%] h-4 w-4 rounded-full border border-blue-300/80 bg-blue-100/70" />
-        <div className="absolute left-1/4 bottom-12 h-6 w-6 rotate-12 rounded-md border border-orange-200/80 bg-orange-100/55 hidden sm:block" />
-        <div className="absolute right-1/4 bottom-14 h-5 w-5 -rotate-12 rounded-md border border-blue-300/80 bg-blue-100/60 hidden sm:block" />
-      </div>
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="mx-auto mb-6 max-w-3xl text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-orange-500 sm:text-4xl">Solutions for Everyone</h2>
-          <p className="mt-3 text-base leading-relaxed text-gray-600 sm:text-lg">
-            Whether you're looking for your next opportunity or seeking skilled talent, we've got you covered.
-          </p>
-        </div>
-
-        <div className="relative">
-          {/* Very light blue/orange dot-fade textures behind cards */}
-          <div
-            className="pointer-events-none absolute -left-8 top-6 h-48 w-48 rounded-full opacity-60"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle, rgba(249,115,22,0.34) 1.2px, transparent 1.2px), radial-gradient(circle at center, rgba(249,115,22,0.2) 0%, rgba(249,115,22,0.08) 45%, transparent 70%)',
-              backgroundSize: '12px 12px, 100% 100%',
-            }}
-          />
-          <div
-            className="pointer-events-none absolute -right-8 top-10 h-56 w-56 rounded-full opacity-60"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle, rgba(37,99,235,0.3) 1.2px, transparent 1.2px), radial-gradient(circle at center, rgba(37,99,235,0.18) 0%, rgba(37,99,235,0.08) 48%, transparent 72%)',
-              backgroundSize: '12px 12px, 100% 100%',
-            }}
-          />
-
-          <div className="grid md:grid-cols-2 gap-6 items-stretch">
-          {/* CARD 1: JOB SEEKERS (Orange Theme) */}
-          <div className="group relative bg-white rounded-[2.25rem] overflow-hidden shadow-[0_18px_40px_rgba(255,140,0,0.1)] border border-gray-100 transition-all hover:shadow-[0_18px_50px_rgba(255,140,0,0.15)] hover:-translate-y-1">
-            {/* Image Header with Gradient Fade */}
-            <div className="relative h-48 sm:h-52 overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80"
-                alt="Skilled Indian workers"
-                className="w-full h-full object-cover grayscale-[20%] group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
-              <span className="absolute top-6 left-6 bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-                <Users size={14} /> For Job Seekers
-              </span>
-              <span className="absolute top-6 right-6 bg-yellow-400 text-black text-[10px] font-black px-3 py-1 rounded shadow-md tracking-widest">NEW</span>
-            </div>
-
-            {/* Card Body */}
-            <div className="relative p-5 sm:p-6">
-              {/* VISUAL DECORATION (Right Side) */}
-              <div className="absolute right-6 top-8 flex flex-col items-end gap-4 text-orange-200/60 hidden lg:flex pointer-events-none">
-                <Settings size={40} className="animate-spin-slow" />
-                <div className="flex gap-1 items-end h-8">
-                  <div className="w-1.5 bg-orange-100 h-1/2 rounded-full"></div>
-                  <div className="w-1.5 bg-orange-200 h-full rounded-full"></div>
-                  <div className="w-1.5 bg-orange-100 h-2/3 rounded-full"></div>
-                </div>
-                <UserCircle2 size={32} />
-              </div>
-
-              <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Launch Your Career</h2>
-              <p className="mb-4 max-w-none text-sm sm:text-base leading-relaxed text-gray-500 lg:max-w-[82%]">
-                Get access to thousands of job opportunities with top companies. We help you build a successful career.
-              </p>
-
-              <ul className="space-y-3 mb-6">
-                {[
-                  'We help you find your job easily.',
-                  'Get recognized training that works.',
-                  'Build your skills and get a paper.',
-                  'Meet great employers directly.',
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium group/item text-[15px] sm:text-base">
-                    <div className="bg-orange-50 p-1 rounded-full text-orange-600 group-hover/item:bg-orange-600 group-hover/item:text-white transition-colors">
-                      <CheckCircle2 size={16} className="sm:w-[18px] sm:h-[18px]" />
+                <div className="relative z-10 flex min-h-[520px] flex-1 flex-col justify-between p-8 md:min-h-[560px] md:max-w-[86%]">
+                  <div>
+                    <div className="mb-6 flex items-center gap-3">
+                      <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white ${pillClass}`}>
+                        {card.eyebrow}
+                      </span>
                     </div>
-                    <span>{text}</span>
-                  </li>
-                ))}
-              </ul>
+                    <h2 className="mb-6 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">
+                      {card.title.split(card.highlight || '').map((part, splitIndex) => (
+                        <React.Fragment key={`${part}-${splitIndex}`}>
+                          {part}
+                          {splitIndex === 0 && card.highlight ? <><br /><span className={textClass}>{card.highlight}</span></> : null}
+                        </React.Fragment>
+                      ))}
+                    </h2>
+                    <p className="mb-8 font-medium leading-relaxed text-slate-500">{card.description}</p>
+                    <ul className="mb-10 space-y-4">
+                      {lines.map((item) => (
+                        <li key={item} className="flex items-center gap-3 text-sm font-semibold text-slate-700">
+                          <CheckCircle2 size={18} className={listClass} /> {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-              <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3.5 rounded-xl shadow-[0_8px_16px_rgba(249,115,22,0.25)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
-                Apply Now <ArrowRight size={18} />
-              </button>
-            </div>
-          </div>
-
-          {/* CARD 2: EMPLOYERS (Blue Theme) */}
-          <div className="group relative bg-white rounded-[2.25rem] overflow-hidden shadow-[0_18px_40px_rgba(37,99,235,0.1)] border border-gray-100 transition-all hover:shadow-[0_18px_50px_rgba(37,99,235,0.15)] hover:-translate-y-1">
-            {/* Image Header with Gradient Fade */}
-            <div className="relative h-48 sm:h-52 overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80"
-                alt="Business management"
-                className="w-full h-full object-cover grayscale-[20%] group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
-              <span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-                <Building2 size={14} /> For Employers
-              </span>
-              <span className="absolute top-6 right-6 bg-cyan-400 text-black text-[10px] font-black px-3 py-1 rounded shadow-md tracking-widest">NEW</span>
-            </div>
-
-            {/* Card Body */}
-            <div className="relative p-5 sm:p-6">
-              {/* VISUAL DECORATION (Right Side) */}
-              <div className="absolute right-6 top-8 flex flex-col items-end gap-4 text-blue-200/60 hidden lg:flex pointer-events-none">
-                <BarChart3 size={40} />
-                <div className="flex gap-2">
-                  <div className="w-7 h-7 rounded-md border-2 border-blue-100 flex items-center justify-center text-[9px] font-bold">100%</div>
+                  <div className="flex justify-start">
+                    <a href={card.buttonLink} className="flex items-center group/button" aria-label={card.buttonLabel}>
+                      <span className={`rounded-l-full px-8 py-4 text-sm font-bold text-white transition-colors ${actionClass}`}>
+                        {card.buttonLabel}
+                      </span>
+                      <span className={`ml-[-2px] rounded-full p-4 text-white shadow-lg transition-colors ${actionClass}`}>
+                        <ArrowRight size={20} />
+                      </span>
+                    </a>
+                  </div>
                 </div>
-                <Settings size={32} className="animate-reverse-spin" />
               </div>
-
-              <h2 className="mb-2 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Build Your Team</h2>
-              <p className="mb-4 max-w-none text-sm sm:text-base leading-relaxed text-gray-500 lg:max-w-[82%]">
-                Access a vast pool of skilled workers. Use government schemes to reduce costs while building a talented team.
-              </p>
-
-              <ul className="space-y-3 mb-6">
-                {[
-                  'Find pre-screened people, fast.',
-                  'We manage all paperwork for you.',
-                  'Get money-saving stipend benefits.',
-                  'Find flexible staff just for you.',
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3 text-gray-700 font-medium group/item text-[15px] sm:text-base">
-                    <div className="bg-blue-50 p-1 rounded-full text-blue-600 group-hover/item:bg-blue-600 group-hover/item:text-white transition-colors">
-                      <CheckCircle2 size={16} className="sm:w-[18px] sm:h-[18px]" />
-                    </div>
-                    <span>{text}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3.5 rounded-xl shadow-[0_8px_16px_rgba(37,99,235,0.25)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
-                Hire Now <ArrowRight size={18} />
-              </button>
-            </div>
-          </div>
-          </div>
+            );
+          })}
         </div>
       </div>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-          @keyframes reverse-spin { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-          .animate-spin-slow { animation: spin 8s linear infinite; }
-          .animate-reverse-spin { animation: reverse-spin 10s linear infinite; }
-        `,
-        }}
-      />
-    </div>
+    </section>
   );
 };
 

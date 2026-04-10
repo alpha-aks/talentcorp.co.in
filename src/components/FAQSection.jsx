@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, HelpCircle, ArrowRight, Lightbulb, XCircle } from 'lucide-react';
+import { fetchFaqItems } from '../utils/strapi';
 
-const faqs = [
+const fallbackFaqs = [
   {
     id: '01',
     question: 'What is NAPS (National Apprenticeship Promotion Scheme)?',
@@ -34,6 +35,7 @@ const faqs = [
 const FAQSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [faqs, setFaqs] = useState(fallbackFaqs);
 
   // Filter FAQs based on search input
   const filteredFaqs = useMemo(() => {
@@ -43,6 +45,23 @@ const FAQSection = () => {
         faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [searchQuery]);
+
+  useEffect(() => {
+    const loadFaqs = async () => {
+      const data = await fetchFaqItems();
+      if (data.length > 0) {
+        setFaqs(
+          data.map((item, index) => ({
+            id: String(index + 1).padStart(2, '0'),
+            question: item.question || '',
+            answer: item.answer || '',
+          }))
+        );
+      }
+    };
+
+    loadFaqs();
+  }, []);
 
   // Reset active index if the current selection is filtered out
   const handleSearch = (e) => {
@@ -227,9 +246,10 @@ const FAQSection = () => {
                       {filteredFaqs[activeIndex].question}
                     </h3>
                     
-                    <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium italic">
-                      "{filteredFaqs[activeIndex].answer}"
-                    </p>
+                      <div
+                        className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium italic"
+                        dangerouslySetInnerHTML={{ __html: filteredFaqs[activeIndex].answer }}
+                      />
                   </motion.div>
                 ) : (
                   <div className="text-center opacity-20">

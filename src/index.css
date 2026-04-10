@@ -21,3 +21,22 @@ body {
   min-height: 100svh;
   overflow-x: hidden;
 }
+
+@keyframes tspl-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.tspl-marquee__track {
+  animation: tspl-marquee 34s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tspl-marquee__track {
+    animation: none;
+  }
+}

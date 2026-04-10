@@ -4,10 +4,11 @@ import { Canvas } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import { ArrowRight, Calendar, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { fetchNews, extractMediaUrl } from '../utils/strapi';
 
 const MotionLink = motion(Link);
 
-const newsItems = [
+const fallbackNewsItems = [
   {
     date: 'March 28, 2026',
     tag: 'Event',
@@ -75,12 +76,29 @@ function NewsScene() {
 
 const NewsSection = () => {
   const [isDesktop, setIsDesktop] = useState(true);
+  const [newsItems, setNewsItems] = useState(fallbackNewsItems);
 
   useEffect(() => {
     const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
     checkDesktop();
     window.addEventListener('resize', checkDesktop);
     return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  useEffect(() => {
+    const loadNews = async () => {
+      const data = await fetchNews();
+      if (data.length > 0) {
+        setNewsItems(data.map(item => ({
+          date: item.date || new Date().toLocaleDateString(),
+          tag: item.tag || 'News',
+          title: item.title || '',
+          desc: item.description || '',
+          img: item.image ? extractMediaUrl(item.image) : fallbackNewsItems[0].img,
+        })));
+      }
+    };
+    loadNews();
   }, []);
 
   return (
