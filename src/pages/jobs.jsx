@@ -719,7 +719,7 @@ function ApplyCTA() {
 		try {
 			await submitLead({
 				name: formData.name,
-				mobile: formData.phone,
+				phone: formData.phone,
 				email: formData.email,
 				subject: `Jobs page interest${formData.jobType ? ` - ${formData.jobType}` : ''}`,
 				message: `Experience: ${formData.experience || 'N/A'}\nPreferred role: ${formData.jobType || 'N/A'}\n${formData.message || ''}`,

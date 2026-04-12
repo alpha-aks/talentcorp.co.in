@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { STRAPI_BASE_URL } from '../utils/strapi';
+import { STRAPI_BASE_URL, submitLead } from '../utils/strapi';
 import { 
   Phone, 
   Mail, 
@@ -33,14 +33,12 @@ const ContactUs = () => {
 
     const formData = new FormData(formElement);
     const leadPayload = {
-      data: {
-        name: formData.get('fullName') || '',
-        email: formData.get('email') || '',
-        phone: formData.get('phone') || '',
-        subject: formData.get('service') || '',
-        message: formData.get('message') || '',
-        consent: Boolean(formData.get('consent')),
-      },
+      name: formData.get('fullName') || '',
+      email: formData.get('email') || '',
+      phone: formData.get('phone') || '',
+      subject: formData.get('service') || '',
+      message: formData.get('message') || '',
+      consent: Boolean(formData.get('consent')),
     };
 
     const manifestEntries = [
@@ -57,18 +55,7 @@ const ContactUs = () => {
     setFlightManifest(manifestEntries.length ? manifestEntries : [{ label: 'Status', value: 'Sending...' }]);
 
     try {
-      const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(leadPayload),
-      });
-
-      if (!response.ok) {
-        const responseText = await response.text();
-        throw new Error(`Submit failed (${response.status}): ${responseText || 'no response body'}`);
-      }
+      await submitLead(leadPayload);
 
       formElement.reset();
       setFlightManifest(manifestEntries.slice(0, 5));

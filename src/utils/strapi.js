@@ -99,10 +99,16 @@ export const createNewsEvent = async (eventData) => {
 };
 
 export const submitLead = async (leadData) => {
+  const normalizedPayload = {
+    ...leadData,
+    phone: leadData?.phone || leadData?.mobile || '',
+  };
+  delete normalizedPayload.mobile;
+
   const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: leadData }),
+    body: JSON.stringify({ data: normalizedPayload }),
   });
 
   if (!response.ok) {
