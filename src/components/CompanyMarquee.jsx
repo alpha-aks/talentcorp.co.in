@@ -15,6 +15,12 @@ function resolveStrapiUrl(url) {
   return `${STRAPI_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
+function withCacheBuster(url, version) {
+  if (!url || !version) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${encodeURIComponent(version)}`;
+}
+
 export default function CompanyMarquee() {
   const [logos, setLogos] = React.useState(FALLBACK_LOGOS);
 
@@ -36,10 +42,12 @@ export default function CompanyMarquee() {
         const mapped = data
           .map((entry) => {
             const attributes = entry?.attributes || {};
-            const logoUrl = attributes?.logo?.data?.attributes?.url;
+            const logoAttributes = attributes?.logo?.data?.attributes || {};
+            const logoUrl = logoAttributes?.url;
             const name = attributes?.name;
+            const version = logoAttributes?.updatedAt || attributes?.updatedAt || entry?.id;
             return {
-              src: resolveStrapiUrl(logoUrl),
+              src: withCacheBuster(resolveStrapiUrl(logoUrl), version),
               alt: name || 'Company logo',
             };
           })
