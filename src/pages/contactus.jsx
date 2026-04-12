@@ -31,7 +31,8 @@ const ContactUs = () => {
     const formElement = event.currentTarget;
     setIsSubmitting(true);
     setShowSuccessPopup(false);
-    setShowPlaneAnimation(false);
+    setShowPlaneAnimation(true);
+    setIsFormFlyingAway(false);
     setSubmitError('');
 
     const formData = new FormData(formElement);
@@ -56,6 +57,8 @@ const ContactUs = () => {
         value: String(formData.get('message') || '').trim().slice(0, 42),
       },
     ].filter((entry) => entry.value);
+
+    setFlightManifest(manifestEntries.length ? manifestEntries : [{ label: 'Status', value: 'Sending...' }]);
 
     try {
       const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {

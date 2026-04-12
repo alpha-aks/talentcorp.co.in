@@ -20,9 +20,11 @@ import {
 	TrendingUp,
 	Truck,
 	Users,
+	Send,
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitLead } from '../utils/strapi'
 
 const stats = [
 	{ icon: Building2, value: 500, suffix: '+', label: 'Partner Companies' },
@@ -670,6 +672,9 @@ function Testimonials() {
 
 function ClientsCTA() {
 	const [isVisible, setIsVisible] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [submitMessage, setSubmitMessage] = useState('')
+	const [submitError, setSubmitError] = useState('')
 	const ref = useRef(null)
 
 	useEffect(() => {
@@ -680,6 +685,45 @@ function ClientsCTA() {
 		if (ref.current) observer.observe(ref.current)
 		return () => observer.disconnect()
 	}, [])
+
+	const handleSubmit = async (event) => {
+		event.preventDefault()
+		setIsSubmitting(true)
+		setSubmitError('')
+		setSubmitMessage('')
+
+		const formData = new FormData(event.currentTarget)
+		const companyName = String(formData.get('companyName') || '').trim()
+		const name = String(formData.get('contactName') || '').trim()
+		const email = String(formData.get('email') || '').trim()
+		const phone = String(formData.get('phone') || '').trim()
+		const industry = String(formData.get('industry') || '').trim()
+		const workforce = String(formData.get('workforce') || '').trim()
+		const requirements = String(formData.get('requirements') || '').trim()
+
+		try {
+			await submitLead({
+				name,
+				email,
+				phone,
+				subject: `Client partnership inquiry${industry ? ` - ${industry}` : ''}`,
+				message: [
+					`Company: ${companyName}`,
+					`Industry: ${industry || 'Not specified'}`,
+					`Workforce requirement: ${workforce || 'Not specified'}`,
+					`Requirements: ${requirements || 'Not provided'}`,
+					`Contact phone: ${phone}`,
+				].join('\n'),
+			})
+
+			event.currentTarget.reset()
+			setSubmitMessage('Your request has been sent. Our team will contact you shortly.')
+		} catch (error) {
+			setSubmitError(error?.message || 'Unable to submit partnership request.')
+		} finally {
+			setIsSubmitting(false)
+		}
+	}
 
 	return (
 		<section ref={ref} className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-20">
@@ -732,18 +776,18 @@ function ClientsCTA() {
 								</div>
 							</div>
 
-							<form className="space-y-4">
+							<form className="space-y-4" onSubmit={handleSubmit}>
 								<div className="grid gap-4 md:grid-cols-2">
-									<input type="text" placeholder="Company Name" className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
-									<input type="text" placeholder="Your Name" className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
+									<input name="companyName" type="text" placeholder="Company Name" required className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
+									<input name="contactName" type="text" placeholder="Your Name" required className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
 								</div>
 
 								<div className="grid gap-4 md:grid-cols-2">
-									<input type="email" placeholder="Email Address" className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
-									<input type="tel" placeholder="Phone Number" className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
+									<input name="email" type="email" placeholder="Email Address" required className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
+									<input name="phone" type="tel" placeholder="Phone Number" className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
 								</div>
 
-								<select className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-500 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+								<select name="industry" className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-500 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
 									<option value="">Select Industry</option>
 									<option value="manufacturing">Manufacturing</option>
 									<option value="automobile">Automobile</option>
@@ -753,7 +797,7 @@ function ClientsCTA() {
 									<option value="other">Other</option>
 								</select>
 
-								<select className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-500 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+								<select name="workforce" className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-500 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
 									<option value="">Workforce Requirement</option>
 									<option value="1-50">1 - 50 Workers</option>
 									<option value="50-100">50 - 100 Workers</option>
@@ -761,13 +805,15 @@ function ClientsCTA() {
 									<option value="500+">500+ Workers</option>
 								</select>
 
-								<textarea rows={3} placeholder="Tell us about your requirements..." className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
+								<textarea name="requirements" rows={3} placeholder="Tell us about your requirements..." className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" />
 
-								<button type="submit" className="group inline-flex w-full items-center justify-center rounded-xl bg-blue-600 py-4 text-lg font-semibold text-white transition-colors hover:bg-blue-700">
-									Request Partnership
-									<ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+								<button type="submit" disabled={isSubmitting} className="group inline-flex w-full items-center justify-center rounded-xl bg-blue-600 py-4 text-lg font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70">
+									{isSubmitting ? 'Sending...' : 'Request Partnership'}
+									<Send className={`ml-2 h-5 w-5 ${isSubmitting ? 'animate-plane-send' : 'transition-transform group-hover:translate-x-1'}`} />
 								</button>
 							</form>
+							{submitMessage && <p className="mt-4 text-sm font-medium text-green-600">{submitMessage}</p>}
+							{submitError && <p className="mt-4 text-sm font-medium text-red-600">{submitError}</p>}
 						</div>
 					</div>
 				</div>

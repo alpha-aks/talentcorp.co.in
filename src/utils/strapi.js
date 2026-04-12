@@ -65,7 +65,7 @@ export const fetchHomeStats = async () => fetchCollection('/api/home-stats?sort=
 export const fetchHomeHighlights = async () => fetchCollection('/api/home-highlights?sort=order:asc&pagination[pageSize]=20');
 export const fetchWorkforceCards = async () => fetchCollection('/api/workforce-cards?sort=order:asc&pagination[pageSize]=20&populate=image');
 export const fetchFaqItems = async () => fetchCollection('/api/faq-items?sort=order:asc&pagination[pageSize]=50');
-export const fetchTestimonials = async () => fetchCollection('/api/testimonials?sort=order:asc&pagination[pageSize]=50&populate=image');
+export const fetchTestimonials = async () => fetchCollection('/api/testimonials?filters[reviewType][$ne]=company&sort=order:asc&pagination[pageSize]=50&populate=image');
 export const fetchFooterSettings = async () => fetchSingleType('/api/footer-setting?populate=logo');
 
 export const createJob = async (jobData) => {
@@ -96,5 +96,20 @@ export const createNewsEvent = async (eventData) => {
     console.error('Error creating news/event:', error);
     return null;
   }
+};
+
+export const submitLead = async (leadData) => {
+  const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: leadData }),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    throw new Error(`Submit failed (${response.status}): ${responseText || 'no response body'}`);
+  }
+
+  return response.json();
 };
 

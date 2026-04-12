@@ -62,7 +62,9 @@ const WorkforceSection = () => {
             const pillClass = index === 0 ? 'bg-orange-500' : 'bg-blue-600';
             const textClass = index === 0 ? 'text-orange-500' : 'text-blue-600';
             const listClass = index === 0 ? 'text-orange-500' : 'text-blue-600';
-            const actionClass = index === 0 ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700';
+            const actionClass = index === 0
+              ? 'bg-gradient-to-r from-orange-500 to-orange-600 shadow-orange-500/25 hover:shadow-orange-500/40'
+              : 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-blue-600/25 hover:shadow-blue-600/40';
             const lines = (card.points || '').split('\n').map((item) => item.trim()).filter(Boolean);
 
             return (
@@ -102,13 +104,13 @@ const WorkforceSection = () => {
                   </div>
 
                   <div className="flex justify-start">
-                    <a href={card.buttonLink} className="flex items-center group/button" aria-label={card.buttonLabel}>
-                      <span className={`rounded-l-full px-8 py-4 text-sm font-bold text-white transition-colors ${actionClass}`}>
-                        {card.buttonLabel}
-                      </span>
-                      <span className={`ml-[-2px] rounded-full p-4 text-white shadow-lg transition-colors ${actionClass}`}>
-                        <ArrowRight size={20} />
-                      </span>
+                    <a
+                      href={card.buttonLink}
+                      className={`group inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 text-sm font-bold text-white shadow-md transition-all duration-300 hover:scale-[1.03] hover:shadow-xl ${actionClass}`}
+                      aria-label={card.buttonLabel}
+                    >
+                      <span>{card.buttonLabel}</span>
+                      <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </a>
                   </div>
                 </div>

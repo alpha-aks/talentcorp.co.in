@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Building2, Star, UserCircle, Users, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Building2, Star, UserCircle, Users, Quote } from 'lucide-react';
 import { fetchTestimonials, extractMediaUrl } from '../utils/strapi';
 
 const fallbackReviews = [
@@ -12,16 +12,6 @@ const fallbackReviews = [
     quote: 'TSPL Group has been instrumental in helping us build a skilled workforce through their NAPS program. Their candidates are well-trained and job-ready.',
     rating: 5,
     metric: '40,000+ placements',
-  },
-  {
-    id: 2,
-    reviewType: 'company',
-    name: 'Priya Mehta',
-    role: 'Talent Acquisition Head',
-    company: 'Mahindra & Mahindra',
-    quote: 'Their understanding of government apprenticeship schemes and quick turnaround time makes them our preferred staffing partner.',
-    rating: 5,
-    metric: '98% retention',
   },
   {
     id: 3,
@@ -48,7 +38,6 @@ const fallbackReviews = [
 const tabs = [
   { key: 'all', label: 'All Reviews', icon: Users },
   { key: 'client', label: 'Client Reviews', icon: Building2 },
-  { key: 'company', label: 'Company Reviews', icon: Quote },
   { key: 'employee', label: 'Employee Reviews', icon: UserCircle },
 ];
 
@@ -62,17 +51,19 @@ export default function Testimonials() {
       const data = await fetchTestimonials();
       if (data.length > 0) {
         setReviews(
-          data.map((item) => ({
-            id: item.id,
-            reviewType: item.reviewType || 'client',
-            name: item.name || '',
-            role: item.role || '',
-            company: item.company || '',
-            quote: item.quote || '',
-            rating: item.rating || 5,
-            metric: item.metric || '',
-            image: item.image ? extractMediaUrl(item.image) : '',
-          }))
+          data
+            .filter((item) => item.reviewType !== 'company')
+            .map((item) => ({
+              id: item.id,
+              reviewType: item.reviewType || 'client',
+              name: item.name || '',
+              role: item.role || '',
+              company: item.company || '',
+              quote: item.quote || '',
+              rating: item.rating || 5,
+              metric: item.metric || '',
+              image: item.image ? extractMediaUrl(item.image) : '',
+            }))
         );
       }
     };
@@ -81,11 +72,12 @@ export default function Testimonials() {
   }, []);
 
   const filteredReviews = useMemo(() => {
-    return activeTab === 'all' ? reviews : reviews.filter((review) => review.reviewType === activeTab);
+    return activeTab === 'all'
+      ? reviews.filter((review) => review.reviewType === 'client' || review.reviewType === 'employee')
+      : reviews.filter((review) => review.reviewType === activeTab);
   }, [activeTab, reviews]);
 
   const visibleReviews = filteredReviews.slice(currentIndex, currentIndex + 3);
-  const totalPages = Math.ceil(filteredReviews.length / 3);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -99,9 +91,6 @@ export default function Testimonials() {
     return () => window.clearInterval(interval);
   }, [filteredReviews.length]);
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 3 >= filteredReviews.length ? 0 : prev + 3));
-  const previousSlide = () => setCurrentIndex((prev) => (prev - 3 < 0 ? Math.max(filteredReviews.length - 3, 0) : prev - 3));
-
   return (
     <section id="reviews" className="relative overflow-hidden bg-slate-950 px-4 py-16 text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_30%)]" />
@@ -112,7 +101,7 @@ export default function Testimonials() {
               Reviews
             </span>
             <h2 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Client and Company Voices <span className="text-orange-400">That Matter</span>
+              Client and Employee Voices <span className="text-orange-400">That Matter</span>
             </h2>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
               Real feedback from the companies we support and the people whose careers we help shape.
@@ -138,7 +127,7 @@ export default function Testimonials() {
           </div>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="w-full">
           <div className="grid gap-6 md:grid-cols-3">
             {visibleReviews.map((review, index) => (
               <article
@@ -186,50 +175,6 @@ export default function Testimonials() {
             ))}
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md">
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.25em] text-white/45">Featured Insight</p>
-                <h3 className="mt-2 text-2xl font-bold text-white">What people love about TSPL</h3>
-              </div>
-              <div className="rounded-2xl bg-white/10 p-3 text-orange-300">
-                <Building2 size={22} />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                'Trusted by companies across manufacturing, pharma, logistics, and more.',
-                'A single partner for hiring, compliance, payroll, and deployment.',
-                'Reviews update from Strapi, so your social proof stays current.',
-              ].map((item) => (
-                <div key={item} className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-sm leading-relaxed text-white/75">
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 flex items-center justify-between gap-4">
-              <button onClick={previousSlide} className="rounded-full border border-white/15 bg-white/5 p-3 text-white transition-colors hover:bg-white/10" aria-label="Previous reviews">
-                <ChevronLeft size={18} />
-              </button>
-
-              <div className="flex items-center gap-2">
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentIndex(index * 3)}
-                    className={`h-2 rounded-full transition-all ${currentIndex === index * 3 ? 'w-8 bg-orange-400' : 'w-2 bg-white/20'}`}
-                    aria-label={`Go to review slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button onClick={nextSlide} className="rounded-full border border-white/15 bg-white/5 p-3 text-white transition-colors hover:bg-white/10" aria-label="Next reviews">
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitLead } from '../utils/strapi'
 
 const placeTypes = [
 	'Office Building',
@@ -479,11 +480,47 @@ function SecurityEnquiry() {
 		city: '',
 		message: '',
 	})
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [submitMessage, setSubmitMessage] = useState('')
+	const [submitError, setSubmitError] = useState('')
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
-		console.log('Security enquiry:', formData)
-		window.alert('Thank you! We will contact you soon about your security needs.')
+		setIsSubmitting(true)
+		setSubmitError('')
+		setSubmitMessage('')
+
+		try {
+			await submitLead({
+				name: formData.name.trim(),
+				email: formData.email.trim(),
+				phone: formData.phone.trim(),
+				subject: `Security enquiry${formData.placeType ? ` - ${formData.placeType}` : ''}`,
+				message: [
+					`Company: ${formData.company.trim() || 'Not provided'}`,
+					`Place type: ${formData.placeType || 'Not specified'}`,
+					`Guard count: ${formData.guardCount || 'Not specified'}`,
+					`City: ${formData.city.trim() || 'Not specified'}`,
+					`Details: ${formData.message.trim() || 'No additional details'}`,
+				].join('\n'),
+			})
+
+			setFormData({
+				name: '',
+				phone: '',
+				email: '',
+				company: '',
+				placeType: '',
+				guardCount: '',
+				city: '',
+				message: '',
+			})
+			setSubmitMessage('Your security enquiry has been sent. Our team will contact you soon.')
+		} catch (error) {
+			setSubmitError(error?.message || 'Unable to submit security enquiry.')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	return (
@@ -518,7 +555,7 @@ function SecurityEnquiry() {
 								</div>
 								<div>
 									<label className="mb-2 block text-sm font-bold text-[#0F172A]">Email Address</label>
-									<input type="email" placeholder="Enter your email" className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none transition-all focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} />
+									<input type="email" required placeholder="Enter your email" className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none transition-all focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} />
 								</div>
 								<div>
 									<label className="mb-2 block text-sm font-bold text-[#0F172A]">Company / Organization</label>
@@ -556,10 +593,12 @@ function SecurityEnquiry() {
 								</div>
 							</div>
 
-							<button type="submit" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-8 py-4 text-lg font-bold text-white shadow-xl shadow-[#F97316]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-[#EA580C] hover:shadow-2xl">
-								<Send className="h-5 w-5" />
-								Send Enquiry
+							<button type="submit" disabled={isSubmitting} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-8 py-4 text-lg font-bold text-white shadow-xl shadow-[#F97316]/30 transition-all duration-300 hover:scale-[1.02] hover:bg-[#EA580C] hover:shadow-2xl disabled:cursor-not-allowed disabled:opacity-70">
+								{isSubmitting ? 'Sending...' : 'Send Enquiry'}
+								<Send className={`h-5 w-5 ${isSubmitting ? 'animate-plane-send' : ''}`} />
 							</button>
+							{submitMessage && <p className="mt-3 text-sm font-medium text-green-600">{submitMessage}</p>}
+							{submitError && <p className="mt-3 text-sm font-medium text-red-600">{submitError}</p>}
 						</form>
 					</div>
 

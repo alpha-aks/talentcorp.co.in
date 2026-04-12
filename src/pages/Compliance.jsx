@@ -22,9 +22,11 @@ import {
 	TrendingDown,
 	Users,
 	Wallet,
+	Send,
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitLead } from '../utils/strapi'
 
 const heroStats = [
 	{ value: '100%', label: 'Compliance Rate' },
@@ -676,6 +678,9 @@ function ComplianceProcess() {
 function ComplianceCTA() {
 	const [isVisible, setIsVisible] = useState(false)
 	const [formData, setFormData] = useState({ name: '', company: '', phone: '', email: '', employees: '', message: '' })
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [submitMessage, setSubmitMessage] = useState('')
+	const [submitError, setSubmitError] = useState('')
 	const sectionRef = useRef(null)
 
 	useEffect(() => {
@@ -687,9 +692,32 @@ function ComplianceCTA() {
 		return () => observer.disconnect()
 	}, [])
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
-		console.log('Form submitted:', formData)
+		setIsSubmitting(true)
+		setSubmitError('')
+		setSubmitMessage('')
+
+		try {
+			await submitLead({
+				name: formData.name.trim(),
+				email: formData.email.trim(),
+				phone: formData.phone.trim(),
+				subject: `Compliance audit request${formData.employees ? ` - ${formData.employees}` : ''}`,
+				message: [
+					`Company: ${formData.company.trim() || 'Not provided'}`,
+					`Employees: ${formData.employees || 'Not specified'}`,
+					`Message: ${formData.message.trim() || 'No additional details'}`,
+				].join('\n'),
+			})
+
+			setFormData({ name: '', company: '', phone: '', email: '', employees: '', message: '' })
+			setSubmitMessage('Your compliance audit request has been sent. We will reach out within 24 hours.')
+		} catch (error) {
+			setSubmitError(error?.message || 'Unable to submit compliance request.')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	return (
@@ -765,7 +793,7 @@ function ComplianceCTA() {
 									</div>
 									<div>
 										<label className="mb-2 block text-sm text-gray-400">Email Address</label>
-										<input type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} className="w-full rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-all focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="email@company.com" />
+										<input type="email" required value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} className="w-full rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-all focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="email@company.com" />
 									</div>
 								</div>
 
@@ -786,10 +814,12 @@ function ComplianceCTA() {
 									<textarea rows={3} value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} className="w-full resize-none rounded-xl border border-gray-700 bg-gray-800/50 px-4 py-3 text-white placeholder-gray-500 transition-all focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="Tell us about your compliance needs..." />
 								</div>
 
-								<button type="submit" className="h-14 w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-lg font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-500 hover:to-cyan-500">
-									Get Free Compliance Audit
-									<ArrowRight className="ml-2 inline h-5 w-5" />
+								<button type="submit" disabled={isSubmitting} className="group h-14 w-full rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-lg font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:from-blue-500 hover:to-cyan-500 disabled:cursor-not-allowed disabled:opacity-70">
+									{isSubmitting ? 'Sending...' : 'Get Free Compliance Audit'}
+									<Send className={`ml-2 inline h-5 w-5 ${isSubmitting ? 'animate-plane-send' : 'transition-transform group-hover:translate-x-1'}`} />
 								</button>
+								{submitMessage && <p className="mt-3 text-sm font-medium text-green-400">{submitMessage}</p>}
+								{submitError && <p className="mt-3 text-sm font-medium text-red-400">{submitError}</p>}
 							</form>
 						</div>
 					</div>

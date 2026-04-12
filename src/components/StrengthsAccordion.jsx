@@ -86,9 +86,9 @@ export default function StrengthsAccordion() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-white px-6 py-24">
+    <section className="relative overflow-hidden bg-white px-6 py-12">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-16">
+        <div className="mb-8">
           <h2 className="mb-4 text-5xl font-extrabold text-[#1a2b4b]">
             Our <span className="text-blue-600">Strengths</span>
           </h2>
@@ -97,7 +97,7 @@ export default function StrengthsAccordion() {
           </p>
         </div>
 
-        <div className="flex h-auto w-full flex-col gap-2 overflow-hidden lg:h-[600px] lg:flex-row">
+        <div className="flex h-auto w-full flex-col gap-2 overflow-hidden lg:h-[450px] lg:flex-row">
           {strengths.map((item, index) => (
             <motion.div
               key={item.id}
@@ -125,7 +125,7 @@ export default function StrengthsAccordion() {
                   />
                 </>
               )}
-              <div className="relative z-10 flex h-full flex-col justify-between p-8">
+              <div className="relative z-10 flex h-full flex-col justify-between px-6 py-5">
                 <div className="flex items-start justify-between">
                   <span className={`text-xl font-black transition-all duration-500 ${hoveredIndex === index ? 'text-white drop-shadow-lg' : 'text-gray-300'}`}>{item.id}</span>
                   {hoveredIndex === index && (
@@ -147,14 +147,14 @@ export default function StrengthsAccordion() {
                   <p
                     className={`font-black leading-none transition-all duration-500 ${
                       hoveredIndex === index
-                        ? 'text-6xl text-white drop-shadow-lg'
+                        ? 'text-5xl text-white drop-shadow-lg'
                         : 'text-3xl text-gray-400 lg:-rotate-90'
                     }`}
                   >
                     {item.stat}
                   </p>
                   <p
-                    className={`mt-2 font-bold uppercase tracking-widest transition-all duration-500 ${
+                    className={`mt-1 font-bold uppercase tracking-widest transition-all duration-500 ${
                       hoveredIndex === index ? 'text-sm text-white/90 drop-shadow-md' : 'hidden'
                     }`}
                   >
@@ -166,7 +166,7 @@ export default function StrengthsAccordion() {
                   <h3
                     className={`whitespace-nowrap font-black transition-all duration-500 ${
                       hoveredIndex === index
-                        ? 'mb-4 text-3xl text-white drop-shadow-lg'
+                        ? 'mb-2 text-3xl text-white drop-shadow-lg'
                         : 'text-lg text-gray-500 lg:origin-left lg:-rotate-90 lg:translate-x-6'
                     }`}
                   >
@@ -179,7 +179,7 @@ export default function StrengthsAccordion() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <p className="mb-6 max-w-md leading-relaxed text-white/90 drop-shadow-md font-medium">{item.desc}</p>
+                      <p className="mb-3 max-w-md leading-relaxed text-white/90 drop-shadow-md font-medium">{item.desc}</p>
                       <button className="group flex items-center gap-2 font-black text-white drop-shadow-md hover:text-orange-300 transition-colors">
                         Learn More
                         <span className="transition-transform group-hover:translate-x-1">{'->'}</span>

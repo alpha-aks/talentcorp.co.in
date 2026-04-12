@@ -193,7 +193,7 @@ const NewsSection = () => {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
               whileHover={{ y: -8 }}
-              className="group overflow-hidden rounded-2xl md:rounded-[2.2rem] border border-gray-100 bg-white/45 shadow-sm backdrop-blur-md transition-all duration-500 hover:shadow-2xl hover:shadow-blue-100/60"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl md:rounded-[2.2rem] border border-gray-100 bg-white/45 shadow-sm backdrop-blur-md transition-all duration-500 hover:shadow-2xl hover:shadow-blue-100/60"
             >
               <motion.div
                 className="relative h-48 md:h-56 overflow-hidden"
@@ -224,7 +224,7 @@ const NewsSection = () => {
               </motion.div>
 
               <motion.div
-                className="p-6 md:p-8"
+                className="flex flex-1 flex-col p-6 md:p-8"
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -260,7 +260,7 @@ const NewsSection = () => {
                 </motion.p>
 
                 <motion.button
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
+                  className="mt-auto flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}

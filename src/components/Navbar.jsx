@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 
 const navLinks = [
@@ -7,7 +7,7 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/#jobs', label: 'Jobs' },
   { href: '/client', label: 'Clients' },
-  { href: '/#achievements', label: 'Achievements' },
+  { href: '/achievements', label: 'Achievements' },
   { href: '/news-events', label: 'News & Events' },
 ];
 
@@ -33,6 +33,16 @@ const Navbar = () => {
   const [isDesktopServicesOpen, setIsDesktopServicesOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const desktopServicesRef = useRef(null);
+
+  const { pathname, hash } = useLocation();
+
+  const isLinkActive = (href) => {
+    const currentPath = pathname + hash;
+    if (href === '/') return currentPath === '/' || currentPath === '';
+    return currentPath === href || pathname === href;
+  };
+
+  const isServiceActive = serviceLinks.some((service) => isLinkActive(service.href));
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -73,7 +83,9 @@ const Navbar = () => {
                 <button
                   type="button"
                   onClick={() => setIsDesktopServicesOpen((prev) => !prev)}
-                  className="inline-flex items-center gap-2 hover:text-[#0f2a4d] transition-colors font-bold"
+                  className={`relative inline-flex items-center gap-2 hover:text-[#0f2a4d] transition-colors font-bold ${
+                    isServiceActive ? 'text-[#0f2a4d] after:absolute after:left-0 after:-bottom-[6px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00]' : ''
+                  }`}
                   aria-expanded={isDesktopServicesOpen}
                   aria-haspopup="menu"
                 >
@@ -83,31 +95,38 @@ const Navbar = () => {
 
                 {isDesktopServicesOpen && (
                   <div className="absolute left-0 top-full mt-2 w-44 overflow-hidden rounded-xl border border-[#d8e7f8] bg-white p-1.5 shadow-xl">
-                    {serviceLinks.map((service) => (
-                      <Link
-                        key={service.href}
-                        to={service.href}
-                        onClick={handleNavigation}
-                        className="block rounded-lg px-3 py-2 text-sm font-semibold text-[#1a4f87] transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d]"
-                      >
-                        {service.label}
-                      </Link>
-                    ))}
+                    {serviceLinks.map((service) => {
+                      const active = isLinkActive(service.href);
+                      return (
+                        <Link
+                          key={service.href}
+                          to={service.href}
+                          onClick={handleNavigation}
+                          className={`block rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:bg-[#f3f8ff] hover:text-[#0f2a4d] ${active ? 'bg-[#f3f8ff] text-[#0f2a4d] font-bold' : 'text-[#1a4f87]'}`}
+                        >
+                          {service.label}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
 
-              {navLinks.map((link) => (
-                link.href.startsWith('/') ? (
-                  <Link key={link.href} to={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
+              {navLinks.map((link) => {
+                const active = isLinkActive(link.href);
+                const baseClasses = 'relative hover:text-[#0f2a4d] transition-colors';
+                const activeClasses = 'text-[#0f2a4d] font-bold after:absolute after:left-0 after:-bottom-[6px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00] after:transition-all after:duration-300';
+
+                return link.href.startsWith('/') ? (
+                  <Link key={link.href} to={link.href} onClick={handleNavigation} className={`${baseClasses} ${active ? activeClasses : ''}`}>
                     {link.label}
                   </Link>
                 ) : (
-                  <a key={link.href} href={link.href} onClick={handleNavigation} className="hover:text-[#0f2a4d] transition-colors">
+                  <a key={link.href} href={link.href} onClick={handleNavigation} className={`${baseClasses} ${active ? activeClasses : ''}`}>
                     {link.label}
                   </a>
-                )
-              ))}
+                );
+              })}
             </div>
 
             <div className="hidden lg:flex items-center gap-2.5">
@@ -147,50 +166,57 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => setIsMobileServicesOpen((prev) => !prev)}
-                    className="flex w-full items-center justify-between rounded-lg px-2 py-1 text-left hover:bg-[#f3f8ff] font-bold"
+                    className={`flex w-full items-center justify-between rounded-lg px-2 py-1 text-left hover:bg-[#f3f8ff] font-bold ${isServiceActive ? 'text-[#0f2a4d]' : ''}`}
                     aria-expanded={isMobileServicesOpen}
                   >
-                    <span>Services</span>
+                    <span className={`relative ${isServiceActive ? 'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00]' : ''}`}>Services</span>
                     <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isMobileServicesOpen && (
                     <div className="mt-2 ml-3 flex flex-col gap-2 border-l border-[#d8e7f8] pl-3">
-                      {serviceLinks.map((service) => (
-                        <Link
-                          key={service.href}
-                          to={service.href}
-                          onClick={handleNavigation}
-                          className="rounded-lg px-2 py-1 text-sm hover:bg-[#f3f8ff]"
-                        >
-                          {service.label}
-                        </Link>
-                      ))}
+                      {serviceLinks.map((service) => {
+                        const active = isLinkActive(service.href);
+                        return (
+                          <Link
+                            key={service.href}
+                            to={service.href}
+                            onClick={handleNavigation}
+                            className={`rounded-lg px-2 py-1 text-sm hover:bg-[#f3f8ff] ${active ? 'text-[#0f2a4d] font-bold' : ''}`}
+                          >
+                            <span className={`relative ${active ? 'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00]' : ''}`}>{service.label}</span>
+                          </Link>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
 
-                {navLinks.map((link) => (
-                  link.href.startsWith('/') ? (
+                {navLinks.map((link) => {
+                  const active = isLinkActive(link.href);
+                  const baseClasses = 'rounded-lg px-2 py-1 hover:bg-[#f3f8ff]';
+                  const activeClasses = 'text-[#0f2a4d] font-bold';
+
+                  return link.href.startsWith('/') ? (
                     <Link
                       key={link.href}
                       to={link.href}
                       onClick={handleNavigation}
-                      className="rounded-lg px-2 py-1 hover:bg-[#f3f8ff]"
+                      className={`${baseClasses} ${active ? activeClasses : ''}`}
                     >
-                      {link.label}
+                      <span className={`relative ${active ? 'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00]' : ''}`}>{link.label}</span>
                     </Link>
                   ) : (
                     <a
                       key={link.href}
                       href={link.href}
                       onClick={handleNavigation}
-                      className="rounded-lg px-2 py-1 hover:bg-[#f3f8ff]"
+                      className={`${baseClasses} ${active ? activeClasses : ''}`}
                     >
-                      {link.label}
+                      <span className={`relative ${active ? 'after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:rounded-full after:bg-[#FF8C00]' : ''}`}>{link.label}</span>
                     </a>
-                  )
-                ))}
+                  );
+                })}
               </div>
 
               <div className="mt-5 grid grid-cols-1 gap-2.5">

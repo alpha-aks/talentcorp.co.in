@@ -26,9 +26,11 @@ import {
 	Users,
 	Wrench,
 	Zap,
+	Send,
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitLead } from '../utils/strapi'
 
 const benefits = [
 	{
@@ -532,11 +534,45 @@ function ContractCTA() {
 		duration: '',
 		message: '',
 	})
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [submitMessage, setSubmitMessage] = useState('')
+	const [submitError, setSubmitError] = useState('')
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
-		// Placeholder action while backend endpoint is not configured.
-		console.log('Contract request submitted:', formData)
+	const handleSubmit = async (event) => {
+		event.preventDefault()
+		setIsSubmitting(true)
+		setSubmitMessage('')
+		setSubmitError('')
+
+		try {
+			await submitLead({
+				name: formData.name.trim(),
+				email: formData.email.trim(),
+				phone: formData.phone.trim(),
+				subject: `Contract staffing request${formData.workers ? ` - ${formData.workers}` : ''}`,
+				message: [
+					`Company: ${formData.company.trim() || 'Not provided'}`,
+					`Workers needed: ${formData.workers || 'Not specified'}`,
+					`Duration: ${formData.duration || 'Not specified'}`,
+					`Details: ${formData.message.trim() || 'No additional details'}`,
+				].join('\n'),
+			})
+
+			setFormData({
+				name: '',
+				company: '',
+				phone: '',
+				email: '',
+				workers: '',
+				duration: '',
+				message: '',
+			})
+			setSubmitMessage('Your staffing request has been sent. Our team will reach out soon.')
+		} catch (error) {
+			setSubmitError(error?.message || 'Unable to submit staffing request.')
+		} finally {
+			setIsSubmitting(false)
+		}
 	}
 
 	const workerOptions = ['1-10', '11-50', '51-100', '101-500', '500+']
@@ -626,10 +662,13 @@ function ContractCTA() {
 
 								<textarea rows={3} placeholder="Describe worker type, skills needed, and location" className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} />
 
-								<button type="submit" className="group flex h-14 w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-lg font-semibold text-white shadow-xl shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-blue-600">
-									Submit Staffing Request
-									<ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+								<button type="submit" disabled={isSubmitting} className="group flex h-14 w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-lg font-semibold text-white shadow-xl shadow-blue-500/25 transition-all hover:from-blue-700 hover:to-blue-600 disabled:cursor-not-allowed disabled:opacity-70">
+									{isSubmitting ? 'Sending...' : 'Submit Staffing Request'}
+									<Send className={`ml-2 h-5 w-5 ${isSubmitting ? 'animate-plane-send' : 'transition-transform group-hover:translate-x-1'}`} />
 								</button>
+
+								{submitMessage && <p className="pt-1 text-sm font-medium text-green-600">{submitMessage}</p>}
+								{submitError && <p className="pt-1 text-sm font-medium text-red-600">{submitError}</p>}
 
 								<div className="flex flex-wrap items-center justify-center gap-4 pt-2">
 									{['Free Consultation', 'No Obligation', 'Quick Response'].map((item) => (
