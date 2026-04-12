@@ -24,6 +24,7 @@ import SecurityPage from './pages/security'
 import MapsPage from './pages/MAPS'
 import AedpPage from './pages/AEDP'
 import AchimentPage from './pages/achiment'
+import JobsPage from './pages/jobs'
 
 const PRELOADER_DURATION_MS = 2800
 
@@ -79,6 +80,7 @@ function App() {
             <Route path="/achievements" element={<AchimentPage />} />
             <Route path="/achiment" element={<AchimentPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
             <Route path="/news-events" element={<NewsEventsPage />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
