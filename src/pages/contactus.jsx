@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { STRAPI_BASE_URL } from '../utils/strapi';
 import { 
   Phone, 
   Mail, 
@@ -11,11 +12,6 @@ import {
   Check,
   Send
 } from 'lucide-react';
-
-const STRAPI_BASE_URL =
-  import.meta.env.VITE_STRAPI_API_URL ||
-  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  'http://localhost:1337';
 
 const ContactUs = () => {
   const [isFormHovered, setIsFormHovered] = useState(false);

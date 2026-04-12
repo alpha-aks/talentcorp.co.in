@@ -1,16 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { STRAPI_BASE_URL } from '../utils/strapi';
 
 const FALLBACK_LOGOS = [
   { src: '/JCB_(company)-Logo.wine.svg', alt: 'JCB' },
   { src: '/Mrf-logo.png', alt: 'MRF' },
   { src: '/haier-logo.png', alt: 'Haier' },
 ];
-
-const STRAPI_BASE_URL =
-  import.meta.env.VITE_STRAPI_API_URL ||
-  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  '';
 
 function resolveStrapiUrl(url) {
   if (!url) return '';
@@ -31,7 +27,7 @@ export default function CompanyMarquee() {
       try {
         const res = await fetch(
           `${STRAPI_BASE_URL}/api/client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100`,
-          { signal: controller.signal }
+          { signal: controller.signal, cache: 'no-store' }
         );
 
         if (!res.ok) return;

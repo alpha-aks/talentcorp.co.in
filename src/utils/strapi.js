@@ -1,4 +1,4 @@
-const STRAPI_BASE_URL = import.meta.env.VITE_STRAPI_API_URL || 'https://backend.tsplgroup.co.in';
+export const STRAPI_BASE_URL = import.meta.env.VITE_STRAPI_API_URL || 'https://backend.tsplgroup.co.in';
 
 export const resolveStrapiUrl = (url) => {
   if (!url) return '';
@@ -30,7 +30,7 @@ export const extractMediaUrl = (media) => {
 };
 
 const fetchJson = async (path) => {
-  const response = await fetch(`${STRAPI_BASE_URL}${path}`);
+  const response = await fetch(`${STRAPI_BASE_URL}${path}`, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Request failed: ${path}`);
   }

@@ -1,9 +1,5 @@
 import React from 'react';
-
-const STRAPI_BASE_URL =
-  import.meta.env.VITE_STRAPI_API_URL ||
-  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  '';
+import { STRAPI_BASE_URL } from '../utils/strapi';
 
 const DEFAULT_TEXTURE_URL =
   'https://assets-news.housing.com/news/wp-content/uploads/2023/09/07214637/Top-10-manufacturing-companies-in-Coimbatore-f.jpg';
@@ -28,6 +24,7 @@ export default function GlobalTextureOverlay() {
       try {
         const res = await fetch(`${STRAPI_BASE_URL}/api/site-texture?populate=texture`, {
           signal: controller.signal,
+          cache: 'no-store',
         });
         if (!res.ok) return;
         const json = await res.json();
