@@ -1,15 +1,8 @@
 import React from 'react';
-import { STRAPI_BASE_URL } from '../utils/strapi';
+import { STRAPI_BASE_URL, fetchSingleType, extractMediaUrl } from '../utils/strapi';
 
 const DEFAULT_TEXTURE_URL =
   'https://assets-news.housing.com/news/wp-content/uploads/2023/09/07214637/Top-10-manufacturing-companies-in-Coimbatore-f.jpg';
-
-function resolveStrapiUrl(url) {
-  if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
-  if (!STRAPI_BASE_URL) return url;
-  return `${STRAPI_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-}
 
 export default function GlobalTextureOverlay() {
   const [textureUrl, setTextureUrl] = React.useState(DEFAULT_TEXTURE_URL);
@@ -22,18 +15,11 @@ export default function GlobalTextureOverlay() {
 
     (async () => {
       try {
-        const res = await fetch(`${STRAPI_BASE_URL}/api/site-texture?populate=texture`, {
-          signal: controller.signal,
-          cache: 'no-store',
-        });
-        if (!res.ok) return;
-        const json = await res.json();
-
-        const attrs = json?.data?.attributes;
+        const data = await fetchSingleType('/api/site-texture?populate=texture');
+        const attrs = data;
         if (typeof attrs?.enabled === 'boolean') setEnabled(attrs.enabled);
 
-        const url = attrs?.texture?.data?.attributes?.url;
-        const resolved = resolveStrapiUrl(url);
+        const resolved = extractMediaUrl(attrs?.texture);
         if (resolved) {
           setTextureUrl(resolved);
         }

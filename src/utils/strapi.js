@@ -37,6 +37,19 @@ const fetchJson = async (path) => {
   return response.json();
 };
 
+const getPluralFallbackPath = (path) => {
+  const [pathname, queryString = ''] = path.split('?');
+  const segments = pathname.split('/').filter(Boolean);
+  if (segments.length === 0) return path;
+
+  const lastSegment = segments[segments.length - 1];
+  if (lastSegment.endsWith('s')) return path;
+
+  segments[segments.length - 1] = `${lastSegment}s`;
+  const fallbackPath = `/${segments.join('/')}`;
+  return queryString ? `${fallbackPath}?${queryString}` : fallbackPath;
+};
+
 export const fetchCollection = async (path) => {
   try {
     const payload = await fetchJson(path);
@@ -50,8 +63,26 @@ export const fetchCollection = async (path) => {
 export const fetchSingleType = async (path) => {
   try {
     const payload = await fetchJson(path);
-    return normalizeStrapiEntry(payload?.data || payload || null);
+    const data = payload?.data;
+    if (Array.isArray(data)) {
+      return normalizeStrapiEntry(data[0] || null);
+    }
+    return normalizeStrapiEntry(data || payload || null);
   } catch (error) {
+    if (String(error?.message || '').includes(path)) {
+      try {
+        const fallbackPath = getPluralFallbackPath(path);
+        const payload = await fetchJson(fallbackPath);
+        const data = payload?.data;
+        if (Array.isArray(data)) {
+          return normalizeStrapiEntry(data[0] || null);
+        }
+        return normalizeStrapiEntry(data || payload || null);
+      } catch (fallbackError) {
+        console.error(`Error fetching ${path}:`, fallbackError);
+        return null;
+      }
+    }
     console.error(`Error fetching ${path}:`, error);
     return null;
   }
