@@ -48,7 +48,7 @@ const HeroSection = ({ onFindJobs, onHireTalent }) => {
             <div className="pointer-events-none absolute left-40 -bottom-16 h-40 w-40 rounded-full bg-orange-400/15 blur-3xl md:left-56 md:h-52 md:w-52" />
 
             <div className="relative inline-block">
-              <div className="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-12 md:-left-8">
+              <div className="absolute -left-2 top-1/2 hidden -translate-y-1/2 -rotate-12 md:-left-8 md:block">
                 <svg width="80" height="40" viewBox="0 0 101 46" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-16 md:w-24 lg:w-32">
                   <path d="M2 44L22 22L42 44L62 22L82 44L99 2" stroke="#EF4444" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M99 2H80M99 2V21" stroke="#EF4444" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />

@@ -394,6 +394,8 @@ function OurProcess() {
 }
 
 function WhyChooseUs() {
+	const [openReasonIndex, setOpenReasonIndex] = useState(0)
+
 	return (
 		<section className="relative overflow-hidden bg-slate-50 py-20 lg:py-28">
 			<div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-[#2563EB]/5 blur-3xl" />
@@ -415,19 +417,32 @@ function WhyChooseUs() {
 
 						<div className="space-y-4">
 							{reasons.map((reason, i) => (
-								<div
+								<button
 									key={reason.title}
-									className={`flex gap-4 rounded-xl p-4 transition-all duration-300 animate-fade-in-up ${
-										reason.highlight ? 'bg-[#2563EB] text-white shadow-xl shadow-[#2563EB]/30' : 'border border-slate-200 bg-white hover:bg-slate-100'
+									type="button"
+									onClick={() => setOpenReasonIndex((current) => (current === i ? -1 : i))}
+									aria-expanded={openReasonIndex === i}
+									className={`w-full rounded-xl p-4 text-left transition-all duration-300 animate-fade-in-up ${
+										openReasonIndex === i
+											? 'bg-[#2563EB] text-white shadow-xl shadow-[#2563EB]/30'
+											: reason.highlight
+												? 'border border-[#2563EB]/20 bg-[#2563EB]/5 hover:border-[#2563EB]/40'
+												: 'border border-slate-200 bg-white hover:bg-slate-100'
 									}`}
 									style={{ animationDelay: `${i * 50}ms` }}
 								>
-									<CheckCircle className={`mt-0.5 h-6 w-6 shrink-0 ${reason.highlight ? 'text-white' : 'text-[#2563EB]'}`} />
-									<div>
-										<h3 className={`font-bold ${reason.highlight ? 'text-white' : 'text-[#0F172A]'}`}>{reason.title}</h3>
-										<p className={`mt-1 text-sm ${reason.highlight ? 'text-white/80' : 'text-[#64748B]'}`}>{reason.desc}</p>
+									<div className="flex items-start gap-4">
+										<CheckCircle className={`mt-0.5 h-6 w-6 shrink-0 ${openReasonIndex === i ? 'text-white' : 'text-[#2563EB]'}`} />
+										<div className="flex-1">
+											<div className="flex items-center gap-4">
+												<h3 className={`font-bold ${openReasonIndex === i ? 'text-white' : 'text-[#0F172A]'}`}>{reason.title}</h3>
+											</div>
+											<div className={`grid transition-all duration-300 ${openReasonIndex === i ? 'mt-2 grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-60'}`}>
+												<p className={`overflow-hidden text-sm ${openReasonIndex === i ? 'text-white/90' : 'text-[#64748B]'}`}>{reason.desc}</p>
+											</div>
+										</div>
 									</div>
-								</div>
+								</button>
 							))}
 						</div>
 					</div>
