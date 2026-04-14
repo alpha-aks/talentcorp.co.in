@@ -16,6 +16,7 @@ const serviceLinks = [
   { href: '/naps', label: 'NAPS' },
   { href: '/bvoc', label: 'B.VOC' },
   { href: '/dvoc', label: 'D.VOC' },
+  { href: '/b2b', label: 'B2B' },
   { href: '/flexi-iti', label: 'FLEXI ITI' },
   { href: '/aedp', label: 'AEDP' },
   { href: '/maps', label: 'MAPS' },
@@ -70,11 +71,11 @@ const Navbar = () => {
       <div className="mx-auto max-w-7xl">
         <div className="rounded-full border border-[#d8e7f8] bg-white shadow-lg shadow-black/5 backdrop-blur-md">
           <div className="px-6 py-3.5 flex items-center justify-between">
-            <Link to="/" className="h-10 w-[155px] overflow-hidden rounded-md sm:h-12 sm:w-[180px]" aria-label="TSPL home">
+            <Link to="/" className="h-10 w-[155px] overflow-hidden rounded-md bg-white sm:h-12 sm:w-[180px]" aria-label="TSPL home">
               <img
                 src="/tspl main logo.png"
                 alt="TSPL"
-                className="h-full w-full object-contain object-center"
+                className="h-full w-full object-cover object-center scale-[1.14] drop-shadow-[0_6px_18px_rgba(0,0,0,0.45)] contrast-125 brightness-110"
               />
             </Link>
 

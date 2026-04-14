@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import './App.css'
 import GlobalTextureOverlay from './components/GlobalTextureOverlay'
 import HomePage from './pages/HomePage'
@@ -28,6 +28,16 @@ import JobsPage from './pages/jobs'
 
 const PRELOADER_DURATION_MS = 2800
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname])
+
+  return null
+}
+
 function App() {
   const [isLoading, setIsLoading] = useState(true)
 
@@ -41,6 +51,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="page-shell">
         <GlobalTextureOverlay />
         {isLoading && (

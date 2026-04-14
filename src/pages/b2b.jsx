@@ -381,7 +381,7 @@ function B2BPage() {
 								<span className="text-sm font-medium text-white/80">Business to Business Solutions</span>
 							</div>
 
-							<h1 className="max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+							<h1 className="hero-text-reveal max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
 								Scale Your
 								<br />
 								<span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-orange-300 bg-clip-text text-transparent">
@@ -391,7 +391,7 @@ function B2BPage() {
 								With TSPL
 							</h1>
 
-							<p className="max-w-xl text-lg leading-relaxed text-white/65 sm:text-xl">
+							<p className="hero-text-reveal-delay max-w-xl text-lg leading-relaxed text-white/65 sm:text-xl">
 								Enterprise-grade workforce solutions designed for businesses that demand excellence, reliability, and scalable execution.
 							</p>
 
@@ -750,7 +750,9 @@ function B2BPage() {
 									{testimonials.map((testimonial, index) => (
 										<div
 											key={testimonial.author}
-											className={`absolute inset-0 transition-all duration-700 ${activeTestimonial === index ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+											className={`absolute inset-0 transition-all duration-700 ${
+												activeTestimonial === index ? 'pointer-events-auto opacity-100 scale-100' : 'pointer-events-none opacity-0 scale-95'
+											}`}
 										>
 											<img
 												src={index % 2 === 0 ? '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp' : '/Gemini_Generated_Image_qskougqskougqsko.png'}
@@ -769,7 +771,11 @@ function B2BPage() {
 									{testimonials.map((testimonial, index) => (
 										<div
 											key={testimonial.author}
-											className={`transition-all duration-500 ${activeTestimonial === index ? 'opacity-100 translate-x-0' : 'absolute inset-0 opacity-0 translate-x-8'}`}
+											className={`transition-all duration-500 ${
+												activeTestimonial === index
+													? 'pointer-events-auto opacity-100 translate-x-0'
+													: 'pointer-events-none absolute inset-0 opacity-0 translate-x-8'
+											}`}
 										>
 											<div className="mb-6 text-blue-400/30">
 												<svg className="h-16 w-16" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">

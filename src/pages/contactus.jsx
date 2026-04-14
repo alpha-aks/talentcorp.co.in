@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { STRAPI_BASE_URL, submitLead } from '../utils/strapi';
 import { 
   Phone, 
   Mail, 
@@ -13,6 +12,95 @@ import {
   Send
 } from 'lucide-react';
 
+const STRAPI_BASE_URL =
+  import.meta.env.VITE_STRAPI_API_URL ||
+  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
+  'http://localhost:1337';
+
+const serviceOptions = [
+  { value: 'NATS', label: 'NATS' },
+  { value: 'NAPS', label: 'NAPS' },
+  { value: 'B.VOC', label: 'B.VOC' },
+  { value: 'D.VOC', label: 'D.VOC' },
+  { value: 'FLEXI ITI', label: 'FLEXI ITI' },
+  { value: 'AEDP', label: 'AEDP' },
+  { value: 'MAPS', label: 'MAPS' },
+  { value: 'SECURITY', label: 'SECURITY' },
+  { value: 'SKILLED JOB', label: 'SKILLED JOB' },
+  { value: 'HOUSEKEEPING', label: 'HOUSEKEEPING' },
+  { value: 'MANPOWER', label: 'MANPOWER' },
+  { value: 'CONTRACT', label: 'CONTRACT' },
+  { value: 'COMPLIANCE', label: 'COMPLIANCE' },
+  { value: 'PAYROLL', label: 'PAYROLL' },
+  { value: 'B2B', label: 'B2B' },
+];
+
+const officeLocations = [
+  {
+    city: 'Head Office',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      'Office No. 111,112,113,103 First Floor, Shree Gajanan Commercial Complex, Chakan- Talegaon Road, Chakan Tal. Khed, Dist. Pune, Maharashtra 410501',
+    calls: ['+91 7397926734'],
+    emails: ['info@tsplgroup.in'],
+  },
+  {
+    city: 'Mumbai',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      'White House, Six Floor, Office No. 605, SV Road, Opposite to Andheri Metro Station West, Mumbai, Maharashtra - 400 058, India',
+    calls: ['+91 7397926734'],
+    emails: ['mumbai@tsplgroup.in'],
+  },
+  {
+    city: 'Chennai',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      'No 1/44, 2nd Floor, Vallar Complex, G.S.T Road, Signaperumal Koil, Kancheepuram District, Chennai, Tamil Nadu - 603204, India',
+    calls: ['+91 9488910028'],
+    emails: ['chennai@tsplgroup.in'],
+  },
+  {
+    city: 'Ranjangaon',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      '2nd Floor, Soham Apartment, Opposite to ICICI Bank, Ranjangaon (Pune), Maharashtra, India',
+    calls: ['+91 7397926734'],
+    emails: ['ranjangaon@tsplgroup.in'],
+  },
+  {
+    city: 'Ghaziabad',
+    company: 'TalentUp Services (India) Private Limited',
+    address: 'S-32 Shop No. 3 Gf - Dlf, Ankur Vihar Loni, Ghaziabad, Uttar Pradesh - 201102, India',
+    calls: ['+91 8484035542'],
+    emails: ['info@talentup.in'],
+  },
+  {
+    city: 'Bhubaneswar',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      'Maha Laxmi Bhawan, Jai Dev Vihar, Near Hotel MAYFAIR Lagoon, Bhubaneswar, Odisha - 751013, India',
+    calls: ['+91 7397926734'],
+    emails: ['bhubaneswar@tsplgroup.in'],
+  },
+  {
+    city: 'Osmanabad',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      'Office No- 2, Mahalaxmi Complex, Opposite Collector Office, Osmanabad, Maharashtra - 413501, India',
+    calls: ['+91 7397926734'],
+    emails: ['osmanabad@tsplgroup.in'],
+  },
+  {
+    city: 'Bangladesh',
+    company: 'TalentCorp Solutions Private Limited',
+    address:
+      '11 no Office, Chobila Complex (2nd Floor), 8/3 Hazari Lane, Anderkilla, Kotwali, Chittagong',
+    calls: ['01830086926', '01837489420'],
+    emails: ['bangladesh@tsplgroup.in'],
+  },
+];
+
 const ContactUs = () => {
   const [isFormHovered, setIsFormHovered] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,6 +109,7 @@ const ContactUs = () => {
   const [isFormFlyingAway, setIsFormFlyingAway] = useState(false);
   const [flightManifest, setFlightManifest] = useState([]);
   const [submitError, setSubmitError] = useState('');
+  const [showAllOffices, setShowAllOffices] = useState(false);
 
   const handleContactSubmit = async (event) => {
     event.preventDefault();
@@ -33,12 +122,14 @@ const ContactUs = () => {
 
     const formData = new FormData(formElement);
     const leadPayload = {
-      name: formData.get('fullName') || '',
-      email: formData.get('email') || '',
-      phone: formData.get('phone') || '',
-      subject: formData.get('service') || '',
-      message: formData.get('message') || '',
-      consent: Boolean(formData.get('consent')),
+      data: {
+        name: formData.get('fullName') || '',
+        email: formData.get('email') || '',
+        phone: formData.get('phone') || '',
+        subject: formData.get('service') || '',
+        message: formData.get('message') || '',
+        consent: Boolean(formData.get('consent')),
+      },
     };
 
     const manifestEntries = [
@@ -55,7 +146,18 @@ const ContactUs = () => {
     setFlightManifest(manifestEntries.length ? manifestEntries : [{ label: 'Status', value: 'Sending...' }]);
 
     try {
-      await submitLead(leadPayload);
+      const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(leadPayload),
+      });
+
+      if (!response.ok) {
+        const responseText = await response.text();
+        throw new Error(`Submit failed (${response.status}): ${responseText || 'no response body'}`);
+      }
 
       formElement.reset();
       setFlightManifest(manifestEntries.slice(0, 5));
@@ -86,7 +188,7 @@ const ContactUs = () => {
       `}</style>
       
       {/* === HEADER & HERO SECTION === */}
-      <header className="relative bg-gray-900 min-h-screen flex flex-col">
+      <header className="relative bg-gray-900 min-h-[72vh] md:min-h-[86vh] flex flex-col">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -100,30 +202,35 @@ const ContactUs = () => {
         <Navbar />
 
         {/* Hero Content */}
-        <div className="relative z-10 flex-grow flex items-center max-w-7xl mx-auto w-full px-8 pt-12 pb-24">
-          <div className="max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
-              Let's Connect<br/>& <span className="text-blue-500">Build the Future</span><br/>Workforce
-            </h1>
-            <p className="text-gray-300 text-lg mb-8 max-w-lg">
-              Scale your business towards your highest potential. Our experts are ready to catalyze your growth. With TSPL Group, your business is our mission.
-            </p>
-            <div className="flex gap-4 mb-12">
-              <button className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full shadow-lg transition-colors flex items-center gap-2">
-                Scale Fast <ArrowRight size={18} />
-              </button>
-              <button className="px-8 py-3 bg-transparent border border-gray-400 hover:border-white text-white font-medium rounded-full transition-colors flex items-center gap-2">
-                Explore Training <ArrowRight size={18} />
-              </button>
+        <div className="relative z-10 flex flex-grow items-center max-w-7xl mx-auto w-full px-8 pt-8 pb-16 md:pt-10 md:pb-20">
+          <div className="grid w-full items-end gap-10 lg:grid-cols-2">
+            <div className="max-w-2xl pt-6 md:pt-10 lg:pt-14">
+              <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+                Let's Connect<br/>& <span className="text-blue-500">Build the Future</span><br/>Workforce
+              </h1>
+              <p className="text-gray-300 text-lg max-w-lg">
+                Scale your business towards your highest potential. Our experts are ready to catalyze your growth. With TSPL Group, your business is our mission.
+              </p>
             </div>
-            <div className="flex gap-12 text-white">
-              <div>
-                <p className="text-3xl font-bold">20+</p>
-                <p className="text-sm text-gray-400">Offices across India</p>
+
+            <div className="lg:justify-self-end lg:text-right">
+              <div className="mb-10 flex flex-wrap gap-4 lg:justify-end">
+                <button className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full shadow-lg transition-colors flex items-center gap-2">
+                  Scale Fast <ArrowRight size={18} />
+                </button>
+                <button className="px-8 py-3 bg-transparent border border-gray-400 hover:border-white text-white font-medium rounded-full transition-colors flex items-center gap-2">
+                  Explore Training <ArrowRight size={18} />
+                </button>
               </div>
-              <div>
-                <p className="text-3xl font-bold text-blue-500">24/7</p>
-                <p className="text-sm text-gray-400">Expert Support</p>
+              <div className="flex gap-12 text-white lg:justify-end">
+                <div>
+                  <p className="text-3xl font-bold">20+</p>
+                  <p className="text-sm text-gray-400">Offices across India</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-blue-500">24/7</p>
+                  <p className="text-sm text-gray-400">Expert Support</p>
+                </div>
               </div>
             </div>
           </div>
@@ -312,11 +419,11 @@ const ContactUs = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Service Interested In</label>
                 <select name="service" required defaultValue="" className="w-full px-5 py-3 border border-gray-200 rounded-full outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)] text-gray-500">
                   <option value="" disabled hidden>Select a Service</option>
-                  <option>NATS PROGRAM</option>
-                  <option>NAPS PROGRAM</option>
-                  <option>FLEXI ITI PROGRAM</option>
-                  <option>TRANING & DEVELOPMENT</option>
-                  <option>STAFF SOLUTIONS</option>
+                  {serviceOptions.map((service) => (
+                    <option key={service.value} value={service.value}>
+                      {service.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -477,50 +584,130 @@ const ContactUs = () => {
       </section>
 
       {/* === LOCATIONS SECTION === */}
-      <section className="max-w-7xl mx-auto py-24 px-8 grid md:grid-cols-2 gap-12 items-center">
-        <div>
+      <section className="max-w-7xl mx-auto py-24 px-8">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div>
           <p className="text-blue-600 font-bold text-sm tracking-widest uppercase mb-2">Our Presence</p>
           <h2 className="text-4xl font-bold mb-4">Find us in India's<br/>Growth Hubs</h2>
-          <p className="text-gray-500 mb-8 max-w-md">Our headquarters is strategically located in the heart of Gurugram's tech corridor. With regional offices across key economic zones in 20+ states.</p>
+          <p className="text-gray-500 mb-8 max-w-2xl">Our headquarters and regional offices are spread across major business hubs to serve clients faster and better.</p>
+
+          <div className="mb-6 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setShowAllOffices((prev) => !prev)}
+              className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+            >
+              {showAllOffices ? 'Show Head Quarter Only' : 'View All Offices'}
+              <ArrowRight size={16} className={`transition-transform ${showAllOffices ? 'rotate-90' : ''}`} />
+            </button>
+            {!showAllOffices && <p className="text-sm text-gray-500">Showing Head Office</p>}
+          </div>
           
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 rounded-full border border-gray-100 bg-white px-6 py-4">
-              <div className="w-10 h-10 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center">
-                <Building size={18} />
-              </div>
-              <div>
-                  <p className="font-bold">Head Office</p>
-                  <p className="text-sm text-gray-500">Office No. 111,112,113,103 First Floor, Shree Gajanan Commercial Complex</p>
-              </div>
+          {!showAllOffices && (
+            <div className="space-y-5">
+              {officeLocations.slice(0, 1).map((office, index) => (
+                <div key={office.city} className="group rounded-[1.75rem] border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_18px_45px_rgba(37,99,235,0.16)]">
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${index % 2 === 0 ? 'bg-orange-100 text-orange-500' : 'bg-blue-100 text-blue-600'}`}>
+                      {index === 0 ? <Building size={18} /> : <MapPin size={18} />}
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg">{office.city}</p>
+                      <p className="text-sm text-gray-600">{office.company}</p>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-gray-500 leading-relaxed">{office.address}</p>
+
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-start gap-2">
+                      <Phone size={16} className="mt-1 text-blue-600" />
+                      <div className="text-sm text-gray-600">
+                        <p className="font-semibold text-gray-700">Call:</p>
+                        {office.calls.map((callNumber) => (
+                          <a key={callNumber} href={`tel:${callNumber.replace(/\s+/g, '')}`} className="block text-blue-700 hover:text-blue-800">
+                            {callNumber}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <Mail size={16} className="mt-1 text-orange-500" />
+                      <div className="text-sm text-gray-600">
+                        <p className="font-semibold text-gray-700">Email:</p>
+                        {office.emails.map((email) => (
+                          <a key={email} href={`mailto:${email}`} className="block text-orange-600 hover:text-orange-700">
+                            {email}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-4 rounded-full border border-gray-100 bg-white px-6 py-4">
-              <div className="w-10 h-10 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center">
-                <MapPin size={18} />
-              </div>
-              <div>
-                  <p className="font-bold">Chakan Office</p>
-                  <p className="text-sm text-gray-500">Chakan- Talegaon Road, Chakan Tal. Khed, Dist. Pune, Maharashtra 410501</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 rounded-full border border-gray-100 bg-white px-6 py-4">
-              <div className="w-10 h-10 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center">
-                <MapPin size={18} />
-              </div>
-              <div>
-                  <p className="font-bold">Pune, Maharashtra</p>
-                  <p className="text-sm text-gray-500">410501</p>
-              </div>
-            </div>
+          )}
+        </div>
+
+          {/* Map */}
+          <div className="overflow-hidden rounded-[3rem] border border-gray-200 bg-gray-100 shadow-[0_18px_50px_rgba(15,42,77,0.10)]">
+            <img
+              src="/map-transparent.png"
+              alt="TSPL Group office map"
+              className="h-96 w-full object-contain bg-white"
+            />
           </div>
         </div>
-        {/* Map */}
-        <div className="overflow-hidden rounded-[3rem] border border-gray-200 bg-gray-100 shadow-[0_18px_50px_rgba(15,42,77,0.10)]">
-          <img
-            src="/map-transparent.png"
-            alt="TSPL Group office map"
-            className="h-96 w-full object-contain bg-white"
-          />
-        </div>
+
+        {showAllOffices && (
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            {officeLocations.map((office, index) => (
+              <div
+                key={office.city}
+                className={`group rounded-[1.75rem] border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_18px_45px_rgba(37,99,235,0.16)] ${index % 2 === 0 ? 'lg:mr-6' : 'lg:ml-6'}`}
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${index % 2 === 0 ? 'bg-orange-100 text-orange-500' : 'bg-blue-100 text-blue-600'}`}>
+                    {index === 0 ? <Building size={18} /> : <MapPin size={18} />}
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg">{office.city}</p>
+                    <p className="text-sm text-gray-600">{office.company}</p>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-500 leading-relaxed">{office.address}</p>
+
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-start gap-2">
+                    <Phone size={16} className="mt-1 text-blue-600" />
+                    <div className="text-sm text-gray-600">
+                      <p className="font-semibold text-gray-700">Call:</p>
+                      {office.calls.map((callNumber) => (
+                        <a key={callNumber} href={`tel:${callNumber.replace(/\s+/g, '')}`} className="block text-blue-700 hover:text-blue-800">
+                          {callNumber}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <Mail size={16} className="mt-1 text-orange-500" />
+                    <div className="text-sm text-gray-600">
+                      <p className="font-semibold text-gray-700">Email:</p>
+                      {office.emails.map((email) => (
+                        <a key={email} href={`mailto:${email}`} className="block text-orange-600 hover:text-orange-700">
+                          {email}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <Footer />
