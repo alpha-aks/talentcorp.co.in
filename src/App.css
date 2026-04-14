@@ -55,6 +55,48 @@
     logo-drift 1.8s ease-in-out 1.78s 1;
 }
 
+.route-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
+}
+
+.route-preloader-layer--orange {
+  animation: sweep-up 0.56s cubic-bezier(0.2, 0.75, 0.2, 1) 0.02s forwards;
+}
+
+.route-preloader-layer--blue {
+  animation: sweep-up 0.56s cubic-bezier(0.2, 0.75, 0.2, 1) 0.18s forwards;
+}
+
+.route-preloader-layer--white {
+  display: grid;
+  place-items: center;
+  animation: sweep-up 0.52s cubic-bezier(0.2, 0.75, 0.2, 1) 0.34s forwards;
+}
+
+.route-preloader-logo {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  animation: logo-pulse 1.15s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
 @keyframes sweep-up {
   from {
     opacity: 0.98;

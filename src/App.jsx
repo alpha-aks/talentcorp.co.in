@@ -40,6 +40,22 @@ function ScrollToTop() {
   return null
 }
 
+function PageLoader() {
+  return (
+    <div className="route-preloader" role="status" aria-label="Loading page">
+      <div className="preloader-layer preloader-layer--orange route-preloader-layer--orange" aria-hidden="true" />
+      <div className="preloader-layer preloader-layer--blue route-preloader-layer--blue" aria-hidden="true" />
+      <div className="preloader-layer preloader-layer--white route-preloader-layer--white" aria-hidden="true">
+        <img
+          src="/TSPL Logo preloader.png"
+          alt="TSPL logo"
+          className="preloader-logo route-preloader-logo"
+        />
+      </div>
+    </div>
+  )
+}
+
 function AnimatedRoutes({ isLoading }) {
   const location = useLocation()
 
@@ -116,7 +132,7 @@ function App() {
         )}
 
         <main className={`home ${isLoading ? 'home--hidden' : ''}`}>
-          <Suspense fallback={<div className="route-loading" aria-live="polite">Loading...</div>}>
+          <Suspense fallback={<PageLoader />}>
             <AnimatedRoutes isLoading={isLoading} />
           </Suspense>
         </main>

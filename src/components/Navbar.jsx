@@ -16,7 +16,6 @@ const serviceLinks = [
   { href: '/naps', label: 'NAPS' },
   { href: '/bvoc', label: 'B.VOC' },
   { href: '/dvoc', label: 'D.VOC' },
-  { href: '/b2b', label: 'B2B' },
   { href: '/flexi-iti', label: 'FLEXI ITI' },
   { href: '/aedp', label: 'AEDP' },
   { href: '/maps', label: 'MAPS' },
