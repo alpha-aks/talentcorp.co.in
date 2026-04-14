@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import './App.css'
@@ -42,7 +42,7 @@ function ScrollToTop() {
 
 function PageLoader() {
   return (
-    <div className="route-preloader" role="status" aria-label="Loading page">
+    <div className="page-transition-overlay" role="status" aria-label="Loading page">
       <div className="preloader-layer preloader-layer--orange route-preloader-layer--orange" aria-hidden="true" />
       <div className="preloader-layer preloader-layer--blue route-preloader-layer--blue" aria-hidden="true" />
       <div className="preloader-layer preloader-layer--white route-preloader-layer--white" aria-hidden="true">
@@ -58,46 +58,90 @@ function PageLoader() {
 
 function AnimatedRoutes({ isLoading }) {
   const location = useLocation()
+  const hasAnimatedInitialRoute = useRef(false)
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false)
+
+  useEffect(() => {
+    if (isLoading) return
+
+    if (!hasAnimatedInitialRoute.current) {
+      hasAnimatedInitialRoute.current = true
+      return
+    }
+
+    setIsPageTransitioning(true)
+    const timer = window.setTimeout(() => {
+      setIsPageTransitioning(false)
+    }, 760)
+
+    return () => window.clearTimeout(timer)
+  }, [location.pathname, isLoading])
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <Routes location={location}>
-          <Route path="/" element={<HomePage animateWords={!isLoading} />} />
-          <Route path="/job/:jobId" element={<JobDetailPage />} />
-          <Route path="/nats" element={<NatsLandingPage />} />
-          <Route path="/naps" element={<NapsPage />} />
-          <Route path="/bvoc" element={<BvocPage />} />
-          <Route path="/dvoc" element={<DvocPage />} />
-          <Route path="/flexi-iti" element={<FlexiItiPage />} />
-          <Route path="/skilled" element={<SkilledPage />} />
-          <Route path="/housekeeping" element={<HousekeepingPage />} />
-          <Route path="/manpower" element={<ManpowerPage />} />
-          <Route path="/payroll" element={<PayrollPage />} />
-          <Route path="/contract" element={<ContractPage />} />
-          <Route path="/b2b" element={<B2BPage />} />
-          <Route path="/security" element={<SecurityPage />} />
-          <Route path="/maps" element={<MapsPage />} />
-          <Route path="/aedp" element={<AedpPage />} />
-          <Route path="/client" element={<ClientPage />} />
-          <Route path="/compliance" element={<CompliancePage />} />
-          <Route path="/achievements" element={<AchimentPage />} />
-          <Route path="/achiment" element={<AchimentPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/jobs" element={<JobsPage />} />
-          <Route path="/news-events" element={<NewsEventsPage />} />
-          <Route path="/news-events/:newsId" element={<NewsDetailPage />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-        </Routes>
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <AnimatePresence mode="wait" initial={false}>
+        {isPageTransitioning && (
+          <motion.div
+            key={`page-transition-${location.pathname}`}
+            className="page-transition-overlay"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.26, ease: 'easeOut' }}
+            aria-hidden="true"
+          >
+            <div className="preloader-layer preloader-layer--orange route-preloader-layer--orange" />
+            <div className="preloader-layer preloader-layer--blue route-preloader-layer--blue" />
+            <div className="preloader-layer preloader-layer--white route-preloader-layer--white">
+              <img
+                src="/TSPL Logo preloader.png"
+                alt="TSPL logo"
+                className="preloader-logo route-preloader-logo"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 22, scale: 0.995 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -18, scale: 0.995 }}
+          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<HomePage animateWords={!isLoading} />} />
+            <Route path="/job/:jobId" element={<JobDetailPage />} />
+            <Route path="/nats" element={<NatsLandingPage />} />
+            <Route path="/naps" element={<NapsPage />} />
+            <Route path="/bvoc" element={<BvocPage />} />
+            <Route path="/dvoc" element={<DvocPage />} />
+            <Route path="/flexi-iti" element={<FlexiItiPage />} />
+            <Route path="/skilled" element={<SkilledPage />} />
+            <Route path="/housekeeping" element={<HousekeepingPage />} />
+            <Route path="/manpower" element={<ManpowerPage />} />
+            <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/contract" element={<ContractPage />} />
+            <Route path="/b2b" element={<B2BPage />} />
+            <Route path="/security" element={<SecurityPage />} />
+            <Route path="/maps" element={<MapsPage />} />
+            <Route path="/aedp" element={<AedpPage />} />
+            <Route path="/client" element={<ClientPage />} />
+            <Route path="/compliance" element={<CompliancePage />} />
+            <Route path="/achievements" element={<AchimentPage />} />
+            <Route path="/achiment" element={<AchimentPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/news-events" element={<NewsEventsPage />} />
+            <Route path="/news-events/:newsId" element={<NewsDetailPage />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
+    </>
   )
 }
 

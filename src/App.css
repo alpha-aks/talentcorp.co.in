@@ -64,6 +64,16 @@
   background: #ffffff;
 }
 
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
+  transform-origin: center;
+}
+
 .route-preloader-layer--orange {
   animation: sweep-up 0.56s cubic-bezier(0.2, 0.75, 0.2, 1) 0.02s forwards;
 }
