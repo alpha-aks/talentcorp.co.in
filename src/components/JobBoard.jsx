@@ -13,7 +13,7 @@ const fallbackJobs = [
   { id: 6, title: 'Assembly Line Worker', company: 'Hero MotoCorp', location: 'Haridwar, Uttarakhand', salary: '₹16,000 - ₹20,000', type: 'Contract', urgent: true },
 ];
 
-const filters = ['All Jobs', 'Apprenticeship', 'Full-time', 'Contract'];
+const filters = ['All Jobs', 'Apprenticeship', 'Full-time', 'Contract', 'Part-time'];
 
 const JobBoard = () => {
   const navigate = useNavigate();
@@ -29,8 +29,9 @@ const JobBoard = () => {
       if (data.length > 0) {
         setJobs(data.map(job => ({
           id: job.id,
-          title: job.documentId || job.title,
+        title: job.title || job.documentId || `Job ${job.id}`,
           company: job.company || '',
+        category: job.category || job.type || '',
           location: job.location || '',
           salary: job.salary || '',
           type: job.type || '',
@@ -44,12 +45,17 @@ const JobBoard = () => {
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
-      const byType = filter === 'All Jobs' || job.type === filter;
+      const jobType = (job.type || '').trim();
+      if (jobType.toLowerCase() === 'overseas') {
+        return false;
+      }
+
+      const byType = filter === 'All Jobs' || jobType === filter;
       const normalized = query.trim().toLowerCase();
       if (!normalized) {
         return byType;
       }
-      const haystack = `${job.title} ${job.company} ${job.location} ${job.type}`.toLowerCase();
+      const haystack = `${job.title} ${job.company} ${job.location} ${job.category} ${jobType}`.toLowerCase();
       return byType && haystack.includes(normalized);
     });
   }, [filter, query]);
@@ -110,13 +116,15 @@ const JobBoard = () => {
               <motion.article
                 key={job.id}
                 className="rounded-md border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-blue-300"
-                initial={{ opacity: 0, x: -50, y: 20 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                exit={{ opacity: 0, x: 50, y: -20 }}
+                initial={{ opacity: 0, y: 44 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                exit={{ opacity: 0, y: -20 }}
+                whileHover={{ y: -4 }}
                 transition={{
-                  duration: 0.4,
-                  delay: index * 0.08,
-                  ease: [0.23, 1, 0.320, 1]
+                  duration: 0.55,
+                  delay: index * 0.09,
+                  ease: [0.22, 1, 0.36, 1]
                 }}
               >
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

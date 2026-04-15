@@ -1,7 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Canvas } from '@react-three/fiber';
-import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import { ArrowRight, Calendar, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { fetchNews, extractMediaUrl } from '../utils/strapi';
@@ -32,48 +30,6 @@ const fallbackNewsItems = [
   },
 ];
 
-function NewsScene() {
-  return (
-    <group>
-      <Float speed={2.8} rotationIntensity={0.45} floatIntensity={1.2}>
-        <Sphere args={[1.08, 48, 48]} position={[-4.8, -0.45, -4.0]}>
-          <MeshDistortMaterial
-            color="#FF8C00"
-            emissive="#ffb347"
-            emissiveIntensity={0.12}
-            speed={1.6}
-            distort={0.24}
-            roughness={0.08}
-            metalness={0.05}
-            transparent
-            opacity={0.1}
-          />
-        </Sphere>
-      </Float>
-
-      <Float speed={3.2} rotationIntensity={0.55} floatIntensity={1.35}>
-        <Sphere args={[0.84, 48, 48]} position={[4.25, -1.7, -3.8]}>
-          <MeshDistortMaterial
-            color="#2f80ff"
-            emissive="#7ec3ff"
-            emissiveIntensity={0.14}
-            speed={1.5}
-            distort={0.26}
-            roughness={0.1}
-            metalness={0.1}
-            transparent
-            opacity={0.1}
-          />
-        </Sphere>
-      </Float>
-
-      <ambientLight intensity={0.9} />
-      <pointLight position={[5, 8, 6]} intensity={0.45} color="#cfe9ff" />
-      <pointLight position={[-5, 2, 4]} intensity={0.42} color="#ffbf73" />
-    </group>
-  );
-}
-
 const NewsSection = () => {
   const [isDesktop, setIsDesktop] = useState(true);
   const [newsItems, setNewsItems] = useState(fallbackNewsItems);
@@ -90,6 +46,7 @@ const NewsSection = () => {
       const data = await fetchNews();
       if (data.length > 0) {
         setNewsItems(data.map(item => ({
+          id: item.documentId || item.id,
           date: item.date || new Date().toLocaleDateString(),
           tag: item.tag || 'News',
           title: item.title || '',
@@ -104,12 +61,9 @@ const NewsSection = () => {
   return (
     <section id="news-events" className="relative overflow-hidden bg-white py-10 md:py-16">
       {isDesktop && (
-        <div className="pointer-events-none absolute inset-0 z-0 opacity-30">
-          <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 5], fov: 42 }} gl={{ antialias: true, powerPreference: 'high-performance' }}>
-            <Suspense fallback={null}>
-              <NewsScene />
-            </Suspense>
-          </Canvas>
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-40">
+          <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-orange-200/40 blur-3xl" />
+          <div className="absolute -right-16 bottom-12 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl" />
         </div>
       )}
 
@@ -187,7 +141,7 @@ const NewsSection = () => {
         >
           {newsItems.map((item, i) => (
             <motion.article
-              key={item.title}
+              key={item.id || item.title}
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -207,6 +161,8 @@ const NewsSection = () => {
                   alt={item.title}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
+                  width="640"
+                  height="384"
                   initial={{ scale: 1.1 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -259,7 +215,8 @@ const NewsSection = () => {
                   {item.desc}
                 </motion.p>
 
-                <motion.button
+                <MotionLink
+                  to={item.id ? `/news-events/${item.id}` : '/news-events'}
                   className="mt-auto flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-gray-50 py-3 md:py-4 font-bold text-orange-500 transition-all group-hover:border-orange-500 group-hover:bg-orange-500 group-hover:text-white text-sm md:text-base"
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -269,7 +226,7 @@ const NewsSection = () => {
                   whileTap={{ scale: 0.98 }}
                 >
                   Read More <ExternalLink size={18} />
-                </motion.button>
+                </MotionLink>
               </motion.div>
             </motion.article>
           ))}

@@ -113,7 +113,7 @@ export default function Footer() {
               {[
                 { href: '#services', label: 'Services' },
                 { href: '#about', label: 'About' },
-                { href: '/jobs', label: 'Jobs' },
+                { href: '#jobs', label: 'Jobs' },
                 { href: '#clients', label: 'Clients' },
                 { href: '#achievements', label: 'Achievements' },
                 { href: '/news-events', label: 'News & Events' },

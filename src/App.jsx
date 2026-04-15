@@ -1,30 +1,32 @@
-import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import './App.css'
 import GlobalTextureOverlay from './components/GlobalTextureOverlay'
-import HomePage from './pages/HomePage'
-import JobDetailPage from './pages/JobDetailPage'
-import ContactUs from './pages/contactus'
-import NewsEventsPage from './pages/NewsEventsPage'
-import NatsLandingPage from './pages/nats'
-import NapsPage from './pages/naps'
-import BvocPage from './pages/bvoc'
-import DvocPage from './pages/dvoc'
-import FlexiItiPage from './pages/FLEXI'
-import SkilledPage from './pages/skilled'
-import AboutPage from './pages/about'
-import HousekeepingPage from './pages/housekeeping'
-import ManpowerPage from './pages/manpower'
-import PayrollPage from './pages/payroll'
-import ContractPage from './pages/contract'
-import B2BPage from './pages/b2b'
-import ClientPage from './pages/client'
-import CompliancePage from './pages/Compliance'
-import SecurityPage from './pages/security'
-import MapsPage from './pages/MAPS'
-import AedpPage from './pages/AEDP'
-import AchimentPage from './pages/achiment'
-import JobsPage from './pages/jobs'
+const HomePage = lazy(() => import('./pages/HomePage'))
+const JobDetailPage = lazy(() => import('./pages/JobDetailPage'))
+const ContactUs = lazy(() => import('./pages/contactus'))
+const NewsEventsPage = lazy(() => import('./pages/NewsEventsPage'))
+const NatsLandingPage = lazy(() => import('./pages/nats'))
+const NapsPage = lazy(() => import('./pages/naps'))
+const BvocPage = lazy(() => import('./pages/bvoc'))
+const DvocPage = lazy(() => import('./pages/dvoc'))
+const FlexiItiPage = lazy(() => import('./pages/FLEXI'))
+const SkilledPage = lazy(() => import('./pages/skilled'))
+const AboutPage = lazy(() => import('./pages/about'))
+const HousekeepingPage = lazy(() => import('./pages/housekeeping'))
+const ManpowerPage = lazy(() => import('./pages/manpower'))
+const PayrollPage = lazy(() => import('./pages/payroll'))
+const ContractPage = lazy(() => import('./pages/contract'))
+const B2BPage = lazy(() => import('./pages/b2b'))
+const ClientPage = lazy(() => import('./pages/client'))
+const CompliancePage = lazy(() => import('./pages/Compliance'))
+const SecurityPage = lazy(() => import('./pages/security'))
+const MapsPage = lazy(() => import('./pages/MAPS'))
+const AedpPage = lazy(() => import('./pages/AEDP'))
+const AchimentPage = lazy(() => import('./pages/achiment'))
+const JobsPage = lazy(() => import('./pages/jobs'))
+const NewsDetailPage = lazy(() => import('./pages/news/NewsDetailPage'))
 
 const PRELOADER_DURATION_MS = 2800
 
@@ -38,38 +40,83 @@ function ScrollToTop() {
   return null
 }
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true)
+function PageLoader({ showLogo = false }) {
+  return (
+    <div className="page-transition-overlay" role="status" aria-label="Loading page">
+      <div className="preloader-layer preloader-layer--orange route-preloader-layer--orange" aria-hidden="true" />
+      <div className="preloader-layer preloader-layer--blue route-preloader-layer--blue" aria-hidden="true" />
+      <div className="preloader-layer preloader-layer--white route-preloader-layer--white" aria-hidden="true">
+        {showLogo ? (
+          <img
+            src="/TSPL Logo preloader.png"
+            alt="TSPL logo"
+            className="preloader-logo route-preloader-logo"
+          />
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+function AnimatedRoutes({ isLoading }) {
+  const location = useLocation()
+  const hasAnimatedInitialRoute = useRef(false)
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false)
+  const showLogo = location.pathname === '/'
 
   useEffect(() => {
+    if (isLoading) return
+
+    if (!hasAnimatedInitialRoute.current) {
+      hasAnimatedInitialRoute.current = true
+      return
+    }
+
+    setIsPageTransitioning(true)
     const timer = window.setTimeout(() => {
-      setIsLoading(false)
-    }, PRELOADER_DURATION_MS)
+      setIsPageTransitioning(false)
+    }, 760)
 
     return () => window.clearTimeout(timer)
-  }, [])
+  }, [location.pathname, isLoading])
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="page-shell">
-        <GlobalTextureOverlay />
-        {isLoading && (
-          <div className="preloader" role="status" aria-label="Loading TSPL website">
-            <div className="preloader-layer preloader-layer--orange" aria-hidden="true" />
-            <div className="preloader-layer preloader-layer--blue" aria-hidden="true" />
-            <div className="preloader-layer preloader-layer--white">
-              <img
-                src="/TSPL Logo preloader.png"
-                alt="TSPL logo"
-                className="preloader-logo"
-              />
+    <>
+      <AnimatePresence mode="wait" initial={false}>
+        {isPageTransitioning && (
+          <motion.div
+            key={`page-transition-${location.pathname}`}
+            className="page-transition-overlay"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.26, ease: 'easeOut' }}
+            aria-hidden="true"
+          >
+            <div className="preloader-layer preloader-layer--orange route-preloader-layer--orange" />
+            <div className="preloader-layer preloader-layer--blue route-preloader-layer--blue" />
+            <div className="preloader-layer preloader-layer--white route-preloader-layer--white">
+              {showLogo ? (
+                <img
+                  src="/TSPL Logo preloader.png"
+                  alt="TSPL logo"
+                  className="preloader-logo route-preloader-logo"
+                />
+              ) : null}
             </div>
-          </div>
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        <main className={`home ${isLoading ? 'home--hidden' : ''}`}>
-          <Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 22, scale: 0.995 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -18, scale: 0.995 }}
+          transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Routes location={location}>
             <Route path="/" element={<HomePage animateWords={!isLoading} />} />
             <Route path="/job/:jobId" element={<JobDetailPage />} />
             <Route path="/nats" element={<NatsLandingPage />} />
@@ -93,9 +140,51 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/news-events" element={<NewsEventsPage />} />
+            <Route path="/news-events/:newsId" element={<NewsDetailPage />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+        </motion.div>
+      </AnimatePresence>
+    </>
+  )
+}
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsLoading(false)
+    }, PRELOADER_DURATION_MS)
+
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <ScrollToTop />
+      <div className="page-shell">
+        <GlobalTextureOverlay />
+        {isLoading && (
+          <div className="preloader" role="status" aria-label="Loading TSPL website">
+            <div className="preloader-layer preloader-layer--orange" aria-hidden="true" />
+            <div className="preloader-layer preloader-layer--blue" aria-hidden="true" />
+            <div className="preloader-layer preloader-layer--white">
+              <img
+                src="/TSPL Logo preloader.png"
+                alt="TSPL logo"
+                className="preloader-logo"
+              />
+            </div>
+          </div>
+        )}
+
+        <main className={`home ${isLoading ? 'home--hidden' : ''}`}>
+          <Suspense fallback={<PageLoader />}>
+            <AnimatedRoutes isLoading={isLoading} />
+          </Suspense>
         </main>
       </div>
     </BrowserRouter>

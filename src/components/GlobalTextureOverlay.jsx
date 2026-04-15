@@ -1,42 +1,56 @@
 import React from 'react';
-
-const STRAPI_BASE_URL =
-  import.meta.env.VITE_STRAPI_API_URL ||
-  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  '';
+import { STRAPI_BASE_URL, fetchSingleType, extractMediaUrl } from '../utils/strapi';
 
 const DEFAULT_TEXTURE_URL =
-  'https://assets-news.housing.com/news/wp-content/uploads/2023/09/07214637/Top-10-manufacturing-companies-in-Coimbatore-f.jpg';
-
-function resolveStrapiUrl(url) {
-  if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
-  if (!STRAPI_BASE_URL) return url;
-  return `${STRAPI_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-}
+  '/images-10.jpeg';
 
 export default function GlobalTextureOverlay() {
   const [textureUrl, setTextureUrl] = React.useState(DEFAULT_TEXTURE_URL);
   const [enabled, setEnabled] = React.useState(true);
+  const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
+    let idleId;
+    let timeoutId;
+
+    const schedule = () => {
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(() => setIsReady(true), { timeout: 1500 });
+      } else {
+        timeoutId = window.setTimeout(() => setIsReady(true), 800);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener('load', schedule);
+      if (typeof idleId === 'number' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (typeof timeoutId === 'number') {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!isReady) return;
     if (!STRAPI_BASE_URL) return;
 
     const controller = new AbortController();
 
     (async () => {
       try {
-        const res = await fetch(`${STRAPI_BASE_URL}/api/site-texture?populate=texture`, {
-          signal: controller.signal,
-        });
-        if (!res.ok) return;
-        const json = await res.json();
-
-        const attrs = json?.data?.attributes;
+        const data = await fetchSingleType('/api/site-texture?populate=texture');
+        const attrs = data;
         if (typeof attrs?.enabled === 'boolean') setEnabled(attrs.enabled);
 
-        const url = attrs?.texture?.data?.attributes?.url;
-        const resolved = resolveStrapiUrl(url);
+        const resolved = extractMediaUrl(attrs?.texture);
         if (resolved) {
           setTextureUrl(resolved);
         }
@@ -46,9 +60,9 @@ export default function GlobalTextureOverlay() {
     })();
 
     return () => controller.abort();
-  }, []);
+  }, [isReady]);
 
-  if (!enabled) return null;
+  if (!enabled || !isReady) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[15]">

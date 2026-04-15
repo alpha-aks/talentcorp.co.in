@@ -31,6 +31,7 @@ import {
 	Wrench,
 	Zap,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -119,13 +120,13 @@ function SkilledJobHero() {
 						<span className="text-sm font-bold text-white">SKILLED JOB WORK</span>
 					</div>
 
-					<h1 className="hero-text-reveal mb-6 text-5xl font-bold leading-tight text-white sm:text-6xl lg:text-7xl">
+					<h1 className="mb-6 text-5xl font-bold leading-tight text-white sm:text-6xl lg:text-7xl">
 						We Have
 						<span className="mt-2 block text-[#F97316]">Trained Workers</span>
 						<span className="block text-white">For Your Work</span>
 					</h1>
 
-					<p className="hero-text-reveal-delay mb-10 max-w-2xl text-xl leading-relaxed text-white/90">
+					<p className="mb-10 max-w-2xl text-xl leading-relaxed text-white/90">
 						Need trained workers like welders, electricians, or machine operators?
 						<span className="font-semibold text-[#F97316]"> TSPL provides skilled workers who know their job well.</span>
 						 They come trained and ready to work.
@@ -141,10 +142,10 @@ function SkilledJobHero() {
 					</div>
 
 					<div className="mb-12 flex flex-col gap-4 sm:flex-row">
-						<a href="#enquiry" className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#F97316] px-8 py-4 text-lg font-bold text-white shadow-2xl shadow-[#F97316]/30 transition-all duration-300 hover:scale-105 hover:bg-[#EA580C]">
+						<Link to="/contact-us" className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#F97316] px-8 py-4 text-lg font-bold text-white shadow-2xl shadow-[#F97316]/30 transition-all duration-300 hover:scale-105 hover:bg-[#EA580C]">
 							Get Skilled Workers
 							<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-						</a>
+						</Link>
 						<a href="tel:+919876543210" className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/50 hover:bg-white/10">
 							Call Now: +91 98765 43210
 						</a>
@@ -480,16 +481,16 @@ function Enquiry() {
 						<p className="mb-8 text-lg text-blue-100">Join thousands who transformed their careers through NATS.</p>
 
 						<div className="flex flex-wrap gap-4">
-							<button className="flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#ea580c]">
+							<Link to="/contact-us" className="flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#ea580c]">
 								<GraduationCap className="h-5 w-5" />
 								Join Now
 								<ArrowRight className="h-5 w-5" />
-							</button>
+							</Link>
 
-							<button className="flex items-center gap-2 rounded-full border border-white/40 bg-transparent px-6 py-3 font-medium text-white transition-colors hover:bg-white/10">
+							<Link to="/contact-us" className="flex items-center gap-2 rounded-full border border-white/40 bg-transparent px-6 py-3 font-medium text-white transition-colors hover:bg-white/10">
 								<Building2 className="h-5 w-5 text-blue-100" />
 								For Employers
-							</button>
+							</Link>
 						</div>
 					</div>
 

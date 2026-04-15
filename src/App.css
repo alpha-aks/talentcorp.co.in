@@ -55,6 +55,58 @@
     logo-drift 1.8s ease-in-out 1.78s 1;
 }
 
+.route-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
+}
+
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
+  transform-origin: center;
+}
+
+.route-preloader-layer--orange {
+  animation: sweep-up 0.56s cubic-bezier(0.2, 0.75, 0.2, 1) 0.02s forwards;
+}
+
+.route-preloader-layer--blue {
+  animation: sweep-up 0.56s cubic-bezier(0.2, 0.75, 0.2, 1) 0.18s forwards;
+}
+
+.route-preloader-layer--white {
+  display: grid;
+  place-items: center;
+  animation: sweep-up 0.52s cubic-bezier(0.2, 0.75, 0.2, 1) 0.34s forwards;
+}
+
+.route-preloader-logo {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  animation: logo-pulse 1.15s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
 @keyframes sweep-up {
   from {
     opacity: 0.98;
@@ -120,8 +172,16 @@
 }
 
 .home--hidden {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.route-loading {
+  min-height: 40svh;
+  display: grid;
+  place-items: center;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 .hero-content-wait,
