@@ -758,7 +758,6 @@ export default function AchimentPage() {
 			<Navbar />
 			<main>
 				<AwardsHero />
-				<Milestones />
 				<AwardsSection />
 				<TestimonialsSection />
 				<AchievementsCta />
