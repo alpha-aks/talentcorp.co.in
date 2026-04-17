@@ -18,7 +18,7 @@ import {
 const STRAPI_BASE_URL =
   import.meta.env.VITE_STRAPI_API_URL ||
   import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  'http://localhost:1337';
+  'https://backend.tsplgroup.co.in';
 
 const serviceOptions = [
   { value: 'NATS', label: 'NATS' },

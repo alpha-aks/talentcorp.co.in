@@ -10,13 +10,15 @@
  * @returns {Promise<Object>} - Response from the sheet
  */
 export const submitToGoogleSheet = async (formData) => {
-  const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL?.trim();
+  const GOOGLE_SHEETS_URL =
+    'https://script.google.com/macros/s/AKfycbyCBjRRmEES-x4jYYb0RoMxur2LUbYPxBrfdwfXRUf--3mRNpP3BnUCk6LTKtSlqVyYhQ/exec' ||
+    import.meta.env.VITE_GOOGLE_SHEETS_URL?.trim() ||
+    import.meta.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL?.trim();
   const submittedAt = new Date().toISOString();
   
   if (!GOOGLE_SHEETS_URL) {
-    console.warn('Google Sheets URL not configured. Skipping sheet submission.');
     return {
-      status: 'error',
+      status: 'skipped',
       message: 'Google Sheets URL not configured',
       submittedAt,
     };
