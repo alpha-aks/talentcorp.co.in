@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets';
 import { STRAPI_BASE_URL } from '../utils/strapi';
+import { submitToGoogleSheet } from '../utils/googleSheets';
 import { 
   Phone, 
   Mail, 
@@ -114,6 +115,7 @@ const ContactUs = () => {
   const [isFormFlyingAway, setIsFormFlyingAway] = useState(false);
   const [flightManifest, setFlightManifest] = useState([]);
   const [submitError, setSubmitError] = useState('');
+  const [submitStatusNote, setSubmitStatusNote] = useState('');
   const [showAllOffices, setShowAllOffices] = useState(false);
 
   const handleContactSubmit = async (event) => {
@@ -124,44 +126,112 @@ const ContactUs = () => {
     setShowPlaneAnimation(true);
     setIsFormFlyingAway(false);
     setSubmitError('');
+    setSubmitStatusNote('');
 
     const formData = new FormData(formElement);
+
+    const normalizedData = {
+      fullName: String(formData.get('fullName') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      service: String(formData.get('service') || '').trim(),
+      message: String(formData.get('message') || '').trim(),
+      consent: Boolean(formData.get('consent')),
+    };
+
+    const failValidation = (message) => {
+      setShowSuccessPopup(false);
+      setShowPlaneAnimation(false);
+      setIsFormFlyingAway(false);
+      setFlightManifest([]);
+      setSubmitError(message);
+      setIsSubmitting(false);
+    };
+
+    if (normalizedData.phone.length < 5) {
+      failValidation('Phone number must be at least 5 characters.');
+      return;
+    }
+
+    if (normalizedData.message.length < 10) {
+      failValidation('Message must be at least 10 characters.');
+      return;
+    }
+    
+    // Prepare data for Strapi backend
     const leadPayload = {
       data: {
-        name: formData.get('fullName') || '',
-        email: formData.get('email') || '',
-        phone: formData.get('phone') || '',
-        subject: formData.get('service') || '',
-        message: formData.get('message') || '',
-        consent: Boolean(formData.get('consent')),
+        name: normalizedData.fullName,
+        email: normalizedData.email,
+        phone: normalizedData.phone,
+        subject: normalizedData.service,
+        message: normalizedData.message,
+        consent: normalizedData.consent,
       },
     };
 
+    // Prepare data for Google Sheets
+    const sheetsData = {
+      fullName: normalizedData.fullName,
+      email: normalizedData.email,
+      phone: normalizedData.phone,
+      service: normalizedData.service,
+      message: normalizedData.message,
+      consent: normalizedData.consent,
+    };
+
     const manifestEntries = [
-      { label: 'Name', value: String(formData.get('fullName') || '').trim() },
-      { label: 'Email', value: String(formData.get('email') || '').trim() },
-      { label: 'Phone', value: String(formData.get('phone') || '').trim() },
-      { label: 'Service', value: String(formData.get('service') || '').trim() },
+      { label: 'Name', value: normalizedData.fullName },
+      { label: 'Email', value: normalizedData.email },
+      { label: 'Phone', value: normalizedData.phone },
+      { label: 'Service', value: normalizedData.service },
       {
         label: 'Message',
-        value: String(formData.get('message') || '').trim().slice(0, 42),
+        value: normalizedData.message.slice(0, 42),
       },
     ].filter((entry) => entry.value);
 
     setFlightManifest(manifestEntries.length ? manifestEntries : [{ label: 'Status', value: 'Sending...' }]);
 
     try {
-      const response = await fetch(`${STRAPI_BASE_URL}/api/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(leadPayload),
-      });
+      const [strapiResult, sheetResult] = await Promise.allSettled([
+        fetch(`${STRAPI_BASE_URL}/api/leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(leadPayload),
+        }).then(async (response) => {
+          if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(`CRM submit failed (${response.status}): ${responseText || 'no response body'}`);
+          }
+          return { status: 'success' };
+        }),
+        submitToGoogleSheet(sheetsData),
+      ]);
 
-      if (!response.ok) {
-        const responseText = await response.text();
-        throw new Error(`Submit failed (${response.status}): ${responseText || 'no response body'}`);
+      const crmOk = strapiResult.status === 'fulfilled';
+      const sheetOk =
+        sheetResult.status === 'fulfilled' &&
+        (sheetResult.value.status === 'success' || sheetResult.value.status === 'skipped');
+
+      if (crmOk && sheetOk) {
+        setSubmitStatusNote('Response sent successfully. Saved to CRM and Google Sheet.');
+      } else if (crmOk && !sheetOk) {
+        setSubmitStatusNote('Response sent successfully. Saved to CRM, but Google Sheet sync failed.');
+      } else if (!crmOk && sheetOk) {
+        setSubmitStatusNote('Response sent successfully. Saved to Google Sheet, but CRM sync failed.');
+      } else {
+        const crmError =
+          strapiResult.status === 'rejected'
+            ? strapiResult.reason?.message || 'CRM submission failed.'
+            : null;
+        const sheetError =
+          sheetResult.status === 'rejected'
+            ? sheetResult.reason?.message || 'Google Sheet submission failed.'
+            : sheetResult.value?.message || 'Google Sheet submission failed.';
+        throw new Error(`${crmError || 'CRM submission failed.'} ${sheetError || ''}`.trim());
       }
 
       formElement.reset();
@@ -418,7 +488,7 @@ const ContactUs = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                <input name="phone" type="tel" placeholder="+91 98765 43210" required className="w-full px-5 py-3 border border-gray-200 rounded-full outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)]" />
+                <input name="phone" type="tel" placeholder="+91 98765 43210" minLength={5} required className="w-full px-5 py-3 border border-gray-200 rounded-full outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)]" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Service Interested In</label>
@@ -433,7 +503,7 @@ const ContactUs = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                <textarea name="message" rows="4" placeholder="How can we help you?" required className="w-full px-5 py-3 border border-gray-200 rounded-[1.75rem] outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)]"></textarea>
+                <textarea name="message" rows="4" placeholder="How can we help you?" minLength={10} required className="w-full px-5 py-3 border border-gray-200 rounded-[1.75rem] outline-none transition-all duration-300 focus:border-blue-300 focus:ring-4 focus:ring-blue-200/70 focus:shadow-[0_0_0_1px_rgba(147,197,253,0.28)]"></textarea>
               </div>
               <label className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
                 <input
@@ -466,6 +536,9 @@ const ContactUs = () => {
                   <div>
                     <p className="text-base font-semibold text-blue-700">Your message was sent successfully</p>
                     <p className="mt-1 text-sm text-gray-500">We received your message and will review it shortly.</p>
+                    {submitStatusNote && (
+                      <p className="mt-2 text-xs font-medium text-blue-600">{submitStatusNote}</p>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -719,5 +792,4 @@ const ContactUs = () => {
     </div>
   );
 };
-
 export default ContactUs;

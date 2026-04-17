@@ -41,7 +41,6 @@ const services = [
 	{
 		id: 'pf',
 		title: 'PF Registration & Compliance',
-		titleHindi: 'पीएफ पंजीकरण और अनुपालन',
 		description: 'Complete Provident Fund management including registration, monthly challans, annual returns, and employee transfers.',
 		icon: Building2,
 		image: '/Gemini_Generated_Image_qskougqskougqsko.png',
@@ -51,7 +50,6 @@ const services = [
 	{
 		id: 'esi',
 		title: 'ESI Registration & Management',
-		titleHindi: 'ईएसआई पंजीकरण और प्रबंधन',
 		description: 'Employee State Insurance handling from registration to claims. Healthcare benefits for your workforce made easy.',
 		icon: HeartPulse,
 		image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp',
@@ -61,7 +59,6 @@ const services = [
 	{
 		id: 'wages',
 		title: 'Minimum Wages Compliance',
-		titleHindi: 'न्यूनतम वेतन अनुपालन',
 		description: 'Stay updated with state-wise minimum wage notifications. We ensure your payroll meets all legal requirements.',
 		icon: Wallet,
 		image: '/Gemini_Generated_Image_qskougqskougqsko.png',
@@ -71,7 +68,6 @@ const services = [
 	{
 		id: 'factory',
 		title: 'Factory Act Compliance',
-		titleHindi: 'फैक्ट्री अधिनियम अनुपालन',
 		description: 'Complete Factory Act requirements - licenses, safety audits, register maintenance, and inspector coordination.',
 		icon: Factory,
 		image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp',
@@ -81,7 +77,6 @@ const services = [
 	{
 		id: 'labor',
 		title: 'Labor Law Compliance',
-		titleHindi: 'श्रम कानून अनुपालन',
 		description: 'Comprehensive labor law compliance covering Contract Labor Act, CLRA, Shops Act, and other applicable regulations.',
 		icon: FileText,
 		image: '/Gemini_Generated_Image_qskougqskougqsko.png',
@@ -91,7 +86,6 @@ const services = [
 	{
 		id: 'contractor',
 		title: 'Contractor Compliance',
-		titleHindi: 'ठेकेदार अनुपालन',
 		description: 'Principal employer compliance for contract workers. License management, register maintenance, and audit readiness.',
 		icon: Users,
 		image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp',
@@ -103,7 +97,6 @@ const services = [
 const lawCategories = [
 	{
 		title: 'Social Security Laws',
-		titleHindi: 'सामाजिक सुरक्षा कानून',
 		laws: [
 			'Employees Provident Fund Act (EPF)',
 			'Employees State Insurance Act (ESI)',
@@ -114,7 +107,6 @@ const lawCategories = [
 	},
 	{
 		title: 'Wage & Salary Laws',
-		titleHindi: 'वेतन और मजदूरी कानून',
 		laws: [
 			'Minimum Wages Act',
 			'Payment of Wages Act',
@@ -125,7 +117,6 @@ const lawCategories = [
 	},
 	{
 		title: 'Employment Laws',
-		titleHindi: 'रोजगार कानून',
 		laws: [
 			'Industrial Employment Act',
 			'Contract Labour Act (CLRA)',
@@ -136,7 +127,6 @@ const lawCategories = [
 	},
 	{
 		title: 'Factory & Safety Laws',
-		titleHindi: 'फैक्ट्री और सुरक्षा कानून',
 		laws: [
 			'Factories Act, 1948',
 			'Building Workers Act',
@@ -152,7 +142,6 @@ const processSteps = [
 		number: '01',
 		icon: ClipboardList,
 		title: 'Share Your Details',
-		titleHindi: 'अपनी जानकारी दें',
 		description: 'Tell us about your business, number of employees, and current compliance status. We will understand your needs.',
 		color: 'blue',
 	},
@@ -160,7 +149,6 @@ const processSteps = [
 		number: '02',
 		icon: Search,
 		title: 'Free Compliance Audit',
-		titleHindi: 'मुफ्त अनुपालन ऑडिट',
 		description: 'Our experts conduct a thorough audit of your existing compliance status and identify gaps and risks.',
 		color: 'cyan',
 	},
@@ -168,7 +156,6 @@ const processSteps = [
 		number: '03',
 		icon: FileCheck,
 		title: 'Implementation',
-		titleHindi: 'कार्यान्वयन',
 		description: 'We handle all registrations, filings, and documentation. You get regular updates on progress.',
 		color: 'green',
 	},
@@ -176,7 +163,6 @@ const processSteps = [
 		number: '04',
 		icon: Shield,
 		title: 'Ongoing Protection',
-		titleHindi: 'निरंतर सुरक्षा',
 		description: 'Monthly compliance management, timely filings, and proactive alerts keep you always protected.',
 		color: 'orange',
 	},
@@ -186,7 +172,6 @@ const riskCards = [
 	{
 		icon: AlertTriangle,
 		title: 'Heavy Penalties',
-		titleHindi: 'भारी जुर्माना',
 		amount: '₹1 Lakh+',
 		description: 'Non-compliance can result in penalties up to ₹1 lakh per violation under various labor laws.',
 		color: 'red',
@@ -194,7 +179,6 @@ const riskCards = [
 	{
 		icon: Gavel,
 		title: 'Legal Action',
-		titleHindi: 'कानूनी कार्रवाई',
 		amount: '3+ Years',
 		description: 'Serious violations can lead to imprisonment of company directors and responsible persons.',
 		color: 'orange',
@@ -202,7 +186,6 @@ const riskCards = [
 	{
 		icon: ShieldX,
 		title: 'License Cancellation',
-		titleHindi: 'लाइसेंस रद्द',
 		amount: 'Business Risk',
 		description: 'Repeated violations can result in cancellation of factory license and business permits.',
 		color: 'yellow',
@@ -210,7 +193,6 @@ const riskCards = [
 	{
 		icon: TrendingDown,
 		title: 'Reputation Damage',
-		titleHindi: 'प्रतिष्ठा को नुकसान',
 		amount: 'Long-term',
 		description: 'Compliance issues can damage your brand reputation and affect client relationships.',
 		color: 'purple',
@@ -218,7 +200,6 @@ const riskCards = [
 	{
 		icon: Scale,
 		title: 'Worker Disputes',
-		titleHindi: 'कर्मचारी विवाद',
 		amount: 'Costly',
 		description: 'Non-compliance often leads to worker disputes, strikes, and labor court cases.',
 		color: 'blue',
@@ -226,7 +207,6 @@ const riskCards = [
 	{
 		icon: Clock,
 		title: 'Audit Failures',
-		titleHindi: 'ऑडिट में विफलता',
 		amount: 'Client Loss',
 		description: 'Many corporates conduct compliance audits. Failing them means losing business opportunities.',
 		color: 'cyan',
@@ -340,7 +320,7 @@ function ComplianceHero() {
 							<span className="font-medium text-gray-900"> PF, ESI, Labor Laws, Factory Act</span> - we handle everything so you can focus on growth.
 						</p>
 
-						<p className="border-l-2 border-blue-500 pl-4 italic text-gray-500">कानूनी अनुपालन में पूर्ण सहायता - PF, ESI, श्रम कानून सब कुछ हम संभालते हैं</p>
+						<p className="border-l-2 border-blue-500 pl-4 italic text-gray-500">End-to-end legal compliance support for PF, ESI, labor law, and factory regulations.</p>
 
 						<div className="flex flex-wrap gap-4 pt-4">
 							<Link to="/contact-us" className="group inline-flex h-14 items-center rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-8 text-lg font-semibold text-white shadow-xl shadow-blue-500/30 transition-all hover:from-blue-700 hover:to-blue-800">
@@ -426,7 +406,7 @@ function WhyCompliance() {
 				<div className={`mb-16 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 					<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-2">
 						<AlertTriangle className="h-4 w-4 text-red-400" />
-						<span className="text-sm font-medium text-red-300">Risk Alert / जोखिम चेतावनी</span>
+						<span className="text-sm font-medium text-red-300">Risk Alert</span>
 					</div>
 					<h2 className="mb-6 text-4xl font-bold text-white lg:text-5xl">What Happens Without <span className="text-red-400">Compliance?</span></h2>
 					<p className="mx-auto max-w-2xl text-lg text-gray-400">Don&apos;t let non-compliance cost your business. These are the real risks companies face.</p>
@@ -449,7 +429,7 @@ function WhyCompliance() {
 									<div className="flex-1">
 										<p className={`mb-1 text-2xl font-bold ${colors.text}`}>{risk.amount}</p>
 										<h3 className="text-lg font-semibold text-white">{risk.title}</h3>
-										<p className="text-sm text-gray-500">{risk.titleHindi}</p>
+										<p className="text-sm text-gray-500">Business impact</p>
 									</div>
 								</div>
 								<p className="mt-4 text-sm leading-relaxed text-gray-400">{risk.description}</p>
@@ -490,7 +470,7 @@ function ComplianceServices() {
 		<section ref={sectionRef} className="bg-[#0a0a0a] py-24">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className={`mb-16 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-					<p className="mb-4 font-medium text-blue-400">Our Services / हमारी सेवाएं</p>
+					<p className="mb-4 font-medium text-blue-400">Our Services</p>
 					<h2 className="mb-6 text-4xl font-bold text-white lg:text-5xl">Complete Compliance Solutions</h2>
 					<p className="mx-auto max-w-2xl text-lg text-gray-400">From PF to Factory Act - we cover all statutory requirements so you never face penalties.</p>
 				</div>
@@ -540,7 +520,7 @@ function ComplianceServices() {
 									<currentService.icon className={`h-6 w-6 ${colors.text}`} />
 									<h3 className="text-2xl font-bold text-white">{currentService.title}</h3>
 								</div>
-								<p className="mb-4 italic text-gray-500">{currentService.titleHindi}</p>
+								<p className="mb-4 italic text-gray-500">Trusted compliance execution by specialist teams.</p>
 								<p className="mb-6 text-gray-400">{currentService.description}</p>
 								<div className="grid grid-cols-2 gap-3">
 									{currentService.features.map((feature) => (
@@ -576,7 +556,7 @@ function LawsCovered() {
 		<section ref={sectionRef} className="bg-gradient-to-b from-gray-50 to-white py-24">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className={`mb-16 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-					<p className="mb-4 font-medium text-blue-600">Comprehensive Coverage / व्यापक कवरेज</p>
+					<p className="mb-4 font-medium text-blue-600">Comprehensive Coverage</p>
 					<h2 className="mb-6 text-4xl font-bold text-gray-900 lg:text-5xl">Laws We Handle</h2>
 					<p className="mx-auto max-w-2xl text-lg text-gray-600">Complete statutory compliance across all major Indian labor laws and regulations.</p>
 				</div>
@@ -591,7 +571,7 @@ function LawsCovered() {
 							<div className="absolute -left-4 -top-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 text-lg font-bold text-white shadow-lg">{categoryIndex + 1}</div>
 							<div className="mb-6 pl-4">
 								<h3 className="text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">{category.title}</h3>
-								<p className="text-sm text-gray-500">{category.titleHindi}</p>
+								<p className="text-sm text-gray-500">Full statutory scope</p>
 							</div>
 
 							<ul className="space-y-3">
@@ -613,7 +593,6 @@ function LawsCovered() {
 
 function ComplianceProcess() {
 	const [isVisible, setIsVisible] = useState(false)
-	const [activeStep, setActiveStep] = useState(0)
 	const sectionRef = useRef(null)
 
 	useEffect(() => {
@@ -625,56 +604,40 @@ function ComplianceProcess() {
 		return () => observer.disconnect()
 	}, [])
 
-	useEffect(() => {
-		if (!isVisible) return undefined
-		const interval = window.setInterval(() => {
-			setActiveStep((prev) => (prev + 1) % processSteps.length)
-		}, 4000)
-
-		return () => window.clearInterval(interval)
-	}, [isVisible])
-
 	return (
 		<section ref={sectionRef} className="bg-white py-24">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className={`mb-16 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-					<p className="mb-4 font-medium text-blue-600">How It Works / यह कैसे काम करता है</p>
+					<p className="mb-4 font-medium text-blue-600">How It Works</p>
 					<h2 className="mb-6 text-4xl font-bold text-gray-900 lg:text-5xl">Simple 4-Step Process</h2>
 					<p className="mx-auto max-w-2xl text-lg text-gray-600">Getting compliant is easier than you think. We handle the complexity.</p>
 				</div>
 
 				<div className="relative">
-					<div className="absolute left-0 right-0 top-24 hidden h-1 bg-gray-200 lg:block">
-						<div className="h-full bg-gradient-to-r from-blue-500 via-cyan-500 via-green-500 to-orange-500 transition-all duration-500" style={{ width: `${((activeStep + 1) / processSteps.length) * 100}%` }} />
-					</div>
-
 					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
 						{processSteps.map((step, index) => {
 							const Icon = step.icon
 							const colors = processColorMap[step.color]
-							const isActive = activeStep === index
-							const isPast = index < activeStep
 
 							return (
 								<div
 									key={step.number}
-									onClick={() => setActiveStep(index)}
-									className={`relative cursor-pointer transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+									className={`group relative transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
 									style={{ transitionDelay: `${index * 150}ms` }}
 								>
-									<div className={`relative rounded-2xl border-2 p-6 transition-all duration-300 ${isActive ? `${colors.border} ${colors.bg} shadow-xl` : isPast ? 'border-gray-200 bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
-										<div className={`absolute -top-4 left-6 flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold transition-all duration-300 ${isActive || isPast ? `bg-gradient-to-r ${colors.gradient} text-white shadow-lg` : 'bg-gray-200 text-gray-500'}`}>{step.number}</div>
-										<div className={`mb-4 mt-4 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 ${isActive ? `${colors.bg} border ${colors.border}` : 'bg-gray-100'}`}>
-											<Icon className={`h-8 w-8 ${isActive ? colors.text : 'text-gray-400'}`} />
+									<div className="relative rounded-2xl border-2 border-gray-200 bg-white p-6 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-blue-300 group-hover:bg-blue-50/40 group-hover:shadow-xl">
+										<div className="absolute -top-4 left-6 flex h-10 w-10 items-center justify-center rounded-xl bg-gray-200 text-sm font-bold text-gray-500 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-cyan-500 group-hover:text-white group-hover:shadow-lg">{step.number}</div>
+										<div className="mb-4 mt-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 transition-all duration-300 group-hover:border group-hover:border-blue-300 group-hover:bg-blue-50">
+											<Icon className="h-8 w-8 text-gray-400 transition-colors duration-300 group-hover:text-blue-600" />
 										</div>
-										<h3 className={`mb-1 text-xl font-bold ${isActive ? 'text-gray-900' : 'text-gray-700'}`}>{step.title}</h3>
-										<p className={`mb-3 text-sm ${isActive ? colors.text : 'text-gray-400'}`}>{step.titleHindi}</p>
+										<h3 className="mb-1 text-xl font-bold text-gray-700 transition-colors duration-300 group-hover:text-gray-900">{step.title}</h3>
+										<p className="mb-3 text-sm text-gray-400 transition-colors duration-300 group-hover:text-blue-600">Guided execution</p>
 										<p className="text-sm leading-relaxed text-gray-600">{step.description}</p>
-										{isActive && <div className={`absolute bottom-0 left-6 right-6 h-1 rounded-t-full bg-gradient-to-r ${colors.gradient}`} />}
+										<div className={`absolute bottom-0 left-6 right-6 h-1 origin-left scale-x-0 rounded-t-full bg-gradient-to-r ${colors.gradient} transition-transform duration-300 group-hover:scale-x-100`} />
 									</div>
 									{index < processSteps.length - 1 && (
 										<div className="absolute -right-4 top-1/2 z-10 hidden -translate-y-1/2 lg:flex">
-											<ArrowRight className={`h-6 w-6 transition-colors ${isPast ? colors.text : 'text-gray-300'}`} />
+											<ArrowRight className="h-6 w-6 text-gray-300 transition-colors duration-300 group-hover:text-blue-500" />
 										</div>
 									)}
 								</div>
@@ -749,7 +712,7 @@ function ComplianceCTA() {
 
 						<h2 className="mb-6 text-4xl font-bold text-white lg:text-5xl">Ready to Become <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">100% Compliant?</span></h2>
 						<p className="mb-8 text-xl text-gray-400">Don&apos;t wait for a government notice. Get your free compliance audit today and secure your business.</p>
-						<p className="mb-8 border-l-2 border-blue-500/50 pl-4 italic text-gray-500">आज ही मुफ्त अनुपालन ऑडिट प्राप्त करें और अपने व्यवसाय को सुरक्षित करें</p>
+						<p className="mb-8 border-l-2 border-blue-500/50 pl-4 italic text-gray-500">Request a free compliance audit today and protect your business from avoidable legal risk.</p>
 
 						<div className="mb-10 grid grid-cols-2 gap-4">
 							{guarantees.map((guarantee) => (

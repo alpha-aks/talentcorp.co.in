@@ -171,10 +171,16 @@ const testimonials = [
 ]
 
 function useSectionReveal(threshold = 0.2) {
-	const [isVisible, setIsVisible] = useState(false)
+	const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+	const [isVisible, setIsVisible] = useState(isMobile)
 	const sectionRef = useRef(null)
 
 	useEffect(() => {
+		if (isMobile) {
+			setIsVisible(true)
+			return undefined
+		}
+
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				setIsVisible(entry.isIntersecting)
@@ -187,7 +193,7 @@ function useSectionReveal(threshold = 0.2) {
 		}
 
 		return () => observer.disconnect()
-	}, [threshold])
+	}, [threshold, isMobile])
 
 	return { isVisible, sectionRef }
 }
@@ -232,7 +238,7 @@ function AwardsHero() {
 	]
 
 	return (
-		<section ref={sectionRef} className="relative min-h-[90vh] overflow-hidden bg-white pt-24">
+		<section ref={sectionRef} className="relative min-h-[78vh] overflow-hidden bg-white pt-16 md:min-h-[90vh] md:pt-24">
 			<div className="absolute inset-0">
 				<div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${achievementsHeroAsset.url}')` }} />
 				<div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/60" />
@@ -248,8 +254,8 @@ function AwardsHero() {
 				</svg>
 			</div>
 
-			<div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
-				<div className="grid items-center gap-12 lg:grid-cols-2">
+			<div className="relative mx-auto max-w-7xl px-6 py-10 md:py-16 lg:px-8">
+				<div className="grid items-center gap-10 md:gap-12 lg:grid-cols-2">
 					<div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
 						<div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-2 shadow-lg shadow-blue-500/25">
 							<Trophy className="h-4 w-4 text-white" />
@@ -325,7 +331,7 @@ function AwardsHero() {
 					</div>
 				</div>
 
-				<div className={`mt-16 grid grid-cols-2 gap-6 transition-all duration-1000 delay-500 md:grid-cols-4 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+				<div className={`mt-10 grid grid-cols-2 gap-4 transition-all duration-1000 delay-500 md:mt-16 md:gap-6 md:grid-cols-4 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
 					{stats.map((stat) => (
 						<div key={stat.label} className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white/80 p-6 backdrop-blur-sm transition-all duration-300 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10">
 							<div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-orange-50 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -367,7 +373,7 @@ function Milestones() {
 	}, [isVisible])
 
 	return (
-		<section ref={sectionRef} className="relative overflow-hidden bg-slate-50 py-24">
+		<section ref={sectionRef} className="relative overflow-hidden bg-slate-50 py-16 md:py-24">
 			<div className="absolute inset-0 opacity-[0.02]">
 				<svg className="h-full w-full">
 					<pattern id="milestone-dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -467,7 +473,7 @@ function AwardsSection() {
 	const { isVisible, sectionRef } = useSectionReveal(0.2)
 
 	return (
-		<section ref={sectionRef} id="achievements" className="relative overflow-hidden bg-white py-24">
+		<section ref={sectionRef} id="achievements" className="relative overflow-hidden bg-white py-16 md:py-24">
 			<div className="absolute inset-0">
 				<div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-blue-100 blur-3xl opacity-30" />
 				<div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-orange-100 blur-3xl opacity-30" />
@@ -579,7 +585,7 @@ function TestimonialsSection() {
 	}
 
 	return (
-		<section ref={sectionRef} className="relative overflow-hidden bg-slate-50 py-24">
+		<section ref={sectionRef} className="relative overflow-hidden bg-slate-50 py-16 md:py-24">
 			<div className="absolute top-0 left-0 h-full w-full opacity-5">
 				<Quote className="absolute left-20 top-20 h-64 w-64 -rotate-12 text-blue-500" />
 				<Quote className="absolute bottom-20 right-20 h-48 w-48 rotate-12 text-orange-500" />
@@ -695,7 +701,7 @@ function AchievementsCta() {
 	const { isVisible, sectionRef } = useSectionReveal(0.2)
 
 	return (
-		<section ref={sectionRef} className="relative overflow-hidden bg-white py-24">
+		<section ref={sectionRef} className="relative overflow-hidden bg-white py-16 md:py-24">
 			<div className="absolute inset-0">
 				<div className="absolute left-1/2 top-0 h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-br from-blue-100 via-white to-orange-100 blur-3xl opacity-50" />
 			</div>

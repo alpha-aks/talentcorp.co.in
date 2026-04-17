@@ -4,14 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import Navbar from '../components/Navbar';
 
-const JobBoard = lazy(() => import('../components/JobBoard'));
-const CompanyMarquee = lazy(() => import('../components/CompanyMarquee'));
-const StrengthsAccordion = lazy(() => import('../components/StrengthsAccordion'));
-const WorkforceSection = lazy(() => import('../components/WorkforceSection'));
-const NewsSection = lazy(() => import('../components/NewsSection'));
-const FAQSection = lazy(() => import('../components/FAQSection'));
-const Footer = lazy(() => import('../components/Footer'));
-const Testimonials = lazy(() => import('../components/Testimonials'));
+const loadJobBoard = () => import('../components/JobBoard');
+const loadCompanyMarquee = () => import('../components/CompanyMarquee');
+const loadStrengthsAccordion = () => import('../components/StrengthsAccordion');
+const loadWorkforceSection = () => import('../components/WorkforceSection');
+const loadNewsSection = () => import('../components/NewsSection');
+const loadFAQSection = () => import('../components/FAQSection');
+const loadFooter = () => import('../components/Footer');
+const loadTestimonials = () => import('../components/Testimonials');
+
+const JobBoard = lazy(loadJobBoard);
+const CompanyMarquee = lazy(loadCompanyMarquee);
+const StrengthsAccordion = lazy(loadStrengthsAccordion);
+const WorkforceSection = lazy(loadWorkforceSection);
+const NewsSection = lazy(loadNewsSection);
+const FAQSection = lazy(loadFAQSection);
+const Footer = lazy(loadFooter);
+const Testimonials = lazy(loadTestimonials);
 
 function DeferredSection({
   children,
@@ -92,6 +101,34 @@ function DeferredSection({
 export default function HomePage() {
   const navigate = useNavigate();
   const [transition, setTransition] = React.useState(null);
+
+  useEffect(() => {
+    const runPrefetch = () => {
+      // Warm up above-the-fold follow-up sections first.
+      loadCompanyMarquee();
+      loadWorkforceSection();
+      loadStrengthsAccordion();
+      loadJobBoard();
+
+      // Prefetch lower sections in the background.
+      setTimeout(() => {
+        loadNewsSection();
+        loadTestimonials();
+        loadFAQSection();
+        loadFooter();
+      }, 250);
+    };
+
+    if (typeof window === 'undefined') return;
+
+    if ('requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(runPrefetch, { timeout: 700 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(runPrefetch, 120);
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   const startWhirlpool = React.useCallback((action, event) => {
     const x = event?.clientX ?? window.innerWidth / 2;
