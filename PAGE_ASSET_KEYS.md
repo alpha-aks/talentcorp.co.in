@@ -29,9 +29,6 @@ Create records in Strapi at: Content Manager -> Page Asset.
 - about.team.manager2
 - about.team.manager3
 - contact.hero
-
-## Recommended Next Keys (not yet wired in code)
-
 - jobs.fallback
 - jobs.welder
 - jobs.electrician
@@ -59,6 +56,24 @@ Create records in Strapi at: Content Manager -> Page Asset.
 - flexi.hero
 - flexi.success
 - aedp.hero
+- achievements.hero
+
+## Recommended Next Keys (not yet wired in code)
+
+- news-events.feature
+- news-events.gallery.1
+- news-events.gallery.2
+- news-events.gallery.3
+- achiment.award.1
+- achiment.award.2
+- achiment.award.3
+- achiment.award.4
+- achiment.award.5
+- achiment.award.6
+- achiment.testimonial.1
+- achiment.testimonial.2
+- achiment.testimonial.3
+- achiment.testimonial.4
 
 ## Field Tips
 

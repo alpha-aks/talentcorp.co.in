@@ -26,6 +26,7 @@ import {
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { submitLead } from '../utils/strapi'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const stats = [
 	{ icon: Building2, value: 500, suffix: '+', label: 'Partner Companies' },
@@ -234,13 +235,15 @@ function AnimatedCounter({ value, suffix }) {
 	return <span ref={ref}>{count.toLocaleString()}{suffix}</span>
 }
 
-function ClientsHero() {
+function ClientsHero({ resolveAsset }) {
+	const heroAsset = resolveAsset('client.card.1', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Office Background')
+
 	return (
 		<section className="relative min-h-screen flex items-center overflow-visible bg-[#0f2a4d]">
 			<div className="absolute inset-0 z-0 overflow-hidden">
 				<img
-					src="/Gemini_Generated_Image_qskougqskougqsko.png"
-					alt="Office Background"
+					src={heroAsset.url}
+					alt={heroAsset.alt}
 					className="h-full w-full object-cover object-[78%_center] scale-[1.12] opacity-35"
 				/>
 				<div className="absolute left-0 top-0 bottom-0 w-[72%] bg-gradient-to-r from-[#0f2a4d]/90 via-[#0f2a4d]/60 to-transparent" />
@@ -392,10 +395,14 @@ function LogoMarquee() {
 	)
 }
 
-function Industries() {
+function Industries({ resolveAsset }) {
 	const [isVisible, setIsVisible] = useState(false)
 	const [activeIndustry, setActiveIndustry] = useState(0)
 	const ref = useRef(null)
+	const cardAssets = [
+		resolveAsset('client.card.1', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Client showcase image'),
+		resolveAsset('client.card.2', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'Client showcase image'),
+	]
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(([entry]) => {
@@ -445,8 +452,11 @@ function Industries() {
 
 					<div className="relative min-h-[400px] overflow-hidden rounded-2xl bg-gray-100 lg:min-h-0">
 						{industries.map((industry, index) => (
+							(() => {
+								const industryAsset = cardAssets[index % cardAssets.length]
+								return (
 							<div key={industry.name} className={`absolute inset-0 transition-all duration-500 ${activeIndustry === index ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}>
-								<img src={industry.image} alt={industry.name} className="h-full w-full object-cover" />
+								<img src={industryAsset.url} alt={industryAsset.alt || industry.name} className="h-full w-full object-cover" />
 								<div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent" />
 
 								<div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
@@ -469,6 +479,8 @@ function Industries() {
 									</div>
 								</div>
 							</div>
+								)
+							})()
 						))}
 					</div>
 				</div>
@@ -477,10 +489,14 @@ function Industries() {
 	)
 }
 
-function CaseStudies() {
+function CaseStudies({ resolveAsset }) {
 	const [isVisible, setIsVisible] = useState(false)
 	const [activeCase, setActiveCase] = useState(0)
 	const ref = useRef(null)
+	const cardAssets = [
+		resolveAsset('client.card.1', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Client case study image'),
+		resolveAsset('client.card.2', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'Client case study image'),
+	]
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(([entry]) => {
@@ -518,7 +534,7 @@ function CaseStudies() {
 				<div className={`transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 					<div className="grid items-center gap-8 lg:grid-cols-2">
 						<div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
-							<img src={caseStudies[activeCase].image} alt={caseStudies[activeCase].company} className="h-full w-full object-cover" />
+							<img src={cardAssets[activeCase % cardAssets.length].url} alt={cardAssets[activeCase % cardAssets.length].alt || caseStudies[activeCase].company} className="h-full w-full object-cover" />
 							<div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
 							<div className="absolute bottom-6 left-6">
 								<span className="rounded-full bg-blue-600 px-3 py-1 text-sm text-white">{caseStudies[activeCase].industry}</span>
@@ -824,14 +840,17 @@ function ClientsCTA() {
 }
 
 export default function ClientPage() {
+	const pageAssets = usePageAssets()
+	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
 			<main>
-				<ClientsHero />
+				<ClientsHero resolveAsset={resolveAsset} />
                 <LogoMarquee />
-				<Industries />
-				<CaseStudies />		
+				<Industries resolveAsset={resolveAsset} />
+				<CaseStudies resolveAsset={resolveAsset} />		
 				<Testimonials />
 				<ClientsCTA />
 			</main>

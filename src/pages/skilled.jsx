@@ -34,6 +34,7 @@ import {
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const processSteps = [
 	{
@@ -102,11 +103,13 @@ const stats = [
 	{ value: '98%', label: 'Success Rate' },
 ]
 
-function SkilledJobHero() {
+function SkilledJobHero({ resolveAsset }) {
+	const heroAsset = resolveAsset('skilled.hero', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Skilled Workers')
+
 	return (
 		<section className="relative flex min-h-[90vh] items-center overflow-hidden">
 			<div className="absolute inset-0">
-				<img src="/Gemini_Generated_Image_qskougqskougqsko.png" alt="Skilled Workers" className="h-full w-full object-cover" />
+				<img src={heroAsset.url} alt={heroAsset.alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/85 to-[#0F172A]/70" />
 			</div>
 
@@ -242,7 +245,16 @@ function WhatIsSkilledJob() {
 	)
 }
 
-function JobTypes() {
+function JobTypes({ resolveAsset }) {
+	const roleKeys = [
+		'skilled.role.welder',
+		'skilled.role.electrician',
+		'skilled.role.cnc',
+		'skilled.role.fitter',
+		'skilled.role.plumber',
+		'skilled.role.supervisor',
+	]
+
 	return (
 		<section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white py-20 lg:py-28">
 			<div className="absolute left-0 top-1/4 h-96 w-96 rounded-full bg-[#F97316]/5 blur-3xl" />
@@ -259,10 +271,13 @@ function JobTypes() {
 				</div>
 
 				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-					{jobTypes.map((job) => (
+					{jobTypes.map((job, index) => {
+						const roleAsset = resolveAsset(roleKeys[index] || roleKeys[0], job.image, job.title)
+
+						return (
 						<div key={job.title} className="group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg transition-all duration-500 hover:border-transparent hover:shadow-2xl">
 							<div className="relative h-48 overflow-hidden">
-								<img src={job.image} alt={job.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+								<img src={roleAsset.url} alt={roleAsset.alt || job.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
 								<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 								<div className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-xl shadow-lg" style={{ backgroundColor: job.color }}>
 									<job.icon className="h-6 w-6 text-white" />
@@ -287,7 +302,8 @@ function JobTypes() {
 								</a>
 							</div>
 						</div>
-					))}
+						)
+					})}
 				</div>
 
 				<div className="mt-12 text-center">
@@ -516,13 +532,16 @@ function Enquiry() {
 }
 
 export default function SkilledPage() {
+	const pageAssets = usePageAssets()
+	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
 			<main>
-				<SkilledJobHero />
+				<SkilledJobHero resolveAsset={resolveAsset} />
                 <WhatIsSkilledJob />	
-                <JobTypes />
+                <JobTypes resolveAsset={resolveAsset} />
                 <Industries />
                 <WhyChooseUs />
                 <HowItWorks />													

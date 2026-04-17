@@ -28,6 +28,7 @@ import {
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { submitLead } from '../utils/strapi'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const heroStats = [
 	{ value: '100%', label: 'Compliance Rate' },
@@ -287,6 +288,8 @@ const riskColorMap = {
 
 function ComplianceHero() {
 	const [isVisible, setIsVisible] = useState(false)
+	const pageAssets = usePageAssets()
+	const heroAsset = getPageAsset(pageAssets, 'compliance.hero', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Compliance Background')
 
 	useEffect(() => {
 		setIsVisible(true)
@@ -295,7 +298,7 @@ function ComplianceHero() {
 	return (
 		<section className="relative min-h-screen overflow-hidden bg-white pt-24">
 			<div className="absolute inset-0">
-				<img src="/Gemini_Generated_Image_qskougqskougqsko.png" alt="Compliance Background" className="h-full w-full object-cover" />
+				<img src={heroAsset.url} alt={heroAsset.alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/70" />
 				<div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white" />
 			</div>
@@ -464,6 +467,12 @@ function ComplianceServices() {
 	const [activeService, setActiveService] = useState(0)
 	const [isVisible, setIsVisible] = useState(false)
 	const sectionRef = useRef(null)
+	const pageAssets = usePageAssets()
+	const serviceImages = [
+		getPageAsset(pageAssets, 'compliance.card.1', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Compliance service'),
+		getPageAsset(pageAssets, 'compliance.card.2', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'Compliance service'),
+		getPageAsset(pageAssets, 'compliance.card.3', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Compliance service'),
+	]
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(([entry]) => {
@@ -492,6 +501,7 @@ function ComplianceServices() {
 							const Icon = service.icon
 							const sColors = serviceColorMap[service.color]
 							const isActive = activeService === index
+							const serviceImage = serviceImages[index % serviceImages.length]
 
 							return (
 								<button
@@ -509,6 +519,7 @@ function ComplianceServices() {
 												<ArrowUpRight className={`h-5 w-5 transition-all ${isActive ? `${sColors.text} rotate-0` : '-rotate-45 text-gray-600'}`} />
 											</div>
 											<p className="mt-1 text-sm text-gray-500">{service.titleHindi}</p>
+											<p className="mt-2 text-xs text-gray-500">{serviceImage.alt}</p>
 										</div>
 									</div>
 								</button>
@@ -519,7 +530,7 @@ function ComplianceServices() {
 					<div className={`transition-all duration-700 delay-300 lg:sticky lg:top-32 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
 						<div className={`relative overflow-hidden rounded-3xl border ${colors.border} ${colors.glow} shadow-2xl`}>
 							<div className="relative h-64 overflow-hidden">
-								<img src={currentService.image} alt={currentService.title} className="h-full w-full object-cover transition-all duration-500" />
+								<img src={serviceImages[activeService % serviceImages.length].url} alt={serviceImages[activeService % serviceImages.length].alt || currentService.title} className="h-full w-full object-cover transition-all duration-500" />
 								<div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
 								<div className={`absolute right-6 top-6 flex h-12 w-12 items-center justify-center rounded-full border ${colors.bg} ${colors.border}`}><span className={`text-xl font-bold ${colors.text}`}>{activeService + 1}</span></div>
 							</div>

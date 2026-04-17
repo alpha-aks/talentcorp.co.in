@@ -29,6 +29,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const partnerLogos = [
 	'Tata Steel',
@@ -333,6 +334,10 @@ function B2BPage() {
 	const [testimonialsRef, testimonialsVisible] = useReveal(0.2)
 	const [activeStep, setActiveStep] = useState(0)
 	const [activeTestimonial, setActiveTestimonial] = useState(0)
+	const pageAssets = usePageAssets()
+	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+	const serviceAssetKeys = ['b2b.card.1', 'b2b.card.2', 'b2b.card.3']
+	const b2bHeroAsset = resolveAsset('b2b.hero', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'Business partnership')
 
 	useEffect(() => {
 		const timer = window.setInterval(() => {
@@ -354,8 +359,8 @@ function B2BPage() {
 				<section ref={heroRef} className="relative min-h-screen overflow-hidden bg-[#07111f] pt-24 text-white">
 					<div className="absolute inset-0">
 						<img
-							src="/happy-excited-executive-business-team-600nw-2424450635.jpg.webp"
-							alt="Business partnership"
+							src={b2bHeroAsset.url}
+							alt={b2bHeroAsset.alt}
 							className="h-full w-full object-cover object-center opacity-35"
 						/>
 						<div className="absolute inset-0 bg-gradient-to-r from-[#07111f] via-[#07111f]/85 to-[#07111f]/20" />
@@ -513,7 +518,10 @@ function B2BPage() {
 						</div>
 
 						<div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-							{services.map((service, index) => (
+							{services.map((service, index) => {
+								const serviceAsset = resolveAsset(serviceAssetKeys[index % serviceAssetKeys.length], service.image, service.title)
+
+								return (
 								<article
 									key={service.title}
 									data-index={index}
@@ -523,7 +531,7 @@ function B2BPage() {
 									style={{ transitionDelay: `${index * 90}ms` }}
 								>
 									<div className="relative h-48 overflow-hidden">
-										<img src={service.image} alt={service.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+										<img src={serviceAsset.url} alt={serviceAsset.alt || service.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
 										<div className={`absolute inset-0 bg-gradient-to-t ${service.color} opacity-60 transition-opacity group-hover:opacity-75`} />
 										<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
@@ -546,7 +554,8 @@ function B2BPage() {
 										</div>
 									</div>
 								</article>
-							))}
+								)
+							})}
 						</div>
 					</div>
 				</section>

@@ -22,6 +22,7 @@ import {
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const benefits = [
 	{
@@ -112,11 +113,13 @@ const steps = [
 	},
 ]
 
-function FlexiItiHero() {
+function FlexiItiHero({ resolveAsset }) {
+	const heroAsset = resolveAsset('flexi.hero', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'FLEXI ITI training')
+
 	return (
 		<section className="relative min-h-[90vh] overflow-hidden bg-[#0F172A] pt-24">
 			<div className="absolute inset-0">
-				<img src="/happy-excited-executive-business-team-600nw-2424450635.jpg.webp" alt="FLEXI ITI training" className="h-full w-full object-cover" />
+				<img src={heroAsset.url} alt={heroAsset.alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/80 to-[#0F172A]/60" />
 			</div>
 
@@ -213,7 +216,9 @@ function FlexiItiHero() {
 	)
 }
 
-function FlexiItiBenefits() {
+function FlexiItiBenefits({ resolveAsset }) {
+	const successAsset = resolveAsset('flexi.success', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Students celebrating success')
+
 	return (
 		<section className="relative overflow-hidden py-20 lg:py-28">
 			<div className="absolute inset-0 bg-gradient-to-b from-white via-[#F8FAFC] to-white" />
@@ -278,7 +283,7 @@ function FlexiItiBenefits() {
 					</div>
 
 					<div className="relative h-64 overflow-hidden rounded-2xl lg:h-80">
-						<img src="/Gemini_Generated_Image_qskougqskougqsko.png" alt="Students celebrating success" className="h-full w-full object-cover" />
+						<img src={successAsset.url} alt={successAsset.alt} className="h-full w-full object-cover" />
 						<div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/60 to-transparent" />
 					</div>
 				</div>
@@ -487,12 +492,15 @@ function FlexiItiEnquiry() {
 }
 
 export default function FlexiItiPage() {
+	const pageAssets = usePageAssets()
+	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
 			<main>
-				<FlexiItiHero />
-				<FlexiItiBenefits />
+				<FlexiItiHero resolveAsset={resolveAsset} />
+				<FlexiItiBenefits resolveAsset={resolveAsset} />
 				<FlexiItiProcess />
 				<FlexiItiEligibility />
 				<FlexiItiEnquiry />

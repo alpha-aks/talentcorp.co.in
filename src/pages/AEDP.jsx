@@ -1,6 +1,7 @@
 import { Briefcase, Building2, CheckCircle2, GraduationCap, Handshake, Laptop, Stethoscope, Wrench } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const keyPoints = [
 	'AEDP is a 3-year Apprenticeship Embedded Degree Program aligned with NEP and UGC guidelines.',
@@ -40,11 +41,13 @@ const industries = [
 	},
 ]
 
-function AedpHero() {
+function AedpHero({ resolveAsset }) {
+	const heroAsset = resolveAsset('aedp.hero', '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', 'AEDP students in practical learning')
+
 	return (
 		<section className="relative overflow-hidden bg-[#0F172A] pt-24">
 			<div className="absolute inset-0">
-				<img src="/happy-excited-executive-business-team-600nw-2424450635.jpg.webp" alt="AEDP students in practical learning" className="h-full w-full object-cover" />
+				<img src={heroAsset.url} alt={heroAsset.alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/80 to-[#0F172A]/70" />
 			</div>
 
@@ -193,10 +196,13 @@ function AedpIndustrySection() {
 }
 
 export default function AedpPage() {
+	const pageAssets = usePageAssets()
+	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+
 	return (
 		<div className="bg-white text-[#0F172A]">
 			<Navbar />
-			<AedpHero />
+			<AedpHero resolveAsset={resolveAsset} />
 			<AedpOverview />
 			<AedpBenefits />
 			<AedpIndustrySection />

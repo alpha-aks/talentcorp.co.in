@@ -24,6 +24,7 @@ import {
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import heroImage from '../assets/hero.png'
+import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const awards = [
 	{
@@ -194,6 +195,8 @@ function useSectionReveal(threshold = 0.2) {
 function AwardsHero() {
 	const { isVisible, sectionRef } = useSectionReveal(0.25)
 	const [count, setCount] = useState({ years: 0, workers: 0, clients: 0, awardsWon: 0 })
+	const pageAssets = usePageAssets()
+	const achievementsHeroAsset = getPageAsset(pageAssets, 'achievements.hero', heroImage, 'TSPL achievements')
 
 	useEffect(() => {
 		const duration = 2000
@@ -231,7 +234,7 @@ function AwardsHero() {
 	return (
 		<section ref={sectionRef} className="relative min-h-[90vh] overflow-hidden bg-white pt-24">
 			<div className="absolute inset-0">
-				<div className="absolute inset-0 bg-[url('/happy-excited-executive-business-team-600nw-2424450635.jpg.webp')] bg-cover bg-center" />
+				<div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${achievementsHeroAsset.url}')` }} />
 				<div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/60" />
 				<div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-white" />
 			</div>
@@ -297,7 +300,7 @@ function AwardsHero() {
 							<div className="absolute inset-8 rounded-full border-4 border-blue-300 opacity-20 animate-ping" />
 
 							<div className="absolute inset-12 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 shadow-2xl shadow-orange-500/40">
-								<img src={heroImage} alt="TSPL achievements" className="h-full w-full object-cover opacity-25" />
+								<img src={achievementsHeroAsset.url} alt={achievementsHeroAsset.alt} className="h-full w-full object-cover opacity-25" />
 								<Trophy className="absolute h-24 w-24 text-white drop-shadow-lg" />
 							</div>
 
