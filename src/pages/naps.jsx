@@ -24,11 +24,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { StaggerContainer, StaggerItem } from '../components/AnimatedContent'
 
-const heroStats = [
-	{ value: '15,000+', label: 'Professionals Trained' },
-	{ value: '500+', label: 'Premium Partners' },
-	{ value: 'Rs. 15,000+', label: 'Average Monthly Pay' },
-]
+const heroStats = [{ value: '15,000+', label: 'Professionals Trained' }, { value: '500+', label: 'Premium Partners' }, { value: 'Rs. 15,000+', label: 'Average Monthly Pay' }]
 
 const aboutHighlights = [
 	'12-month premium apprenticeship',
@@ -120,8 +116,8 @@ function NAPSHero() {
 						</Link>
 					</div>
 
-					<div className="flex flex-col justify-center gap-6 sm:flex-row">
-						<StaggerContainer staggerDelay={0.08}>
+					<div className="flex justify-center">
+						<StaggerContainer staggerDelay={0.08} className="flex flex-wrap justify-center gap-6">
 							{heroStats.map((stat) => (
 								<StaggerItem key={stat.label}>
 									<div className="flex items-center gap-4 rounded-2xl border border-[#2563EB]/20 bg-white/80 px-8 py-5 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-[#2563EB]/50 hover:bg-white hover:shadow-md">
@@ -187,8 +183,7 @@ function NAPSAbout() {
 							<div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/50 to-transparent" />
 						</div>
 
-						<div className="grid grid-cols-3 gap-4">
-							<StaggerContainer staggerDelay={0.1}>
+					<StaggerContainer staggerDelay={0.1} className="grid grid-cols-3 gap-4">
 								{aboutFeatures.map((feature) => (
 									<StaggerItem key={feature.title}>
 										<div className="rounded-2xl border border-[#E2E8F0] bg-white p-5 text-center transition-all duration-300 hover:-translate-y-2 hover:border-[#2563EB]/40 hover:shadow-xl">
@@ -200,8 +195,7 @@ function NAPSAbout() {
 										</div>
 									</StaggerItem>
 								))}
-							</StaggerContainer>
-						</div>
+					</StaggerContainer>
 					</div>
 				</div>
 			</div>
@@ -231,19 +225,19 @@ function NAPSBenefits() {
 							</div>
 							<h3 className="text-2xl font-bold text-[#0F172A]">For Professionals</h3>
 						</div>
-						<div className="grid grid-cols-2 gap-4">
-							{applicantBenefits.map((benefit, i) => (
-								<div key={benefit.title} className="group flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-300 hover:scale-[1.03] hover:border-[#2563EB]/40 hover:shadow-xl" style={{ animationDelay: `${i * 100}ms` }}>
-									<div className="h-12 w-12 shrink-0 rounded-xl bg-[#2563EB]/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-[#2563EB]">
-										<benefit.icon className="h-6 w-6 text-[#2563EB] transition-colors duration-300 group-hover:text-white" />
+							<div className="grid grid-cols-2 gap-4">
+								{applicantBenefits.map((benefit, i) => (
+									<div key={benefit.title} className="group flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-300 hover:scale-[1.03] hover:border-[#2563EB]/40 hover:shadow-xl" style={{ animationDelay: `${i * 100}ms` }}>
+										<div className="h-12 w-12 shrink-0 rounded-xl bg-[#2563EB]/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-[#2563EB]">
+											<benefit.icon className="h-6 w-6 text-[#2563EB] transition-colors duration-300 group-hover:text-white" />
+										</div>
+										<div>
+											<h4 className="mb-1 text-base font-bold text-[#0F172A]">{benefit.title}</h4>
+											<p className="text-sm text-[#64748B]">{benefit.desc}</p>
+										</div>
 									</div>
-									<div>
-										<h4 className="mb-1 text-base font-bold text-[#0F172A]">{benefit.title}</h4>
-										<p className="text-sm text-[#64748B]">{benefit.desc}</p>
-									</div>
-								</div>
-							))}
-						</div>
+								))}
+							</div>
 					</div>
 
 					<div>
@@ -414,7 +408,6 @@ function NAPSProcess() {
 										</div>
 									)}
 								</div>
-
 								{i < processSteps.length - 1 && (
 									<div className="absolute -bottom-8 left-1/2 h-8 w-0.5 -translate-x-1/2 bg-gradient-to-b from-[#2563EB] to-transparent md:hidden" />
 								)}

@@ -24,9 +24,10 @@ export const AnimatedContent = ({ children, delay = 0 }) => {
  * Container for staggered animations across multiple children
  * Each child animates in sequence with a stagger effect
  */
-export const StaggerContainer = ({ children, staggerDelay = 0.1 }) => {
+export const StaggerContainer = ({ children, staggerDelay = 0.1, className = '' }) => {
   return (
     <motion.div
+      className={className}
       initial="hidden"
       animate="visible"
       variants={{
