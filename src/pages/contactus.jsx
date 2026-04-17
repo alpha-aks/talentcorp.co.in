@@ -198,7 +198,6 @@ const ContactUs = () => {
     setFlightManifest(manifestEntries.length ? manifestEntries : [{ label: 'Status', value: 'Sending...' }]);
 
     try {
-      // Submit to Strapi and Google Sheets independently so one failure doesn't block the other
       const [strapiResult, sheetResult] = await Promise.allSettled([
         fetch(`${STRAPI_BASE_URL}/api/leads`, {
           method: 'POST',
@@ -797,5 +796,4 @@ const ContactUs = () => {
     </div>
   );
 };
-
 export default ContactUs;
