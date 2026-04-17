@@ -29,7 +29,7 @@ const CONFIG = {
   SPREADSHEET_ID: '1u_waqw6eghaqDRqgwVusmMWcjOwWEHo_cjX4Vei0PLM',
 
   // Email notifications
-  SEND_NOTIFICATIONS: true,
+  SEND_NOTIFICATIONS: false,
   NOTIFICATION_EMAIL: 'your-email@gmail.com', // ← CHANGE THIS
   NOTIFICATION_SUBJECT: 'New Contact Form Submission from TalentCorp',
   

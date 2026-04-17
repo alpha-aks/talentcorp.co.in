@@ -170,10 +170,16 @@ const testimonials = [
 ]
 
 function useSectionReveal(threshold = 0.2) {
-	const [isVisible, setIsVisible] = useState(false)
+	const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+	const [isVisible, setIsVisible] = useState(isMobile)
 	const sectionRef = useRef(null)
 
 	useEffect(() => {
+		if (isMobile) {
+			setIsVisible(true)
+			return undefined
+		}
+
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				setIsVisible(entry.isIntersecting)
@@ -186,7 +192,7 @@ function useSectionReveal(threshold = 0.2) {
 		}
 
 		return () => observer.disconnect()
-	}, [threshold])
+	}, [threshold, isMobile])
 
 	return { isVisible, sectionRef }
 }
