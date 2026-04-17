@@ -45,6 +45,12 @@ export default function Testimonials() {
   const [activeTab, setActiveTab] = useState('all');
   const [reviews, setReviews] = useState(fallbackReviews);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(() => {
+    if (typeof window === 'undefined') return 3;
+    if (window.innerWidth < 640) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 3;
+  });
 
   useEffect(() => {
     const loadReviews = async () => {
@@ -71,25 +77,47 @@ export default function Testimonials() {
     loadReviews();
   }, []);
 
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      if (window.innerWidth < 640) {
+        setCardsPerView(1);
+        return;
+      }
+
+      if (window.innerWidth < 1024) {
+        setCardsPerView(2);
+        return;
+      }
+
+      setCardsPerView(3);
+    };
+
+    updateCardsPerView();
+    window.addEventListener('resize', updateCardsPerView);
+    return () => window.removeEventListener('resize', updateCardsPerView);
+  }, []);
+
   const filteredReviews = useMemo(() => {
     return activeTab === 'all'
       ? reviews.filter((review) => review.reviewType === 'client' || review.reviewType === 'employee')
       : reviews.filter((review) => review.reviewType === activeTab);
   }, [activeTab, reviews]);
 
-  const visibleReviews = filteredReviews.slice(currentIndex, currentIndex + 3);
+  const visibleReviews = filteredReviews.slice(currentIndex, currentIndex + cardsPerView);
 
   useEffect(() => {
     setCurrentIndex(0);
-  }, [activeTab]);
+  }, [activeTab, cardsPerView]);
 
   useEffect(() => {
-    if (filteredReviews.length <= 3) return undefined;
+    if (filteredReviews.length <= cardsPerView) return undefined;
+
     const interval = window.setInterval(() => {
-      setCurrentIndex((prev) => (prev + 3 >= filteredReviews.length ? 0 : prev + 3));
+      setCurrentIndex((prev) => (prev + cardsPerView >= filteredReviews.length ? 0 : prev + cardsPerView));
     }, 6000);
+
     return () => window.clearInterval(interval);
-  }, [filteredReviews.length]);
+  }, [cardsPerView, filteredReviews.length]);
 
   return (
     <section id="reviews" className="relative overflow-hidden bg-slate-950 px-4 py-16 text-white sm:px-6 lg:px-8">
@@ -100,7 +128,7 @@ export default function Testimonials() {
             <span className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-white/70">
               Reviews
             </span>
-            <h2 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
               Client and Employee Voices <span className="text-orange-400">That Matter</span>
             </h2>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
@@ -108,14 +136,14 @@ export default function Testimonials() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2 rounded-full border border-white/10 bg-white/5 p-2 backdrop-blur-md">
+          <div className="grid grid-cols-2 gap-2 rounded-3xl border border-white/10 bg-white/5 p-2 backdrop-blur-md sm:flex sm:flex-wrap sm:rounded-full">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all ${
+                  className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl px-3 py-2 text-xs font-bold transition-all sm:w-auto sm:rounded-full sm:px-4 sm:text-sm ${
                     activeTab === tab.key ? 'bg-white text-slate-950 shadow-lg' : 'text-white/75 hover:bg-white/10'
                   }`}
                 >
@@ -128,11 +156,11 @@ export default function Testimonials() {
         </div>
 
         <div className="w-full">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {visibleReviews.map((review, index) => (
               <article
                 key={`${review.id}-${index}`}
-                className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/8 p-6 shadow-2xl shadow-black/20 backdrop-blur-md transition-transform duration-300 hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/8 p-5 shadow-2xl shadow-black/20 backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:rounded-[2rem] sm:p-6"
               >
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <div className="flex gap-1 text-orange-400">
@@ -145,8 +173,8 @@ export default function Testimonials() {
                   </span>
                 </div>
 
-                <Quote size={42} className="mb-4 text-white/15" />
-                <p className="min-h-[140px] text-sm leading-relaxed text-white/80">{review.quote}</p>
+                <Quote size={36} className="mb-4 text-white/15 sm:h-[42px] sm:w-[42px]" />
+                <p className="min-h-[110px] text-sm leading-relaxed text-white/80 sm:min-h-[140px]">{review.quote}</p>
 
                 <div className="mt-6 flex items-center gap-4 border-t border-white/10 pt-5">
                   <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-slate-800 text-sm font-bold text-white">
@@ -175,6 +203,24 @@ export default function Testimonials() {
             ))}
           </div>
 
+          {filteredReviews.length > cardsPerView ? (
+            <div className="mt-6 flex items-center justify-center gap-2">
+              {Array.from({ length: Math.ceil(filteredReviews.length / cardsPerView) }).map((_, pageIndex) => {
+                const startIndex = pageIndex * cardsPerView;
+                const isActive = currentIndex === startIndex;
+
+                return (
+                  <button
+                    key={pageIndex}
+                    type="button"
+                    onClick={() => setCurrentIndex(startIndex)}
+                    className={`h-2.5 rounded-full transition-all ${isActive ? 'w-7 bg-orange-400' : 'w-2.5 bg-white/30 hover:bg-white/50'}`}
+                    aria-label={`Go to testimonials page ${pageIndex + 1}`}
+                  />
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
