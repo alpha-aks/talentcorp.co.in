@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets';
+import { STRAPI_BASE_URL } from '../utils/strapi';
 import { 
   Phone, 
   Mail, 
@@ -13,11 +14,6 @@ import {
   Check,
   Send
 } from 'lucide-react';
-
-const STRAPI_BASE_URL =
-  import.meta.env.VITE_STRAPI_API_URL ||
-  import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  'http://localhost:1337';
 
 const serviceOptions = [
   { value: 'NATS', label: 'NATS' },
