@@ -166,7 +166,7 @@ const Navbar = () => {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-3 overflow-hidden rounded-2xl border border-[#d8e7f8] bg-white/95 shadow-lg backdrop-blur-md">
+          <div className="lg:hidden mt-3 max-h-[calc(100vh-7.5rem)] overflow-y-auto rounded-2xl border border-[#d8e7f8] bg-white/95 shadow-lg backdrop-blur-md">
             <div className="px-6 py-5">
               <div className="flex flex-col gap-4 text-base font-semibold text-[#1a4f87]">
                 <div>
@@ -181,7 +181,7 @@ const Navbar = () => {
                   </button>
 
                   {isMobileServicesOpen && (
-                    <div className="mt-2 ml-3 flex flex-col gap-2 border-l border-[#d8e7f8] pl-3">
+                    <div className="mt-2 ml-3 max-h-56 overflow-y-auto border-l border-[#d8e7f8] pl-3">
                       {serviceLinks.map((service) => {
                         const active = isLinkActive(service.href);
                         return (

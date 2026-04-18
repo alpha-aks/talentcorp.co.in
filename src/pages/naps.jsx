@@ -83,46 +83,46 @@ const processSteps = [
 
 function NAPSHero() {
 	return (
-		<section className="relative flex min-h-[88vh] items-center overflow-hidden bg-white">
+		<section className="relative flex min-h-[88vh] items-center overflow-hidden bg-white pt-20 sm:pt-24">
 			<div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'linear-gradient(rgba(37,99,235,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.03) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 			<div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-[#2563EB]/10 blur-3xl" />
 			<div className="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[#F97316]/10 blur-3xl" />
 
-			<div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-24 lg:px-8">
+			<div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto max-w-5xl text-center">
 					<div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#2563EB]/20 bg-[#2563EB]/10 px-5 py-2.5 backdrop-blur-sm">
 						<Sparkles className="h-4 w-4 text-[#2563EB]" />
 						<span className="text-sm font-semibold tracking-wide text-[#0F172A]">Premium Apprenticeship Program</span>
 					</div>
 
-					<h1 className="mb-6 text-5xl font-extrabold leading-[1.05] tracking-tight text-[#0F172A] sm:text-6xl md:text-7xl lg:text-8xl">
+					<h1 className="mb-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-[#0F172A] sm:text-6xl md:text-7xl lg:text-8xl">
 						National Apprenticeship
 						<span className="mt-2 block bg-gradient-to-r from-[#2563EB] to-[#F97316] bg-clip-text text-transparent">Programme Scheme</span>
 					</h1>
 
-					<p className="mx-auto mb-10 max-w-3xl text-xl font-medium leading-relaxed text-[#475569] sm:text-2xl lg:text-3xl">
+					<p className="mx-auto mb-10 max-w-3xl text-base font-medium leading-relaxed text-[#475569] sm:text-2xl lg:text-3xl">
 						Advance your career with <span className="font-bold text-[#2563EB]">world-class industry experience</span> and <span className="font-bold text-[#F97316]">competitive compensation</span>
 					</p>
 
-					<div className="mb-14 flex flex-col justify-center gap-4 sm:flex-row">
-						<Link to="/jobs" className="group inline-flex items-center rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] px-10 py-5 text-lg font-semibold text-white shadow-2xl shadow-[#2563EB]/40 transition-all duration-300 hover:scale-105">
+					<div className="mb-14 flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
+						<Link to="/jobs" className="group inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] px-8 py-4 text-base font-semibold text-white shadow-2xl shadow-[#2563EB]/40 transition-all duration-300 hover:scale-105 sm:px-10 sm:py-5 sm:text-lg">
 							<Briefcase className="mr-2 h-5 w-5" />
 							Apply Now
 							<ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
 						</Link>
-						<Link to="/contact-us" className="inline-flex items-center rounded-2xl border-2 border-[#2563EB] bg-white px-10 py-5 text-lg font-semibold text-[#2563EB] transition-all duration-300 hover:bg-[#2563EB] hover:text-white">
+						<Link to="/contact-us" className="inline-flex items-center justify-center rounded-2xl border-2 border-[#2563EB] bg-white px-8 py-4 text-base font-semibold text-[#2563EB] transition-all duration-300 hover:bg-[#2563EB] hover:text-white sm:px-10 sm:py-5 sm:text-lg">
 							<TrendingUp className="mr-2 h-5 w-5" />
 							Learn More
 						</Link>
 					</div>
 
 					<div className="flex justify-center">
-						<StaggerContainer staggerDelay={0.08} className="flex flex-wrap justify-center gap-6">
+						<StaggerContainer staggerDelay={0.08} className="flex flex-wrap justify-center gap-3 sm:gap-6">
 							{heroStats.map((stat) => (
 								<StaggerItem key={stat.label}>
-									<div className="flex items-center gap-4 rounded-2xl border border-[#2563EB]/20 bg-white/80 px-8 py-5 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-[#2563EB]/50 hover:bg-white hover:shadow-md">
+									<div className="flex items-center gap-3 rounded-2xl border border-[#2563EB]/20 bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md transition-all duration-300 hover:border-[#2563EB]/50 hover:bg-white hover:shadow-md sm:gap-4 sm:px-8 sm:py-5">
 										<div className="text-left">
-											<p className="bg-gradient-to-r from-[#2563EB] to-[#F97316] bg-clip-text text-3xl font-extrabold text-transparent sm:text-4xl">{stat.value}</p>
+											<p className="bg-gradient-to-r from-[#2563EB] to-[#F97316] bg-clip-text text-2xl font-extrabold text-transparent sm:text-4xl">{stat.value}</p>
 											<p className="text-sm font-medium text-[#64748B]">{stat.label}</p>
 										</div>
 									</div>
@@ -141,8 +141,8 @@ function NAPSAbout() {
 		<section className="relative bg-slate-50 py-20 lg:py-28">
 			<div className="absolute inset-0 opacity-5" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='256' height='256' fill='white'/%3E%3Cpath d='M0 0h256v256H0z' fill='none'/%3E%3C/svg%3E")` }} />
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-				<div className="grid items-center gap-16 lg:grid-cols-2">
+			<div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
 					<div>
 						<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#2563EB]/20 bg-[#2563EB]/10 px-4 py-2">
 							<span className="h-2 w-2 animate-pulse rounded-full bg-[#2563EB]" />
@@ -183,7 +183,7 @@ function NAPSAbout() {
 							<div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/50 to-transparent" />
 						</div>
 
-					<StaggerContainer staggerDelay={0.1} className="grid grid-cols-3 gap-4">
+					<StaggerContainer staggerDelay={0.1} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 								{aboutFeatures.map((feature) => (
 									<StaggerItem key={feature.title}>
 										<div className="rounded-2xl border border-[#E2E8F0] bg-white p-5 text-center transition-all duration-300 hover:-translate-y-2 hover:border-[#2563EB]/40 hover:shadow-xl">
@@ -209,7 +209,7 @@ function NAPSBenefits() {
 			<div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-[#2563EB]/5 blur-3xl" />
 			<div className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-[#F97316]/5 blur-3xl" />
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+			<div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-16 text-center">
 					<h2 className="mb-4 text-4xl font-bold text-[#0F172A] lg:text-5xl">
 						Why Choose <span className="bg-gradient-to-r from-[#2563EB] to-[#F97316] bg-clip-text text-transparent">NAPS?</span>
@@ -217,7 +217,7 @@ function NAPSBenefits() {
 					<p className="mx-auto max-w-2xl text-lg text-[#64748B]">Premium benefits for professionals and employers</p>
 				</div>
 
-				<div className="grid gap-10 lg:grid-cols-2">
+				<div className="grid gap-8 lg:gap-10 lg:grid-cols-2">
 					<div>
 						<div className="mb-8 flex items-center gap-4">
 							<div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] shadow-lg shadow-[#2563EB]/30">
@@ -225,7 +225,7 @@ function NAPSBenefits() {
 							</div>
 							<h3 className="text-2xl font-bold text-[#0F172A]">For Professionals</h3>
 						</div>
-							<div className="grid grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								{applicantBenefits.map((benefit, i) => (
 									<div key={benefit.title} className="group flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-300 hover:scale-[1.03] hover:border-[#2563EB]/40 hover:shadow-xl" style={{ animationDelay: `${i * 100}ms` }}>
 										<div className="h-12 w-12 shrink-0 rounded-xl bg-[#2563EB]/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-[#2563EB]">
@@ -247,7 +247,7 @@ function NAPSBenefits() {
 							</div>
 							<h3 className="text-2xl font-bold text-[#0F172A]">For Employers</h3>
 						</div>
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							{employerBenefits.map((benefit, i) => (
 								<div key={benefit.title} className="group flex items-start gap-4 rounded-2xl border border-[#E2E8F0] bg-white p-5 transition-all duration-300 hover:scale-[1.03] hover:border-[#F97316]/40 hover:shadow-xl" style={{ animationDelay: `${i * 100}ms` }}>
 									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F97316]/10 transition-colors duration-300 group-hover:bg-[#F97316]">
@@ -277,7 +277,7 @@ function NAPSEligibility() {
 				}}
 			/>
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+			<div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-12 text-center animate-fade-in">
 					<h2 className="mb-2 text-3xl font-bold text-[#0F172A]">
 						Who Can <span className="bg-gradient-to-r from-[#2563EB] to-[#F97316] bg-clip-text text-transparent">Join?</span>
@@ -369,7 +369,7 @@ function NAPSProcess() {
 				<div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#F97316]/10 opacity-40 blur-3xl" />
 			</div>
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+			<div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-16 text-center lg:mb-20">
 					<div className="mb-6 inline-flex items-center rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 px-4 py-2">
 						<span className="text-sm font-semibold text-[#2563EB]">Our Process</span>
@@ -429,7 +429,7 @@ function NAPSProcess() {
 
 function NAPSCTA() {
 	return (
-		<section className="px-8 pb-20 pt-2">
+		<section className="px-4 pb-20 pt-2 sm:px-8">
 			<div className="mx-auto w-full max-w-6xl">
 				<div className="flex flex-col items-center justify-between gap-10 rounded-3xl bg-gradient-to-r from-[#2d52b4] to-[#4083ff] p-8 shadow-lg md:flex-row md:p-12">
 					<div className="flex-1">
