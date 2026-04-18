@@ -8,7 +8,7 @@ const fallbackHero = {
   titleTop: "Build India's",
   titleBottom: 'Future Workforce',
   description: 'We help skilled talent in India to land, launch, and level up with top employers; faster, smarter, and friction-free.',
-  backgroundImage: 'https://media.gettyimages.com/id/1277949331/video/two-male-engineers-celebrating-success-at-factory.jpg?s=640x640&k=20&c=hF1BY1imveumk1jEF3BbOI_YNXHYK3t-kotudyt40Eg=',
+  backgroundImage: '/WhatsApp Image 2026-04-16 at 10.53.25 (1).jpeg',
   primaryCtaLabel: 'Find Your Dream Job',
   secondaryCtaLabel: 'Hire Talent',
 };
@@ -38,7 +38,7 @@ const HeroSection = ({ onFindJobs, onHireTalent }) => {
         <img
           src={hero.backgroundImage}
           alt="TSPL Group"
-          className="h-full w-full scale-[1.18] object-cover object-[20%_center] md:scale-[1.3]"
+          className="h-full w-full scale-[1.08] object-cover object-[20%_center] md:scale-[1.12]"
           loading="eager"
           fetchPriority="high"
           decoding="async"

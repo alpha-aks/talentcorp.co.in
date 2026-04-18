@@ -366,6 +366,20 @@ function JobsFilters({ filters, setFilters, categoryOptions, locationOptions }) 
 		}));
 	};
 
+	const setSingleCategory = (value) => {
+		setFilters((prev) => ({
+			...prev,
+			category: value ? [value] : [],
+		}));
+	};
+
+	const setSingleLocation = (value) => {
+		setFilters((prev) => ({
+			...prev,
+			location: value ? [value] : [],
+		}));
+	};
+
 	const clearFilters = () => {
 		setFilters({
 			jobType: [],
@@ -379,7 +393,7 @@ function JobsFilters({ filters, setFilters, categoryOptions, locationOptions }) 
 	const activeFilterCount = filters.jobType.length + filters.category.length + filters.location.length + (filters.salary ? 1 : 0) + (filters.experience ? 1 : 0);
 
 	return (
-		<div className="sticky top-20 z-40 border-y border-slate-200 bg-white/95 backdrop-blur">
+		<div className="sticky top-20 z-40 border-y border-slate-200/70 bg-white/80 backdrop-blur-xl">
 			<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
 				<div className="mb-4 flex items-center justify-between lg:hidden">
 					<button onClick={() => setIsOpen((prev) => !prev)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700">
@@ -394,8 +408,8 @@ function JobsFilters({ filters, setFilters, categoryOptions, locationOptions }) 
 					)}
 				</div>
 
-				<div className={`${isOpen ? 'block' : 'hidden'} lg:block`}>
-					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+				<div className={`${isOpen ? 'block' : 'hidden'} lg:hidden`}>
+					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 						<div>
 							<h3 className="mb-3 text-sm font-bold text-slate-900">Job Type</h3>
 							<div className="flex flex-wrap gap-2">
@@ -413,32 +427,34 @@ function JobsFilters({ filters, setFilters, categoryOptions, locationOptions }) 
 
 						<div>
 							<h3 className="mb-3 text-sm font-bold text-slate-900">Category</h3>
-							<div className="flex flex-wrap gap-2">
-								{categoryOptions.map((category) => (
-									<button
-										key={category.value}
-										onClick={() => toggleCategory(category.value)}
-										className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${filters.category.includes(category.value) ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-									>
-										{category.label}
-									</button>
+							<select
+								value={filters.category[0] || ''}
+								onChange={(event) => setSingleCategory(event.target.value)}
+								className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-400"
+							>
+								<option value="">Any Category</option>
+								{categoryOptions.map((option) => (
+									<option key={option.value} value={option.value}>
+										{option.label}
+									</option>
 								))}
-							</div>
+							</select>
 						</div>
 
 						<div>
 							<h3 className="mb-3 text-sm font-bold text-slate-900">Location</h3>
-							<div className="flex flex-wrap gap-2">
-								{locationOptions.map((location) => (
-									<button
-										key={location.value}
-										onClick={() => toggleLocation(location.value)}
-										className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${filters.location.includes(location.value) ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
-									>
-										{location.label}
-									</button>
+							<select
+								value={filters.location[0] || ''}
+								onChange={(event) => setSingleLocation(event.target.value)}
+								className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-blue-400"
+							>
+								<option value="">Any Location</option>
+								{locationOptions.map((option) => (
+									<option key={option.value} value={option.value}>
+										{option.label}
+									</option>
 								))}
-							</div>
+							</select>
 						</div>
 
 						<div>
@@ -469,6 +485,85 @@ function JobsFilters({ filters, setFilters, categoryOptions, locationOptions }) 
 									</option>
 								))}
 							</select>
+						</div>
+					</div>
+				</div>
+
+				<div className="hidden lg:block">
+					<div className="rounded-2xl border border-white/60 bg-white/50 p-3 shadow-lg shadow-blue-100/30 backdrop-blur-xl">
+						<div className="flex items-center gap-3 overflow-x-auto whitespace-nowrap">
+							<div className="inline-flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2 text-sm font-semibold text-slate-700">
+								<Filter className="h-4 w-4 text-blue-600" />
+								Filters
+							</div>
+
+							<div className="inline-flex min-w-[440px] items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-3 py-2">
+								<span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Job Type</span>
+								<div className="flex items-center gap-2 overflow-x-auto">
+									{jobTypeOptions.map((type) => (
+										<button
+											key={type.value}
+											onClick={() => toggleJobType(type.value)}
+											className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${filters.jobType.includes(type.value) ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
+										>
+											{type.label}
+										</button>
+									))}
+								</div>
+							</div>
+
+							<div className="inline-flex min-w-[220px] items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-3 py-2">
+								<span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Category</span>
+								<select
+									value={filters.category[0] || ''}
+									onChange={(event) => setSingleCategory(event.target.value)}
+									className="w-full bg-transparent text-sm text-slate-700 outline-none"
+								>
+									<option value="">Any</option>
+									{categoryOptions.map((option) => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div className="inline-flex min-w-[200px] items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-3 py-2">
+								<span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Location</span>
+								<select
+									value={filters.location[0] || ''}
+									onChange={(event) => setSingleLocation(event.target.value)}
+									className="w-full bg-transparent text-sm text-slate-700 outline-none"
+								>
+									<option value="">India</option>
+									{locationOptions.map((option) => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div className="inline-flex min-w-[220px] items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-3 py-2">
+								<span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Salary</span>
+								<select
+									value={filters.salary}
+									onChange={(event) => setFilters((prev) => ({ ...prev, salary: event.target.value }))}
+									className="w-full bg-transparent text-sm text-slate-700 outline-none"
+								>
+									{salaryOptions.map((option) => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</select>
+							</div>
+
+							{activeFilterCount > 0 && (
+								<button onClick={clearFilters} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+									Clear
+								</button>
+							)}
 						</div>
 					</div>
 

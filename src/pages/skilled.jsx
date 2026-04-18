@@ -79,12 +79,12 @@ const industries = [
 ]
 
 const jobTypes = [
-	{ title: 'Welders', description: 'Join metals together using heat. Work in factories, construction sites.', image: '/Gemini_Generated_Image_qskougqskougqsko.png', icon: Zap, color: '#F97316', skills: ['Arc Welding', 'MIG/TIG', 'Pipe Welding'] },
-	{ title: 'Electricians', description: 'Fix and install electrical wires, switches, machines safely.', image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', icon: Zap, color: '#2563EB', skills: ['Wiring', 'Panel Work', 'Motor Repair'] },
-	{ title: 'CNC Operators', description: 'Run computer-controlled machines that cut and shape metal parts.', image: '/Gemini_Generated_Image_qskougqskougqsko.png', icon: Settings, color: '#22C55E', skills: ['CNC Turning', 'VMC', 'Programming'] },
-	{ title: 'Fitters', description: 'Assemble and fit machine parts together with precision.', image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', icon: Wrench, color: '#8B5CF6', skills: ['Assembly', 'Alignment', 'Maintenance'] },
-	{ title: 'Plumbers', description: 'Install and repair pipes for water and gas in buildings and factories.', image: '/Gemini_Generated_Image_qskougqskougqsko.png', icon: Droplets, color: '#06B6D4', skills: ['Pipe Fitting', 'Drainage', 'Industrial'] },
-	{ title: 'Supervisors', description: 'Manage teams of workers, check quality, ensure safety on site.', image: '/happy-excited-executive-business-team-600nw-2424450635.jpg.webp', icon: ClipboardCheck, color: '#EC4899', skills: ['Team Lead', 'Quality Check', 'Safety'] },
+	{ title: 'Welders', description: 'Join metals together using heat. Work in factories, construction sites.', image: 'https://images.pexels.com/photos/26840747/pexels-photo-26840747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', icon: Zap, color: '#F97316', skills: ['Arc Welding', 'MIG/TIG', 'Pipe Welding'] },
+	{ title: 'Electricians', description: 'Fix and install electrical wires, switches, machines safely.', image: 'https://images.pexels.com/photos/33531832/pexels-photo-33531832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', icon: Zap, color: '#2563EB', skills: ['Wiring', 'Panel Work', 'Motor Repair'] },
+	{ title: 'CNC Operators', description: 'Run computer-controlled machines that cut and shape metal parts.', image: 'https://images.pexels.com/photos/14805033/pexels-photo-14805033.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', icon: Settings, color: '#22C55E', skills: ['CNC Turning', 'VMC', 'Programming'] },
+	{ title: 'Fitters', description: 'Assemble and fit machine parts together with precision.', image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=80', icon: Wrench, color: '#8B5CF6', skills: ['Assembly', 'Alignment', 'Maintenance'] },
+	{ title: 'Plumbers', description: 'Install and repair pipes for water and gas in buildings and factories.', image: 'https://images.pexels.com/photos/29226620/pexels-photo-29226620.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', icon: Droplets, color: '#06B6D4', skills: ['Pipe Fitting', 'Drainage', 'Industrial'] },
+	{ title: 'Supervisors', description: 'Manage teams of workers, check quality, ensure safety on site.', image: 'https://images.pexels.com/photos/28196526/pexels-photo-28196526.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', icon: ClipboardCheck, color: '#EC4899', skills: ['Team Lead', 'Quality Check', 'Safety'] },
 ]
 
 const whyBenefits = [
@@ -104,10 +104,10 @@ const stats = [
 ]
 
 function SkilledJobHero({ resolveAsset }) {
-	const heroAsset = resolveAsset('skilled.hero', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Skilled Workers')
+	const heroAsset = resolveAsset('skilled.hero', 'https://images.pexels.com/photos/32048365/pexels-photo-32048365.jpeg', 'Skilled Workers')
 
 	return (
-		<section className="relative flex min-h-[90vh] items-center overflow-hidden">
+		<section className="relative flex h-[100svh] items-center overflow-hidden">
 			<div className="absolute inset-0">
 				<img src={heroAsset.url} alt={heroAsset.alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/85 to-[#0F172A]/70" />
@@ -116,26 +116,26 @@ function SkilledJobHero({ resolveAsset }) {
 			<div className="absolute right-20 top-20 h-72 w-72 rounded-full bg-[#F97316]/20 blur-3xl" />
 			<div className="absolute bottom-20 left-1/4 h-96 w-96 rounded-full bg-[#2563EB]/15 blur-3xl" />
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6 py-32 lg:px-8">
-				<div className="max-w-3xl">
-					<div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#F97316]/30 bg-[#F97316]/20 px-4 py-2 backdrop-blur-sm">
+			<div className="relative z-10 mx-auto flex w-full max-w-7xl justify-start px-6 py-16 lg:px-8 lg:py-12">
+				<div className="max-w-3xl text-left lg:max-w-4xl">
+					<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#F97316]/30 bg-[#F97316]/20 px-4 py-2 backdrop-blur-sm">
 						<Wrench className="h-4 w-4 text-[#F97316]" />
 						<span className="text-sm font-bold text-white">SKILLED JOB WORK</span>
 					</div>
 
-					<h1 className="mb-6 text-5xl font-bold leading-tight text-white sm:text-6xl lg:text-7xl">
+					<h1 className="mb-5 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
 						We Have
 						<span className="mt-2 block text-[#F97316]">Trained Workers</span>
 						<span className="block text-white">For Your Work</span>
 					</h1>
 
-					<p className="mb-10 max-w-2xl text-xl leading-relaxed text-white/90">
+					<p className="mb-8 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl">
 						Need trained workers like welders, electricians, or machine operators?
 						<span className="font-semibold text-[#F97316]"> TSPL provides skilled workers who know their job well.</span>
 						 They come trained and ready to work.
 					</p>
 
-					<div className="mb-10 flex flex-wrap gap-4">
+					<div className="mb-8 flex flex-wrap justify-start gap-4">
 						{['Already Trained', 'Verified Workers', 'Quick Joining'].map((benefit) => (
 							<div key={benefit} className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm">
 								<CheckCircle2 className="h-4 w-4 text-[#22C55E]" />
@@ -144,7 +144,7 @@ function SkilledJobHero({ resolveAsset }) {
 						))}
 					</div>
 
-					<div className="mb-12 flex flex-col gap-4 sm:flex-row">
+					<div className="mb-0 flex flex-col items-start gap-4 sm:flex-row">
 						<Link to="/contact-us" className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#F97316] px-8 py-4 text-lg font-bold text-white shadow-2xl shadow-[#F97316]/30 transition-all duration-300 hover:scale-105 hover:bg-[#EA580C]">
 							Get Skilled Workers
 							<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -154,20 +154,6 @@ function SkilledJobHero({ resolveAsset }) {
 						</a>
 					</div>
 
-					<div className="grid grid-cols-3 gap-4">
-						<div className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm">
-							<p className="text-3xl font-bold text-white">25,000+</p>
-							<p className="text-sm text-white/70">Skilled Workers</p>
-						</div>
-						<div className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm">
-							<p className="text-3xl font-bold text-[#F97316]">50+</p>
-							<p className="text-sm text-white/70">Work Types</p>
-						</div>
-						<div className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm">
-							<p className="text-3xl font-bold text-[#22C55E]">400+</p>
-							<p className="text-sm text-white/70">Happy Companies</p>
-						</div>
-					</div>
 				</div>
 			</div>
 		</section>

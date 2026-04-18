@@ -4,6 +4,7 @@ import { STRAPI_BASE_URL, fetchCollection, extractMediaUrl } from '../utils/stra
 
 const FALLBACK_LOGOS = [
   { src: '/JCB_(company)-Logo.wine.svg', alt: 'JCB' },
+  { src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/LG_logo_%282014%29.svg', alt: 'LG' },
   { src: '/Mrf-logo.png', alt: 'MRF' },
   { src: '/haier-logo.png', alt: 'Haier' },
 ];
@@ -67,7 +68,7 @@ export default function CompanyMarquee() {
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">Trusted by</p>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Companies across India
+              400+ leading companies across India
             </h2>
             <p className="mt-3 text-base font-medium text-slate-600">
               We partner with employers to connect skilled talent with real opportunities.
@@ -89,17 +90,19 @@ export default function CompanyMarquee() {
               {loop.map((logo, index) => (
                 <div
                   key={`${logo.alt}-${index}`}
-                  className="flex h-14 w-40 flex-none items-center justify-center px-2"
+                  className="flex h-24 w-44 flex-none flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white/90 px-3"
                 >
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="max-h-10 w-auto max-w-full object-contain opacity-70 grayscale"
+                    className="max-h-9 w-auto max-w-full object-contain"
                     loading="lazy"
                     width="160"
                     height="56"
                     draggable={false}
                   />
+                  <p className="mt-2 text-xs font-bold uppercase tracking-wide text-slate-700">{logo.alt}</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">Partner</p>
                 </div>
               ))}
             </div>

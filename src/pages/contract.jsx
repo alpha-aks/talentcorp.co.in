@@ -122,7 +122,7 @@ const staffingTypes = [
 		title: 'Short-Term Contract',
 		duration: '1-6 Months',
 		description: 'Perfect for project-based work, event staffing, or covering employee absences.',
-		image: '/images/contract-project.jpg',
+		image: 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_1_db10669652.jpeg',
 		icon: Clock,
 		color: 'blue',
 		features: ['Quick deployment', 'Skilled workers', 'Flexible extension'],
@@ -132,7 +132,7 @@ const staffingTypes = [
 		title: 'Long-Term Contract',
 		duration: '6-24 Months',
 		description: 'Ideal for ongoing projects, production line staffing, or long-term business expansion.',
-		image: '/images/contract-scale.jpg',
+		image: 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg',
 		icon: Calendar,
 		color: 'orange',
 		features: ['Dedicated team', 'Lower cost', 'Consistent quality'],
@@ -142,7 +142,7 @@ const staffingTypes = [
 		title: 'Project-Based Staffing',
 		duration: 'As per project',
 		description: 'Complete team for your specific project from start to finish.',
-		image: '/images/contract-onboard.jpg',
+		image: 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_23_393c307542.jpeg',
 		icon: Building2,
 		color: 'green',
 		features: ['Full team', 'Project management', 'Milestone based'],
@@ -152,7 +152,7 @@ const staffingTypes = [
 		title: 'Seasonal Staffing',
 		duration: 'Peak seasons',
 		description: 'Scale up quickly during busy seasons and scale down when demand drops.',
-		image: '/images/contract-seasonal.jpg',
+		image: 'https://images.pexels.com/photos/17396054/pexels-photo-17396054.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
 		icon: Zap,
 		color: 'purple',
 		features: ['Fast scaling', 'Trained workers', 'Cost effective'],
@@ -192,9 +192,9 @@ function ContractHero({ resolveAsset }) {
 	return (
 		<section className="relative min-h-screen overflow-hidden bg-white pt-24">
 			<div className="absolute inset-0">
-				<img src={resolveAsset('contract.hero', '/images/contract-hero.jpg').url} alt={resolveAsset('contract.hero', '/images/contract-hero.jpg', 'Contract Staffing').alt} className="h-full w-full object-cover" />
-				<div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/80" />
-				<div className="absolute inset-0 bg-gradient-to-b from-white via-white/50 to-white" />
+				<img src={resolveAsset('contract.hero', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg').url} alt={resolveAsset('contract.hero', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg', 'Contract Staffing').alt} className="h-full w-full object-cover" />
+				<div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 to-white/55" />
+				<div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-white/35" />
 			</div>
 
 			<div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:gap-20 lg:px-8 lg:py-24">
@@ -253,7 +253,7 @@ function ContractHero({ resolveAsset }) {
 				<div className="relative">
 					<div className="mx-auto aspect-square max-w-lg">
 						<div className="absolute inset-8 overflow-hidden rounded-3xl border border-gray-100 shadow-2xl shadow-blue-500/10">
-							<img src={resolveAsset('contract.flexible', '/images/contract-flexible.jpg').url} alt={resolveAsset('contract.flexible', '/images/contract-flexible.jpg', 'Contract Workers').alt} className="h-full w-full object-cover" />
+							<img src={resolveAsset('contract.flexible', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg').url} alt={resolveAsset('contract.flexible', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg', 'Contract staffing team').alt} className="h-full w-full object-cover" />
 						</div>
 					</div>
 				</div>
@@ -268,7 +268,7 @@ function WhatIsContract({ resolveAsset }) {
 			<div className="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
 				<div className="relative">
 					<div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
-						<img src={resolveAsset('contract.project', '/images/contract-project.jpg').url} alt={resolveAsset('contract.project', '/images/contract-project.jpg', 'Contract Staffing Explained').alt} className="h-full w-full object-cover" />
+						<img src={resolveAsset('contract.project', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_2_b4fce792ff.jpeg').url} alt={resolveAsset('contract.project', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_2_b4fce792ff.jpeg', 'Contract Staffing Explained').alt} className="h-full w-full object-cover" />
 					</div>
 				</div>
 

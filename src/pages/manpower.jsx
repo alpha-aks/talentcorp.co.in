@@ -35,22 +35,17 @@ import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 function ManpowerHero({ resolveAsset }) {
 	return (
-		<section className="relative flex min-h-[72vh] items-center overflow-hidden lg:min-h-[78vh]">
+		<section className="relative flex h-[100svh] items-center overflow-hidden">
 			<div className="absolute inset-0">
-				<img src={resolveAsset('manpower.hero', '/images/manpower-hero.jpg').url} alt={resolveAsset('manpower.hero', '/images/manpower-hero.jpg', 'Manpower Supply').alt} className="h-full w-full object-cover" />
+				<img src={resolveAsset('manpower.hero', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_23_1_37194de30d.jpeg').url} alt={resolveAsset('manpower.hero', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_23_1_37194de30d.jpeg', 'Manpower Supply').alt} className="h-full w-full object-cover" />
 				<div className="absolute inset-0 bg-gradient-to-r from-[#0F172A]/95 via-[#0F172A]/80 to-[#0F172A]/60" />
 			</div>
 
 			<div className="absolute right-20 top-16 h-56 w-56 animate-pulse rounded-full bg-[#2563EB]/20 blur-3xl" />
 			<div className="absolute bottom-16 left-1/4 h-72 w-72 animate-pulse rounded-full bg-[#F97316]/10 blur-3xl" style={{ animationDelay: '1s' }} />
 
-			<div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+			<div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-14 lg:px-8 lg:py-16">
 				<div className="max-w-2xl text-left">
-					<div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-sm animate-fade-in">
-						<Users className="h-4 w-4 text-[#F97316]" />
-						<span className="text-sm font-medium text-white">Trusted by 400+ Companies</span>
-					</div>
-
 					<h1 className="hero-text-reveal mb-5 text-4xl font-bold leading-tight text-white animate-fade-in sm:text-5xl lg:text-6xl">
 						We Provide
 						<span className="mt-2 block text-[#2563EB]">Right Workers</span>
@@ -78,7 +73,7 @@ function ManpowerHero({ resolveAsset }) {
 						</a>
 					</div>
 
-					<div className="grid grid-cols-3 gap-6 animate-fade-in-up animation-delay-300">
+					<div className="grid grid-cols-3 gap-4 animate-fade-in-up animation-delay-300 sm:gap-6">
 						<div className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm">
 							<p className="text-3xl font-bold text-white">40,000+</p>
 							<p className="text-sm text-white/60">Workers Placed</p>
@@ -122,7 +117,7 @@ function WhatIsManpower({ resolveAsset }) {
 				<div className="grid items-center gap-16 lg:grid-cols-2">
 					<div className="relative animate-fade-in">
 						<div className="relative overflow-hidden rounded-3xl shadow-2xl">
-							<img src={resolveAsset('manpower.workers', '/images/manpower-workers.jpg').url} alt={resolveAsset('manpower.workers', '/images/manpower-workers.jpg', 'Workers at job').alt} className="h-[500px] w-full object-cover" />
+								<img src={resolveAsset('manpower.workers', 'https://images.pexels.com/photos/30223853/pexels-photo-30223853.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2').url} alt={resolveAsset('manpower.workers', 'https://images.pexels.com/photos/30223853/pexels-photo-30223853.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', 'Workers at job').alt} className="h-[500px] w-full object-cover" />
 							<div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/60 to-transparent" />
 						</div>
 
@@ -556,7 +551,7 @@ function ManpowerWhyChooseUs({ resolveAsset }) {
 
 					<div className="relative animate-fade-in-right">
 						<div className="relative overflow-hidden rounded-3xl shadow-2xl">
-							<img src={resolveAsset('manpower.industries', '/images/manpower-industries.jpg').url} alt={resolveAsset('manpower.industries', '/images/manpower-industries.jpg', 'Industries we serve').alt} className="h-[600px] w-full object-cover" />
+								<img src={resolveAsset('manpower.industries', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg').url} alt={resolveAsset('manpower.industries', 'https://backend.tsplgroup.co.in/uploads/Whats_App_Image_2026_04_16_at_10_53_25_3_1d589b7f92.jpeg', 'Industries we serve').alt} className="h-[600px] w-full object-cover" />
 							<div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent" />
 
 							<div className="absolute bottom-0 left-0 right-0 p-6">

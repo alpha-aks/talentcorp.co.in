@@ -104,19 +104,22 @@ export default function HomePage() {
 
   useEffect(() => {
     const runPrefetch = () => {
-      // Warm up above-the-fold follow-up sections first.
+      // Warm up only immediate next sections to avoid startup jank.
       loadCompanyMarquee();
       loadWorkforceSection();
-      loadStrengthsAccordion();
-      loadJobBoard();
 
-      // Prefetch lower sections in the background.
+      // Stagger remaining chunks after initial paint settles.
+      setTimeout(() => {
+        loadStrengthsAccordion();
+        loadJobBoard();
+      }, 500);
+
       setTimeout(() => {
         loadNewsSection();
         loadTestimonials();
         loadFAQSection();
         loadFooter();
-      }, 250);
+      }, 1200);
     };
 
     if (typeof window === 'undefined') return;
