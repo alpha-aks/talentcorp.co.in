@@ -4,7 +4,6 @@ import { STRAPI_BASE_URL, fetchCollection, extractMediaUrl } from '../utils/stra
 
 const FALLBACK_LOGOS = [
   { src: '/JCB_(company)-Logo.wine.svg', alt: 'JCB' },
-  { src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/LG_logo_%282014%29.svg', alt: 'LG' },
   { src: '/Mrf-logo.png', alt: 'MRF' },
   { src: '/haier-logo.png', alt: 'Haier' },
 ];

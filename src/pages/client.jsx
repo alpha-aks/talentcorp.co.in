@@ -25,7 +25,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { submitLead } from '../utils/strapi'
+import { STRAPI_BASE_URL, extractMediaUrl, fetchCollection, submitLead } from '../utils/strapi'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const stats = [
@@ -35,12 +35,17 @@ const stats = [
 	{ icon: TrendingUp, value: 98, suffix: '%', label: 'Client Retention' },
 ]
 
-const partnerLogos = [
+const FALLBACK_PARTNER_LOGOS = [
 	{ name: 'JCB', src: '/JCB_(company)-Logo.wine.svg' },
-	{ name: 'LG', src: '/images-10.jpeg' },
 	{ name: 'HAIER', src: '/haier-logo.png' },
 	{ name: 'MRF', src: '/Mrf-logo.png' },
 ]
+
+function withCacheBuster(url, version) {
+	if (!url || !version) return url
+	const separator = url.includes('?') ? '&' : '?'
+	return `${url}${separator}v=${encodeURIComponent(version)}`
+}
 
 const heroStats = [
 	{ value: 40000, isNumber: true, label: 'Successful Placements' },
@@ -235,7 +240,7 @@ function AnimatedCounter({ value, suffix }) {
 	return <span ref={ref}>{count.toLocaleString()}{suffix}</span>
 }
 
-function ClientsHero({ resolveAsset }) {
+function ClientsHero({ resolveAsset, partnerLogos }) {
 	const heroAsset = resolveAsset('client.card.1', '/Gemini_Generated_Image_qskougqskougqsko.png', 'Office Background')
 
 	return (
@@ -338,9 +343,9 @@ function ClientsHero({ resolveAsset }) {
 	)
 }
 
-function LogoMarquee() {
+function LogoMarquee({ partnerLogos }) {
 	const renderPartnerRow = (reverse = false) => (
-		<div className="logo-marquee-track gap-4" style={{ animationDirection: reverse ? 'reverse' : 'normal' }}>
+		<div className="logo-marquee-track gap-4" style={{ animationDirection: reverse ? 'reverse' : 'normal', animationDuration: '40s' }}>
 			{[...partnerLogos, ...partnerLogos, ...partnerLogos].map((brand, idx) => (
 				<div
 					key={`${brand.name}-${reverse ? 'rev' : 'fwd'}-${idx}`}
@@ -842,13 +847,51 @@ function ClientsCTA() {
 export default function ClientPage() {
 	const pageAssets = usePageAssets()
 	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
+	const [partnerLogos, setPartnerLogos] = useState(FALLBACK_PARTNER_LOGOS)
+
+	useEffect(() => {
+		if (!STRAPI_BASE_URL) return
+
+		let mounted = true
+
+		;(async () => {
+			try {
+				const data = await fetchCollection('/api/client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100')
+				const mapped = data
+					.map((entry) => {
+						const logoUrl = extractMediaUrl(entry.logo)
+						const name = String(entry.name || '').trim() || 'PARTNER'
+						const version = entry.updatedAt || entry.logo?.updatedAt || entry.documentId || entry.id
+						return {
+							name,
+							src: withCacheBuster(logoUrl, version),
+						}
+					})
+					.filter((item) => Boolean(item.src))
+
+				if (!mounted || mapped.length === 0) return
+
+				const merged = [...mapped, ...FALLBACK_PARTNER_LOGOS].filter(
+					(item, index, array) => array.findIndex((candidate) => candidate.src === item.src) === index
+				)
+
+				setPartnerLogos(merged)
+			} catch {
+				// Keep fallback logos if Strapi fetch fails.
+			}
+		})()
+
+		return () => {
+			mounted = false
+		}
+	}, [])
 
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
 			<main>
-				<ClientsHero resolveAsset={resolveAsset} />
-                <LogoMarquee />
+				<ClientsHero resolveAsset={resolveAsset} partnerLogos={partnerLogos} />
+				<LogoMarquee partnerLogos={partnerLogos} />
 				<Industries resolveAsset={resolveAsset} />
 				<CaseStudies resolveAsset={resolveAsset} />		
 				<Testimonials />
