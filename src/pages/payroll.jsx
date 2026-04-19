@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ServiceEnquirySection from '../components/ServiceEnquirySection';
 
 const benefits = {
   forCompanies: [
@@ -585,6 +586,7 @@ export default function PayrollPage() {
         <PayrollFAQ />
         <PayrollCTA />
       </main>
+      <ServiceEnquirySection serviceName="PAYROLL" />
       <Footer />
     </div>
   );

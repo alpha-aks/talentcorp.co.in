@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { StaggerContainer, StaggerItem } from '../components/AnimatedContent'
 
 const heroStats = [{ value: '15,000+', label: 'Professionals Trained' }, { value: '500+', label: 'Premium Partners' }, { value: 'Rs. 15,000+', label: 'Average Monthly Pay' }]
@@ -483,6 +484,7 @@ export default function NapsPage() {
 				<NAPSProcess />
 				<NAPSCTA />
 			</main>
+			<ServiceEnquirySection serviceName="NAPS" />
 			<Footer />
 		</div>
 	)

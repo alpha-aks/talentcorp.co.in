@@ -1,6 +1,7 @@
 import { BadgeIndianRupee, Building2, CalendarClock, CheckCircle2, Factory, Handshake, ShieldCheck, Users, Wrench } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 
 const benefits = [
 	'Offers financial support of Rs. 3500 per month per apprentice.',
@@ -179,6 +180,7 @@ export default function MapsPage() {
 			<MapsHero />
 			<MapsProgramDetails />
 			<MapsBenefits />
+			<ServiceEnquirySection serviceName="MAPS" />
 			<Footer />
 		</div>
 	)

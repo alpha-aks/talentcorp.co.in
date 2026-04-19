@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 
 const programmeFeatures = [
 	'UGC Scheme - Skill Development',
@@ -433,7 +434,7 @@ export default function BvocPage() {
 				<BvocBenefits />
 				<BvocProcess />
 				<BvocEligibility />
-				<BvocEnquiry />
+				<ServiceEnquirySection serviceName="B.VOC" />
 			</main>
 			<Footer />
 		</div>

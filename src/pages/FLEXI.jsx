@@ -22,6 +22,7 @@ import {
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const benefits = [
@@ -503,7 +504,7 @@ export default function FlexiItiPage() {
 				<FlexiItiBenefits resolveAsset={resolveAsset} />
 				<FlexiItiProcess />
 				<FlexiItiEligibility />
-				<FlexiItiEnquiry />
+				<ServiceEnquirySection serviceName="FLEXI ITI" />
 			</main>
 			<Footer />
 		</div>

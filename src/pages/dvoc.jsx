@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 
 const disciplines = [
 	'Engineering',
@@ -438,7 +439,7 @@ export default function DvocPage() {
 				<DvocBenefits />
 				<DvocProcess />
 				<DvocEligibility />
-				<DvocEnquiry />
+				<ServiceEnquirySection serviceName="D.VOC" />
 			</main>
 			<Footer />
 		</div>

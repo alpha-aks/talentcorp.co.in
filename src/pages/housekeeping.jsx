@@ -34,6 +34,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 function HousekeepingHero({ resolveAsset }) {
@@ -606,7 +607,7 @@ export default function HousekeepingPage() {
 				<OurServices resolveAsset={resolveAsset} />				
 				<WhyChooseUs resolveAsset={resolveAsset} />
 				<OurProcess />
-				<Enquiry />
+				<ServiceEnquirySection serviceName="HOUSEKEEPING" />
 			</main>
 			<Footer />
 		</div>

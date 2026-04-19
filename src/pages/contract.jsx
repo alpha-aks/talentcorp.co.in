@@ -30,6 +30,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { submitLead } from '../utils/strapi'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
@@ -716,6 +717,7 @@ export default function ContractPage() {
 				<ContractIndustries />
 				<ContractBenefits resolveAsset={resolveAsset} />
 				<ContractCTA resolveAsset={resolveAsset} />
+				<ServiceEnquirySection serviceName="CONTRACT" />
 			</main>
 			<Footer />
 		</div>

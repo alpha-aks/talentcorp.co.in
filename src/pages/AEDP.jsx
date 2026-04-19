@@ -1,6 +1,7 @@
 import { Briefcase, Building2, CheckCircle2, GraduationCap, Handshake, Laptop, Stethoscope, Wrench } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 const keyPoints = [
@@ -206,6 +207,7 @@ export default function AedpPage() {
 			<AedpOverview />
 			<AedpBenefits />
 			<AedpIndustrySection />
+			<ServiceEnquirySection serviceName="AEDP" />
 			<Footer />
 		</div>
 	)

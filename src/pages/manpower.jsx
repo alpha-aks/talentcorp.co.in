@@ -31,6 +31,7 @@ import {
 } from 'lucide-react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ServiceEnquirySection from '../components/ServiceEnquirySection'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 
 function ManpowerHero({ resolveAsset }) {
@@ -648,7 +649,7 @@ export default function ManpowerPage() {
 				<WorkerTypes />
 				<ManpowerWhyChooseUs resolveAsset={resolveAsset} />
 				<HowItWorks />		
-				<Enquiry />
+				<ServiceEnquirySection serviceName="MANPOWER" />
 			</main>
 			<Footer />
 		</div>

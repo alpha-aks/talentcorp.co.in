@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, CheckCircle2, GraduationCap, Briefcase, FileText, CheckSquare, Award, Building2, ArrowRight, Phone, Mail } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ServiceEnquirySection from '../components/ServiceEnquirySection';
 
 const natsHighlights = [
 	{
@@ -348,6 +349,7 @@ export default function NatsLandingPage() {
 					</div>
 				</section>
 			</main>
+			<ServiceEnquirySection serviceName="NATS" />
 
 			<Footer />
 		</div>
