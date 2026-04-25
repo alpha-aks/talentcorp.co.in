@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
+import React from 'react';
 
 const milestones = [
 	{ year: '2014', title: 'Company Founded', description: 'Started with a small team of 5 people' },
@@ -29,42 +30,241 @@ const values = [
 	{ icon: Award, title: 'Quality', description: 'We deliver the best results always', color: '#2563EB' },
 ]
 
-const teamData = {
-	ceo: {
-		name: 'Rajesh Kumar',
-		role: 'Founder & CEO',
-		image: '/images/team/ceo.jpg',
-		description: 'Leading TSPL Group since 2014',
-	},
-	directors: [
-		{
-			name: 'Priya Sharma',
-			role: 'Director of Operations',
-			image: '/images/team/director1.jpg',
-			description: 'Oversees all operational activities',
-		},
-		{
-			name: 'Amit Patel',
-			role: 'Director of Training',
-			image: '/images/team/director2.jpg',
-			description: 'Manages all training programs',
-		},
-	],
-	managers: [
-		{ name: 'Sunita Verma', role: 'HR Manager', image: '/images/team/manager1.jpg' },
-		{ name: 'Vikram Singh', role: 'Training Manager', image: '/images/team/manager2.jpg' },
-		{ name: 'Meera Joshi', role: 'Client Relations', image: '/images/team/manager3.jpg' },
-	],
-}
+const styles = `
+  .visionary-container {
+    background-color: #0b1120;
+    color: white;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    padding: 60px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-function Leaf({ className = '', style = {} }) {
-	return (
-		<svg viewBox="0 0 20 28" className={className} style={style} fill="#22C55E">
-			<path d="M10 0C10 0 3 7 3 15C3 21 6 26 10 28C14 26 17 21 17 15C17 7 10 0 10 0Z" />
-			<path d="M10 6V24" stroke="#166534" strokeWidth="0.8" fill="none" opacity="0.4" />
-		</svg>
-	)
-}
+  .title {
+    font-size: 28px;
+    letter-spacing: 3px;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .title span {
+    color: #87ceeb;
+    text-shadow: 0 0 15px rgba(135, 206, 235, 0.4);
+  }
+
+  /* Main Layout Grid - Adjusted for wider layout */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr; /* Left side big, Right side flexible */
+    gap: 30px;
+    max-width: 1400px; /* Thoda wide kiya taaki 4 cards fit hon */
+    width: 100%;
+    align-items: start;
+  }
+
+  /* Right Side Grid - 4 Columns */
+  .right-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Exact 4 above, 4 below */
+    gap: 20px;
+  }
+
+  /* 3D Card Logic */
+  .card-container {
+    perspective: 1500px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .card-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-container:hover .card-wrapper {
+    transform: rotateY(-20deg) rotateX(8deg);
+  }
+
+  /* Layers Base */
+  .layer {
+    border-radius: 12px;
+    background: rgba(20, 30, 50, 0.85);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(135, 206, 235, 0.2);
+    overflow: hidden;
+    transition: all 0.6s ease;
+    height: 100%;
+  }
+
+  /* Back Layers (Stacked behind) */
+  .back-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.1), transparent);
+  }
+
+  /* Hover Animations */
+  .card-container:hover .layer-1 {
+    opacity: 0.6;
+    transform: translateZ(15px) translateX(25px);
+  }
+
+  .card-container:hover .layer-2 {
+    opacity: 0.3;
+    transform: translateZ(-15px) translateX(50px);
+  }
+
+  .card-container:hover .main-layer {
+    transform: translateZ(40px);
+    border-color: rgba(135, 206, 235, 0.6);
+    box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Content Styling */
+  .main-layer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .profile-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    filter: grayscale(10%) brightness(0.9);
+    border-bottom: 1px solid rgba(135, 206, 235, 0.2);
+  }
+
+  .big-card .profile-img {
+    height: 350px; /* Bada image left wale ke liye */
+  }
+
+  .card-info {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-info h3 {
+    margin: 0;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .big-card .card-info h3 {
+    font-size: 22px;
+  }
+
+  .card-info p.role {
+    font-size: 11px;
+    color: #87ceeb;
+    margin: 5px 0 0 0;
+    font-weight: 600;
+  }
+
+  .big-card .card-info p.role {
+    font-size: 14px;
+  }
+
+  .card-info p.desc {
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-top: 15px;
+  }
+
+  /* Responsive Design taaki mobile/tablet pe kharab na ho */
+  @media (max-width: 1200px) {
+    .layout-grid { grid-template-columns: 1fr; max-width: 900px; }
+    .right-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .right-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .right-grid { grid-template-columns: 1fr; }
+  }
+`;
+
+const Card = ({ name, role, desc, img, isBig }) => (
+  <div className={`card-container ${isBig ? 'big-card' : ''}`}>
+    <div className="card-wrapper">
+      {/* Background Effect Layers */}
+      <div className="layer back-layer layer-1"></div>
+      <div className="layer back-layer layer-2"></div>
+      
+      {/* Front Visible Layer */}
+      <div className="layer main-layer">
+        <img src={img} alt={name} className="profile-img" />
+        <div className="card-info">
+          <h3>{name}</h3>
+          <p className="role">{role}</p>
+          {isBig && <p className="desc">{desc}</p>}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+function VisionarySection() {
+  // Total 9 log: 1 Bada + 8 Chote (4 upar, 4 niche)
+  const mainLeader = { 
+    name: "Dr. Mehboob Sayyad", 
+    role: "Founder & Chairman", 
+    desc: "Visionary leader driving innovation in talent acquisition. Dedicated to building transformative relationships.", 
+    img: "https://i.pinimg.com/736x/f6/55/bd/f655bdeb413bd8366df948e23520ef3e.jpg" 
+  };
+
+  const teamMembers = [
+    // Upar ke 4
+    { name: "Sunil Chavan", role: "Director", img: "https://i.pinimg.com/736x/10/0d/d6/100dd68bb6efd1d013c75be5f0570958.jpg" },
+    { name: "Deshbhushan Jain", role: "Director", img: "https://i.pinimg.com/736x/ce/34/57/ce34572a8697115400d550d5bd330aae.jpg" },
+    { name: "Vikas Patil", role: "Director", img: "https://i.pinimg.com/736x/eb/e4/97/ebe49719a0ec0a81c4370153e9a1eaac.jpg" },
+    { name: "Prakash Rathod", role: "Director", img: "https://i.pinimg.com/736x/d4/77/21/d47721308ff9e92cc546bc57c28c8276.jpg" },
+    // Niche ke 4
+    { name: "Sarang Chavan", role: "Director", img: "https://i.pinimg.com/736x/19/4b/ad/194bad38e54e07a04fabc16aadf21666.jpg" },
+    { name: "Babasaheb Khillari", role: "Director", img: "https://i.pravatar.cc/400?img=12" },
+    { name: "Dheepan Chakravarthi", role: "Director", img: "https://i.pravatar.cc/400?img=33" }
+    
+  ];
+
+  return (
+    <div className="visionary-container">
+      <style>{styles}</style>
+      
+      <h2 className="title">MEET OUR <span>VISIONARIES</span></h2>
+      
+      <div className="layout-grid">
+        {/* Left Side: 1 Big Card */}
+        <div className="left-side">
+          <Card {...mainLeader} isBig={true} />
+        </div>
+
+        {/* Right Side: 8 Small Cards Grid (4 Columns) */}
+        <div className="right-grid">
+          {teamMembers.map((member, index) => (
+            <Card key={index} {...member} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+} 
 
 function AboutHero({ resolveAsset }) {
 	const aboutHeroAsset = resolveAsset(
@@ -297,122 +497,10 @@ function Achievements() {
 	)
 }
 
-function TeamTree({ teamData }) {
-	return (
-		<section className="relative overflow-hidden py-20 lg:py-28">
-			<div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E9] via-[#F1F8E9] to-[#C8E6C9]" />
-
-			<div className="pointer-events-none absolute inset-0">
-				<Leaf className="absolute h-7 w-5 opacity-40 animate-pulse" style={{ top: '10%', left: '15%', transform: 'rotate(-20deg)' }} />
-				<Leaf className="absolute h-6 w-4 opacity-50 animate-pulse" style={{ top: '20%', right: '20%', transform: 'rotate(25deg)', animationDelay: '1s' }} />
-				<Leaf className="absolute h-8 w-6 opacity-35 animate-pulse" style={{ top: '40%', left: '8%', transform: 'rotate(-35deg)', animationDelay: '2s' }} />
-				<Leaf className="absolute h-6 w-4 opacity-45 animate-pulse" style={{ top: '60%', right: '12%', transform: 'rotate(15deg)', animationDelay: '0.5s' }} />
-			</div>
-
-			<div className="relative z-10 mx-auto max-w-5xl px-6 lg:px-8">
-				<div className="mb-16 text-center">
-					<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/15 px-4 py-2">
-						<Leaf className="h-5 w-4" />
-						<span className="text-sm font-bold text-[#166534]">OUR FAMILY TREE</span>
-					</div>
-					<h2 className="mb-4 text-4xl font-bold text-[#0F172A] lg:text-5xl">Growing Together</h2>
-					<p className="mx-auto max-w-2xl text-lg text-[#64748B]">
-						Like a tree, our team grows stronger with each branch - every member helps us reach new heights
-					</p>
-				</div>
-
-				<div className="relative">
-					<div className="relative z-10 mb-32 flex justify-center">
-						<div className="relative">
-							<div className="absolute -inset-6 rounded-full bg-gradient-to-b from-[#22C55E]/30 to-transparent blur-2xl" />
-							<div className="relative w-64 rounded-3xl border-4 border-[#22C55E] bg-white p-6 shadow-2xl transition-all duration-300 hover:-translate-y-1">
-								<div className="relative mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border-4 border-[#F97316] shadow-lg">
-									<img src={teamData.ceo.image} alt={teamData.ceo.name} className="h-full w-full object-cover" />
-								</div>
-								<div className="text-center">
-									<h3 className="text-xl font-bold text-[#0F172A]">{teamData.ceo.name}</h3>
-									<p className="mt-1 font-bold text-[#F97316]">{teamData.ceo.role}</p>
-									<p className="mt-2 text-sm text-[#64748B]">{teamData.ceo.description}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="mb-20 grid gap-8 md:grid-cols-2">
-						{teamData.directors.map((director) => (
-							<div key={director.name} className="relative rounded-2xl border-2 border-[#2563EB] bg-white p-5 shadow-xl transition-all duration-300 hover:-translate-y-1">
-								<div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#2563EB] px-3 py-1 text-xs font-bold text-white shadow-lg">
-									DIRECTOR
-								</div>
-								<div className="relative mx-auto mb-3 h-[72px] w-[72px] overflow-hidden rounded-full border-2 border-[#2563EB]/40 shadow-md">
-									<img src={director.image} alt={director.name} className="h-full w-full object-cover" />
-								</div>
-								<div className="text-center">
-									<h3 className="text-base font-bold text-[#0F172A]">{director.name}</h3>
-									<p className="mt-1 text-sm font-semibold text-[#2563EB]">{director.role}</p>
-									<p className="mt-2 text-xs leading-relaxed text-[#64748B]">{director.description}</p>
-								</div>
-							</div>
-						))}
-					</div>
-
-					<div className="grid gap-6 md:grid-cols-3">
-						{teamData.managers.map((manager) => (
-							<div key={manager.name} className="relative rounded-xl border-2 border-[#F97316]/60 bg-white p-4 shadow-lg transition-all duration-300 hover:-translate-y-1">
-								<div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#F97316] px-2 py-0.5 text-[10px] font-bold text-white">
-									MANAGER
-								</div>
-								<div className="relative mx-auto mb-2 h-14 w-14 overflow-hidden rounded-full border-2 border-[#F97316]/40 shadow">
-									<img src={manager.image} alt={manager.name} className="h-full w-full object-cover" />
-								</div>
-								<div className="text-center">
-									<h3 className="text-sm font-bold text-[#0F172A]">{manager.name}</h3>
-									<p className="mt-1 text-xs font-medium text-[#F97316]">{manager.role}</p>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-		</section>
-	)
-}
-
 export default function AboutPage() {
 	const pageAssets = usePageAssets()
 	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
-	const managedTeamData = {
-		...teamData,
-		ceo: {
-			...teamData.ceo,
-			image: resolveAsset('about.team.ceo', teamData.ceo.image).url,
-		},
-		directors: [
-			{
-				...teamData.directors[0],
-				image: resolveAsset('about.team.director1', teamData.directors[0].image).url,
-			},
-			{
-				...teamData.directors[1],
-				image: resolveAsset('about.team.director2', teamData.directors[1].image).url,
-			},
-		],
-		managers: [
-			{
-				...teamData.managers[0],
-				image: resolveAsset('about.team.manager1', teamData.managers[0].image).url,
-			},
-			{
-				...teamData.managers[1],
-				image: resolveAsset('about.team.manager2', teamData.managers[1].image).url,
-			},
-			{
-				...teamData.managers[2],
-				image: resolveAsset('about.team.manager3', teamData.managers[2].image).url,
-			},
-		],
-	}
-
+	
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
@@ -421,7 +509,7 @@ export default function AboutPage() {
 				<OurStory resolveAsset={resolveAsset} />
 				<OurValues />
 				<Achievements />
-				<TeamTree teamData={managedTeamData} />
+				<VisionarySection />
 			</main>
 			<Footer />
 		</div>
