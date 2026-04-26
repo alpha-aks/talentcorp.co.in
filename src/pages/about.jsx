@@ -1,9 +1,10 @@
-import { ArrowRight, Trophy, Building2, MapPin, Calendar, Target, Eye, Heart, Shield, Users, Lightbulb, HandHeart, Award } from 'lucide-react'
+import { ArrowRight, Trophy, Building2, MapPin, Calendar, Target, Eye, Heart, Shield, Users, Lightbulb, HandHeart, Award, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets'
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const milestones = [
 	{ year: '2014', title: 'Company Founded', description: 'Started with a small team of 5 people' },
@@ -30,255 +31,129 @@ const values = [
 	{ icon: Award, title: 'Quality', description: 'We deliver the best results always', color: '#2563EB' },
 ]
 
-const styles = `
-  .visionary-container {
-    background-color: #0b1120;
-    color: white;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    padding: 60px 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .title {
-    font-size: 28px;
-    letter-spacing: 3px;
-    margin-bottom: 50px;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .title span {
-    color: #87ceeb;
-    text-shadow: 0 0 15px rgba(135, 206, 235, 0.4);
-  }
-
-  /* Main Layout Grid - Adjusted for wider layout */
-  .layout-grid {
-    display: grid;
-    grid-template-columns: 350px 1fr; /* Left side big, Right side flexible */
-    gap: 30px;
-    max-width: 1400px; /* Thoda wide kiya taaki 4 cards fit hon */
-    width: 100%;
-    align-items: start;
-  }
-
-  /* Right Side Grid - 4 Columns */
-  .right-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Exact 4 above, 4 below */
-    gap: 20px;
-  }
-
-  /* Card Logic */
-  .card-container {
-    cursor: pointer;
-    width: 100%;
-    position: relative;
-    perspective: 1000px;
-  }
-
-  .card-wrapper {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.25s cubic-bezier(0.0, 0.0, 0.2, 1);
-    transform-style: preserve-3d;
-    will-change: transform;
-  }
-
-  .card-container:hover .card-wrapper {
-    transform: translateZ(30px) scale(1.01);
-  }
-
-  /* Layers Base */
-  .layer {
-    border-radius: 12px;
-    background: rgba(20, 30, 50, 0.85);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(135, 206, 235, 0.2);
-    overflow: visible;
-    transition: border-color 0.25s cubic-bezier(0.0, 0.0, 0.2, 1),
-                box-shadow 0.25s cubic-bezier(0.0, 0.0, 0.2, 1);
-    height: 100%;
-  }
-
-  /* Back Layers (Stacked behind) */
-  .back-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    z-index: -1;
-    background: linear-gradient(135deg, rgba(135, 206, 235, 0.1), transparent);
-  }
-
-  /* Hover Animations */
-  .card-container:hover .layer-1 {
-    opacity: 0;
-  }
-
-  .card-container:hover .layer-2 {
-    opacity: 0;
-  }
-
-  .card-container:hover .main-layer {
-    border-color: rgba(135, 206, 235, 0.5);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 24px rgba(135, 206, 235, 0.12);
-  }
-
-  /* Content Styling */
-  .main-layer {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .profile-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    object-position: top;
-    filter: grayscale(10%) brightness(0.9);
-    border-bottom: 1px solid rgba(135, 206, 235, 0.2);
-    border-radius: 10px 10px 0 0;
-    transition: transform 0.25s cubic-bezier(0.0, 0.0, 0.2, 1),
-                box-shadow 0.25s cubic-bezier(0.0, 0.0, 0.2, 1),
-                filter 0.25s cubic-bezier(0.0, 0.0, 0.2, 1);
-    position: relative;
-    z-index: 3;
-    transform-origin: center top;
-    will-change: transform;
-  }
-
-  .card-container:hover .profile-img {
-    transform: scale(1.08);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(135, 206, 235, 0.2);
-    filter: grayscale(0%) brightness(1.06);
-  }
-
-  .big-card .profile-img {
-    height: 350px; /* Bada image left wale ke liye */
-  }
-
-  .card-info {
-    padding: 15px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card-info h3 {
-    margin: 0;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .big-card .card-info h3 {
-    font-size: 22px;
-  }
-
-  .card-info p.role {
-    font-size: 11px;
-    color: #87ceeb;
-    margin: 5px 0 0 0;
-    font-weight: 600;
-  }
-
-  .big-card .card-info p.role {
-    font-size: 14px;
-  }
-
-  .card-info p.desc {
-    font-size: 13px;
-    color: #cbd5e1;
-    line-height: 1.5;
-    margin-top: 15px;
-  }
-
-  /* Responsive Design taaki mobile/tablet pe kharab na ho */
-  @media (max-width: 1200px) {
-    .layout-grid { grid-template-columns: 1fr; max-width: 900px; }
-    .right-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (max-width: 900px) {
-    .right-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 600px) {
-    .right-grid { grid-template-columns: 1fr; }
-  }
-`;
-
-const Card = ({ name, role, desc, img, isBig }) => (
-  <div className={`card-container ${isBig ? 'big-card' : ''}`}>
-    <div className="card-wrapper">
-      {/* Background Effect Layers */}
-      <div className="layer back-layer layer-1"></div>
-      <div className="layer back-layer layer-2"></div>
-      
-      {/* Front Visible Layer */}
-      <div className="layer main-layer">
-        <img src={img} alt={name} className="profile-img" />
-        <div className="card-info">
-          <h3>{name}</h3>
-          <p className="role">{role}</p>
-          {isBig && <p className="desc">{desc}</p>}
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 function VisionarySection() {
-  // Total 9 log: 1 Bada + 8 Chote (4 upar, 4 niche)
-  const mainLeader = { 
-    name: "Dr. Mehboob Sayyad", 
-    role: "Founder & Chairman", 
-    desc: "Visionary leader driving innovation in talent acquisition. Dedicated to building transformative relationships.", 
-    img: "/visionaries/Untitled design (3).png" 
-  };
+	const founder = {
+		name: "Dr. Mehboob Sayyad,",
+		role: "Founder & Chairman",
+		img: "/visionaries/Untitled design (3).png",
+		bio: "Driving the future of web innovation."
+	};
 
-  const teamMembers = [
-    // Upar ke 4
-    { name: "Sunil Chavan", role: "Director", img: "/visionaries/Untitled design (4).png" },
-    { name: "Deshbhushan Jain", role: "Director", img: "/visionaries/Untitled design (5).png" },
-    { name: "Vikas Patil", role: "Director", img: "/visionaries/Untitled design (6).png" },
-    { name: "Prakash Rathod", role: "Director", img: "/visionaries/Untitled design (7).png" },
-    // Niche ke 4
-    { name: "Sarang Chavan", role: "Director", img: "/visionaries/Untitled design (14).png" },
-    { name: "Babasaheb Khillari", role: "Director", img: "/visionaries/Untitled design (15).png" },
-    { name: "Dheepan Chakravarthi", role: "Director", img: "https://i.pravatar.cc/400?img=33" }
-    
-  ];
+	const directors = [
+		{ name: "Sunil Chavan", role: "Board Director", img: "/visionaries/Untitled design (4).png" },
+		{ name: "Deshbhushan Jain", role: "Board Director", img: "/visionaries/Untitled design (5).png" },
+		{ name: "Vikas Patil", role: "Board Director", img: "/visionaries/Untitled design (6).png" },
+		{ name: "Prakash Rathod", role: "Board Director", img: "/visionaries/Untitled design (7).png" },
+		{ name: "Sarang Chavan", role: "Board Director", img: "/visionaries/Untitled design (14).png" },
+		{ name: "Babasaheb Khillari", role: "Board Director", img: "/visionaries/Untitled design (15).png" },
+		{ name: "Dheepan Chakravarthi", role: "Board Director", img: "https://i.pravatar.cc/400?img=33" },
+		//{ name: "Rohan Desai", role: "Board Director", img: "https://i.pravatar.cc/400?img=52" },
+	];
 
-  return (
-    <div className="visionary-container">
-      <style>{styles}</style>
-      
-      <h2 className="title">MEET OUR <span>VISIONARIES</span></h2>
-      
-      <div className="layout-grid">
-        {/* Left Side: 1 Big Card */}
-        <div className="left-side">
-          <Card {...mainLeader} isBig={true} />
-        </div>
+	const containerVariants = {
+		hidden: { opacity: 0 },
+		visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+	};
 
-        {/* Right Side: 8 Small Cards Grid (4 Columns) */}
-        <div className="right-grid">
-          {teamMembers.map((member, index) => (
-            <Card key={index} {...member} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-} 
+	const itemVariants = {
+		hidden: { y: 20, opacity: 0 },
+		visible: { y: 0, opacity: 1 }
+	};
+
+	return (
+		<section className="relative bg-[#0f172a] text-white py-24 px-4 overflow-hidden">
+			<div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
+				<div className="absolute top-[-10%] left-[20%] w-72 h-72 bg-blue-600/20 blur-[120px] rounded-full" />
+				<div className="absolute bottom-[10%] right-[20%] w-96 h-96 bg-purple-600/10 blur-[150px] rounded-full" />
+			</div>
+
+			<div className="max-w-7xl mx-auto relative z-10">
+				<div className="text-center mb-20">
+					<motion.h2
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-4"
+					>
+						Our Leadership
+					</motion.h2>
+					<motion.h1
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.1 }}
+						className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight"
+					>
+						MEET OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">VISIONARIES</span>
+					</motion.h1>
+					<motion.p
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.2 }}
+						className="mt-6 max-w-2xl mx-auto text-white/70"
+					>
+						Discover the team shaping the mission and delivering exceptional results for our partners and communities.
+					</motion.p>
+				</div>
+
+				<motion.div
+					initial={{ scale: 0.95, opacity: 0 }}
+					animate={{ scale: 1, opacity: 1 }}
+					transition={{ duration: 0.5 }}
+					className="flex flex-col items-center mb-20"
+				>
+					<div className="group relative">
+						<div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-40 group-hover:opacity-100 transition duration-1000" />
+						<div className="relative bg-slate-900 rounded-full p-2">
+							<img
+								src={founder.img}
+								alt={founder.name}
+								className="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-slate-800"
+							/>
+						</div>
+					</div>
+
+					<div className="mt-8 text-center max-w-xl">
+						<h3 className="text-3xl font-bold">{founder.name}</h3>
+						<p className="text-blue-400 text-lg mb-3">{founder.role}</p>
+						<p className="text-white/75 mb-4">{founder.bio}</p>
+						<div className="flex justify-center gap-4 text-gray-400">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:text-white cursor-pointer transition-colors"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+							<Mail size={20} className="hover:text-white cursor-pointer transition-colors" />
+						</div>
+					</div>
+				</motion.div>
+
+				<motion.div
+					variants={containerVariants}
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true }}
+					className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
+				>
+					{directors.map((director, index) => (
+						<motion.div
+							key={index}
+							variants={itemVariants}
+							className="text-center group"
+						>
+							<div className="relative inline-block mb-4">
+								<img
+									src={director.img}
+									alt={director.name}
+									className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
+								/>
+								<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-blue-500/50 transition-all" />
+							</div>
+							<h4 className="text-xl font-semibold group-hover:text-blue-400 transition-colors">{director.name}</h4>
+							<p className="text-gray-500 text-sm">{director.role}</p>
+						</motion.div>
+					))}
+				</motion.div>
+			</div>
+		</section>
+	);
+}
+
 
 function AboutHero({ resolveAsset }) {
 	const aboutHeroAsset = resolveAsset(
@@ -514,7 +389,7 @@ function Achievements() {
 export default function AboutPage() {
 	const pageAssets = usePageAssets()
 	const resolveAsset = (key, fallbackUrl, fallbackAlt = '') => getPageAsset(pageAssets, key, fallbackUrl, fallbackAlt)
-	
+
 	return (
 		<div className="min-h-screen bg-white text-slate-800">
 			<Navbar />
