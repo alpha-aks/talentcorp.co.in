@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { fetchJobs, submitLead } from '../utils/strapi';
+import { extractMediaUrl, fetchJobs, submitLead } from '../utils/strapi';
 import { uploadResumeToGoogleDrive } from '../utils/googleSheets';
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets';
 
@@ -147,12 +147,13 @@ const mapApiJobToListing = (job, index, placeholderImages, fallbackImage) => {
 	const category = String(job.category || job.jobCategory || job.type || job.title || 'General').trim();
 	const location = String(job.location || 'India').trim();
 	const skills = Array.isArray(job.skills) && job.skills.length ? job.skills : ['Teamwork', 'Communication'];
+	const uploadedPhotoUrl = extractMediaUrl(job.photo);
 
 	return {
 		id: String(job.id),
 		title: job.title || `Job ${job.id}`,
 		company: job.company || 'TSPL Group',
-		image: placeholderImages[index % placeholderImages.length] || fallbackImage,
+		image: uploadedPhotoUrl || placeholderImages[index % placeholderImages.length] || fallbackImage,
 		category,
 		location,
 		salaryMin,

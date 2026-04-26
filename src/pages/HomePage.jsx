@@ -22,6 +22,49 @@ const FAQSection = lazy(loadFAQSection);
 const Footer = lazy(loadFooter);
 const Testimonials = lazy(loadTestimonials);
 
+function SkeletonBlock({ className = '' }) {
+  return <div className={`animate-pulse rounded-xl bg-slate-200/70 ${className}`} />;
+}
+
+function SectionSkeleton({ className = '', rows = 3 }) {
+  return (
+    <div className={`mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 ${className}`}>
+      <SkeletonBlock className="h-8 w-56" />
+      <SkeletonBlock className="mt-3 h-4 w-80 max-w-full" />
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: rows }).map((_, idx) => (
+          <SkeletonBlock key={idx} className="h-36" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MarqueeSkeleton() {
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+        {Array.from({ length: 6 }).map((_, idx) => (
+          <SkeletonBlock key={idx} className="h-14" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FooterSkeleton() {
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <SkeletonBlock className="h-8 w-52" />
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <SkeletonBlock key={idx} className="h-28" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DeferredSection({
   children,
   minHeight = 0,
@@ -29,6 +72,7 @@ function DeferredSection({
   sectionId,
   className,
   tone = 'blue',
+  placeholder,
 }) {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -93,7 +137,7 @@ function DeferredSection({
           />
         </>
       )}
-      <div className="relative z-10">{isVisible ? children : null}</div>
+      <div className="relative z-10">{isVisible ? children : placeholder || null}</div>
     </section>
   );
 }
@@ -180,58 +224,58 @@ export default function HomePage() {
         onHireTalent={(e) => startWhirlpool('hire', e)}
       />
 
-      <DeferredSection minHeight={140} rootMargin="120px 0px" tone="orange">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={140} rootMargin="120px 0px" tone="orange" placeholder={<MarqueeSkeleton />}>
+        <Suspense fallback={<MarqueeSkeleton />}>
           <CompanyMarquee />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection minHeight={520} rootMargin="120px 0px" tone="blue">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={520} rootMargin="120px 0px" tone="blue" placeholder={<SectionSkeleton rows={2} />}>
+        <Suspense fallback={<SectionSkeleton rows={2} />}>
           <WorkforceSection />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection minHeight={440} rootMargin="110px 0px" tone="orange">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={440} rootMargin="110px 0px" tone="orange" placeholder={<SectionSkeleton rows={3} />}>
+        <Suspense fallback={<SectionSkeleton rows={3} />}>
           <StrengthsAccordion />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection sectionId="open-jobs" className="px-4 py-14 sm:px-6 lg:px-8" minHeight={340} rootMargin="100px 0px" tone="blue">
+      <DeferredSection sectionId="open-jobs" className="px-4 py-14 sm:px-6 lg:px-8" minHeight={340} rootMargin="100px 0px" tone="blue" placeholder={<SectionSkeleton rows={3} className="px-0 py-0" />}>
         <div className="mx-auto max-w-7xl">
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Open Jobs</h2>
           <p className="mt-2 max-w-2xl text-slate-600">
             Browse current openings and apply in minutes.
           </p>
           <div className="mt-8">
-            <Suspense fallback={null}>
+            <Suspense fallback={<SectionSkeleton rows={3} className="px-0 py-0" />}>
               <JobBoard />
             </Suspense>
           </div>
         </div>
       </DeferredSection>
 
-      <DeferredSection minHeight={420} tone="orange">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={420} tone="orange" placeholder={<SectionSkeleton rows={3} />}>
+        <Suspense fallback={<SectionSkeleton rows={3} />}>
           <NewsSection />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection minHeight={360} tone="blue">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={360} tone="blue" placeholder={<SectionSkeleton rows={2} />}>
+        <Suspense fallback={<SectionSkeleton rows={2} />}>
           <Testimonials />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection minHeight={300} tone="orange">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={300} tone="orange" placeholder={<SectionSkeleton rows={2} />}>
+        <Suspense fallback={<SectionSkeleton rows={2} />}>
           <FAQSection />
         </Suspense>
       </DeferredSection>
 
-      <DeferredSection minHeight={260} rootMargin="160px 0px" tone="blue">
-        <Suspense fallback={null}>
+      <DeferredSection minHeight={260} rootMargin="160px 0px" tone="blue" placeholder={<FooterSkeleton />}>
+        <Suspense fallback={<FooterSkeleton />}>
           <Footer />
         </Suspense>
       </DeferredSection>

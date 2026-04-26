@@ -96,7 +96,8 @@ export const fetchSingleType = async (path) => {
   }
 };
 
-export const fetchJobs = async () => fetchCollection('/api/jobs?sort=createdAt:desc&pagination[pageSize]=50');
+export const fetchJobs = async () =>
+  fetchCollection('/api/jobs?sort=createdAt:asc,id:asc&pagination[pageSize]=50&populate=photo');
 export const fetchNews = async () => fetchCollection('/api/news-events?sort=order:asc,date:desc&pagination[pageSize]=100&populate=image');
 export const fetchPageAssets = async () =>
   fetchCollection('/api/page-assets?sort=order:asc,name:asc&pagination[pageSize]=300&populate=image');

@@ -15,9 +15,13 @@ This document outlines the Strapi collections that need to be created to manage 
 - `salary` (String, required) - Salary range (e.g., "₹18,000 - ₹25,000")
 - `type` (Enumeration, required) - Job type: `Full-time`, `Apprenticeship`, `Contract`, `Part-time`
 - `urgent` (Boolean) - Mark if urgent (shown with orange badge)
+- `photo` (Media, single image) - Job card / listing image uploaded in Strapi
 - `description` (Text) - Full job description
 - `requirements` (Text) - Required qualifications
 - `publishedAt` (Date) - Publication date
+
+Display order note:
+- Jobs are consumed in FIFO order (`createdAt:asc`) so first-created jobs appear first.
 
 **Example JSON (for bulk import):**
 ```json
