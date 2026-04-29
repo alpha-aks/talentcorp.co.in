@@ -4,7 +4,7 @@ import {
   ArrowLeft, MapPin, IndianRupee, Clock, Briefcase, Calendar,
   CheckCircle, Send, Zap, Shield, TrendingUp, Heart, Award, Star, Building2
 } from 'lucide-react';
-import { fetchJobs, submitApplicant } from '../utils/strapi';
+import { extractMediaUrl, fetchJobs, submitApplicant } from '../utils/strapi';
 import './JobDetailPage.css';
 
 // ─── Static constants ────────────────────────────────────────────────────────
@@ -45,6 +45,28 @@ const getStats = (job) => [
   { icon: Calendar, label: 'Posted', value: 'Recently' },
 ];
 
+const formatSalary = (job) => {
+  if (job?.salary) return job.salary;
+  const min = Number(job?.salaryMin);
+  const max = Number(job?.salaryMax);
+  if (Number.isFinite(min) && Number.isFinite(max)) {
+    return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
+  }
+  if (Number.isFinite(min)) return `INR ${min.toLocaleString('en-IN')}+`;
+  if (Number.isFinite(max)) return `Up to INR ${max.toLocaleString('en-IN')}`;
+  return 'Competitive';
+};
+
+const getReqs = (job) => {
+  const raw = String(job?.requirements || '').trim();
+  if (!raw) return REQS;
+  const list = raw
+    .split(/\r?\n|•|\u2022|,/) 
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return list.length ? list : REQS;
+};
+
 // ─── Memoised Sub-components ──────────────────────────────────────────────────
 
 const StatStrip = React.memo(({ job }) => (
@@ -68,20 +90,24 @@ const JobDescription = React.memo(({ job }) => (
     <h2 className="pro-section-title">Role Overview</h2>
     <div className="pro-section-content">
       <p>
-        Join <strong>{job.company}</strong> as a <strong>{job.title}</strong> based in {job.location}.
-        This is a dynamic role designed for individuals who are passionate about delivering quality results.
-        You will be working with a highly skilled, supportive team with clear avenues for professional growth and skill enhancement.
+        {job.description || (
+          <>
+            Join <strong>{job.company}</strong> as a <strong>{job.title}</strong> based in {job.location}.
+            This is a dynamic role designed for individuals who are passionate about delivering quality results.
+            You will be working with a highly skilled, supportive team with clear avenues for professional growth and skill enhancement.
+          </>
+        )}
       </p>
     </div>
   </section>
 ));
 
-const Requirements = React.memo(() => (
+const Requirements = React.memo(({ job }) => (
   <section className="pro-section">
     <h2 className="pro-section-title">Key Requirements</h2>
     <div className="pro-section-content">
       <ul className="pro-req-list">
-        {REQS.map((r, i) => (
+        {getReqs(job).map((r, i) => (
           <li key={i} className="pro-req-item">
             <CheckCircle size={16} className="pro-req-icon" />
             <span>{r}</span>
@@ -135,9 +161,15 @@ const JobDetailPage = () => {
             company: found.company || 'TSPL Group',
             category: found.category || found.type || 'General',
             location: found.location || 'India',
-            salary: found.salary || 'Competitive',
+            salary: formatSalary(found),
+            salaryMin: found.salaryMin,
+            salaryMax: found.salaryMax,
             type: found.type || 'Full-time',
             urgent: Boolean(found.urgent),
+            description: found.description || '',
+            requirements: found.requirements || '',
+            photo: found.photo || null,
+            image: extractMediaUrl(found.photo),
           });
         }
       } finally {
@@ -221,9 +253,15 @@ const JobDetailPage = () => {
       <header className="pro-hero">
         <div className="pro-hero-inner">
           <div className="pro-hero-main">
-            <div className="pro-company-logo">
-              {job.company.charAt(0)}
-            </div>
+            {job.image ? (
+              <div className="pro-company-logo overflow-hidden p-0">
+                <img src={job.image} alt={job.title} className="h-full w-full object-cover" />
+              </div>
+            ) : (
+              <div className="pro-company-logo">
+                {job.company.charAt(0)}
+              </div>
+            )}
             <div className="pro-hero-details">
               <h1 className="pro-title">{job.title}</h1>
               <div className="pro-subtitle">
@@ -248,7 +286,7 @@ const JobDetailPage = () => {
       <div className="pro-main-layout">
         <div className="pro-content">
           <JobDescription job={job} />
-          <Requirements />
+          <Requirements job={job} />
           <BenefitsCard />
         </div>
 
