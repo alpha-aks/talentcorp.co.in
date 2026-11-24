@@ -1106,7 +1106,7 @@ function LeadershipSection({ isMobile }) {
 	const topDirectors = [
 		{ id: '1', name: 'Dr. Mehboob Sayyad', role: 'Chairman & Founder', imageUrl: '/visionaries/Dr mehboob Sayyad.png', slug: 'dr-mehboob-sayyad' },
 		{ id: '2', name: 'Sunil Chavan', role: 'Director & Co-Founder', imageUrl: '/visionaries/Sunil Chavan.png', slug: 'sunil-chavan' },
-		{ id: 'mentor', name: 'Dr. Dnyaneshwar D. Kamble', role: 'Mentor | Guiding Leader | Strategic Advisor', badge: 'Our Mentor & Guiding Leader', imageUrl: '/visionaries/Dr Dnyaneshwar D Kamble.png', slug: 'dr-dnyaneshwar-d-kamble' },
+		{ id: 'mentor', name: 'Dr. Dnyaneshwar D. Kamble', role: 'Guiding Leader', imageUrl: '/visionaries/Dr Dnyaneshwar D Kamble.png', slug: 'dr-dnyaneshwar-d-kamble' },
 	];
 
 	const bottomDirectors = [
@@ -1176,11 +1176,6 @@ function LeadershipSection({ isMobile }) {
 									{/* Leadership Info Overlay */}
 									<div className="absolute bottom-0 left-0 w-full p-4 md:p-5 text-left flex justify-between items-end z-10">
 										<div className="min-w-0 flex-1 pr-2">
-											{leader.badge && (
-												<span className="inline-block px-2 py-0.5 mb-1 rounded bg-orange-500 text-white text-[8px] font-extrabold uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1">
-													{leader.badge}
-												</span>
-											)}
 											<h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-0.5 transition-transform duration-300 group-hover:-translate-y-1 whitespace-nowrap truncate">
 												{leader.name}
 											</h3>
@@ -1780,8 +1775,8 @@ export default function AboutPage() {
 							{
 								"@type": "Person",
 								"name": "Dr. Dnyaneshwar D. Kamble",
-								"jobTitle": "Mentor | Guiding Leader | Strategic Advisor",
-								"description": "Dr. Dnyaneshwar D. Kamble is a respected mentor and guiding personality whose experience, leadership vision and commitment to social and organisational development serve as an inspiration to TSPL Group.",
+								"jobTitle": "Guiding Leader",
+								"description": "Dr. Dnyaneshwar D. Kamble is a respected guiding leader whose experience, leadership vision and commitment to social and organisational development serve as an inspiration to TSPL Group.",
 								"image": "https://tsplgroup.in/visionaries/Dr%20Dnyaneshwar%20D%20Kamble.png"
 							}
 						],

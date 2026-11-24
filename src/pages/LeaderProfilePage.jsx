@@ -49,8 +49,8 @@ With extensive experience in manpower management, staffing operations, and appre
 	},
 	'dr-dnyaneshwar-d-kamble': {
 		name: 'Dr. Dnyaneshwar D. Kamble',
-		role: 'Mentor | Guiding Leader | Strategic Advisor',
-		category: 'Our Mentor & Guiding Leader',
+		role: 'Guiding Leader',
+		category: 'Visionary',
 		imageUrl: '/visionaries/Dr Dnyaneshwar D Kamble.png',
 		bio: `Dr. Dnyaneshwar D. Kamble is a respected mentor and guiding personality whose experience, leadership vision and commitment to social and organisational development serve as an inspiration to our organisation.
 
@@ -548,12 +548,6 @@ export default function LeaderProfilePage() {
 											strokeWidth={2.4}
 										/>
 									</div>
-
-									{profile.category && (
-										<div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#ff6817]">
-											<span>{profile.category}</span>
-										</div>
-									)}
 
 									<h1 className="text-[34px] font-black leading-[1.08] tracking-[-0.035em] text-[#09245d] sm:text-[42px] lg:text-[46px] xl:text-[50px]">
 										{profile.name}
