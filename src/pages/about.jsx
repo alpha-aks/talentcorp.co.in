@@ -1267,48 +1267,55 @@ function ManagementSection({ isMobile }) {
 		},
 		{
 			id: '3',
+			name: 'Shyam Lande',
+			role: 'Operations Head, Haier Group',
+			imageUrl: '/leaders/ShyamLande.png',
+			slug: 'shyam-lande'
+		},
+		{
+			id: '4',
 			name: 'Mubarak Shaikh',
 			role: 'General Manager, Operations',
 			imageUrl: '/leaders/2 Mr. Mubarak Shaikh.jpg',
 			slug: 'mubarak-shaikh'
 		},
 		{
-			id: '4',
+			id: '5',
 			name: 'Gyanendra Mishra',
 			role: 'Asst. General Manager, Sourcing',
 			imageUrl: '/leaders/3 mr gyanendra mishra.jpg',
 			slug: 'gyanendra-mishra'
 		},
 		{
-			id: '5',
+			id: '6',
 			name: 'Vishal Ubale',
 			role: 'Manager Sourcing & TPO Placement',
 			imageUrl: '/leaders/4 mr vishal ubale.jpg',
 			slug: 'vishal-ubale'
 		},
 		{
-			id: '6',
+			id: '7',
 			name: 'Lokesh Pardeshi',
 			role: 'Finance Head',
 			imageUrl: '/leaders/5 lokesh.jpg',
 			slug: 'lokesh-pardeshi'
 		},
 		{
-			id: '7',
+			id: '8',
 			name: 'Purushottam Gaikwad',
 			role: 'Assistant General Manager, Operations',
 			imageUrl: '/leaders/7th Photo Purushottam Gaikwad (Assistant General Manager in Operation).jpeg',
 			slug: 'purushottam-gaikwad'
 		},
 		{
-			id: '8',
+			id: '9',
 			name: 'Shivanand Mane',
 			role: 'Regional Head, Operations',
 			imageUrl: '/leaders/7 mr shivanand mane .jpg',
 			slug: 'shivanand-mane'
 		},
 		{
-			id: '9',
+			id: '10',
 			name: 'Rahul Borkar',
 			role: 'Recruitment Head',
 			imageUrl: '/leaders/9 mr rahul borkar.jpg',

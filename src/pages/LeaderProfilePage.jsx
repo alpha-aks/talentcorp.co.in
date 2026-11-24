@@ -154,6 +154,20 @@ His strong understanding of market dynamics and customer requirements has helped
 		],
 		location: 'Pune, India'
 	},
+	'shyam-lande': {
+		name: 'Shyam Lande',
+		role: 'Operations Head, Haier Group',
+		category: 'Leader',
+		imageUrl: '/leaders/ShyamLande.png',
+		bio: `Shyam Lande serves as the Operations Head at Haier Group, overseeing operational activities and ensuring efficient execution of business processes. His role involves coordinating teams, streamlining operations, maintaining quality standards, and driving operational efficiency. His expertise in operational planning, team coordination, process management, and performance improvement contributes to achieving organizational objectives and maintaining smooth day-to-day operations.`,
+		longBio: 'Mr. Shyam Lande oversees operational activities and workflow execution at Haier Group, coordinating cross-functional teams to ensure high standards of efficiency, safety, and quality.',
+		expertise: ['Operational Planning', 'Team Coordination', 'Process Management', 'Performance Improvement', 'Quality Standards'],
+		achievements: [
+			'Streamlined operational workflows and enhanced day-to-day execution efficiency.',
+			'Consistently maintained high quality standards and operational discipline across teams.'
+		],
+		location: 'Pune, India'
+	},
 	'mubarak-shaikh': {
 		name: 'Mubarak Shaikh',
 		role: 'General Manager, Operations',
