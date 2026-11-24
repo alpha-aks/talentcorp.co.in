@@ -1106,6 +1106,7 @@ function LeadershipSection({ isMobile }) {
 	const topDirectors = [
 		{ id: '1', name: 'Dr. Mehboob Sayyad', role: 'Chairman & Founder', imageUrl: '/visionaries/Dr mehboob Sayyad.png', slug: 'dr-mehboob-sayyad' },
 		{ id: '2', name: 'Sunil Chavan', role: 'Director & Co-Founder', imageUrl: '/visionaries/Sunil Chavan.png', slug: 'sunil-chavan' },
+		{ id: 'mentor', name: 'Dr. Dnyaneshwar D. Kamble', role: 'Mentor | Guiding Leader | Strategic Advisor', badge: 'Our Mentor & Guiding Leader', imageUrl: '/visionaries/Dr Dnyaneshwar D Kamble.png', slug: 'dr-dnyaneshwar-d-kamble' },
 	];
 
 	const bottomDirectors = [
@@ -1175,6 +1176,11 @@ function LeadershipSection({ isMobile }) {
 									{/* Leadership Info Overlay */}
 									<div className="absolute bottom-0 left-0 w-full p-4 md:p-5 text-left flex justify-between items-end z-10">
 										<div className="min-w-0 flex-1 pr-2">
+											{leader.badge && (
+												<span className="inline-block px-2 py-0.5 mb-1 rounded bg-orange-500 text-white text-[8px] font-extrabold uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1">
+													{leader.badge}
+												</span>
+											)}
 											<h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-0.5 transition-transform duration-300 group-hover:-translate-y-1 whitespace-nowrap truncate">
 												{leader.name}
 											</h3>
@@ -1201,7 +1207,7 @@ function LeadershipSection({ isMobile }) {
 							className="w-full max-w-[280px] sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(16.666%-20px)] block transition-transform duration-300 hover:scale-102"
 						>
 							<motion.div
-								{...getLeaderAnimProps(i + 2)}
+								{...getLeaderAnimProps(i + 3)}
 								className="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:ring-blue-200 w-full"
 							>
 								<div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-200 min-h-[280px]">
@@ -1715,8 +1721,8 @@ function Achievements({ isMobile }) {
 export default function AboutPage() {
 	useSEO({
 		title: 'About - TSPL Group',
-		description: 'Meet Dr. Mehboob Sayyad, Chairman and Managing Director of TalentCorp Solutions Private Limited (TSPL Group), alongside our Board of Directors.',
-		keywords: 'Dr. Mehboob Sayyad, Dr. Mehboob Sayyed, Dr. Mahiboob Sayyad, Chairman, Managing Director, Sunil Chavan, Prakash Rathod, Deshbhushan Jain, TSPL Group, TalentCorp Solutions'
+		description: 'Meet Dr. Mehboob Sayyad, Chairman and Managing Director of TalentCorp Solutions Private Limited (TSPL Group), alongside our Board of Directors and Mentors.',
+		keywords: 'Dr. Mehboob Sayyad, Dr. Mehboob Sayyed, Dr. Mahiboob Sayyad, Chairman, Managing Director, Sunil Chavan, Dr. Dnyaneshwar D. Kamble, Prakash Rathod, Deshbhushan Jain, TSPL Group, TalentCorp Solutions'
 	});
 
 	const pageAssets = usePageAssets()
@@ -1763,6 +1769,13 @@ export default function AboutPage() {
 								"name": "Sunil Chavan",
 								"jobTitle": "Director",
 								"image": "https://tsplgroup.in/visionaries/Sunil%20Chavan.png"
+							},
+							{
+								"@type": "Person",
+								"name": "Dr. Dnyaneshwar D. Kamble",
+								"jobTitle": "Mentor | Guiding Leader | Strategic Advisor",
+								"description": "Dr. Dnyaneshwar D. Kamble is a respected mentor and guiding personality whose experience, leadership vision and commitment to social and organisational development serve as an inspiration to TSPL Group.",
+								"image": "https://tsplgroup.in/visionaries/Dr%20Dnyaneshwar%20D%20Kamble.png"
 							}
 						],
 						"employee": [

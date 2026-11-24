@@ -47,6 +47,29 @@ With extensive experience in manpower management, staffing operations, and appre
 		],
 		location: 'Pune, India'
 	},
+	'dr-dnyaneshwar-d-kamble': {
+		name: 'Dr. Dnyaneshwar D. Kamble',
+		role: 'Mentor | Guiding Leader | Strategic Advisor',
+		category: 'Our Mentor & Guiding Leader',
+		imageUrl: '/visionaries/Dr Dnyaneshwar D Kamble.png',
+		bio: `Dr. Dnyaneshwar D. Kamble is a respected mentor and guiding personality whose experience, leadership vision and commitment to social and organisational development serve as an inspiration to our organisation.
+
+With his valuable experience in leadership, administration and community development, he provides meaningful guidance and strategic direction that support our organisation's growth and long-term vision.
+
+His mentorship encourages us to strengthen our organisational values, promote professional excellence, develop effective leadership and create meaningful opportunities for individuals and communities.
+
+At TSPL Group, we deeply value his guidance, wisdom and continued encouragement in our journey towards sustainable growth and organisational excellence.
+
+His vision inspires us to grow with purpose, lead with responsibility and create a lasting positive impact.`,
+		longBio: 'With extensive experience in leadership, administration, and community development, Dr. Dnyaneshwar D. Kamble provides essential mentorship and strategic counsel that anchor TSPL Group. His guidance fosters institutional integrity, social responsibility, and sustainable growth across all our nationwide initiatives.',
+		expertise: ['Strategic Advisory', 'Leadership Mentorship', 'Organisational Development', 'Community Development', 'Administrative Governance'],
+		achievements: [
+			'Esteemed mentor and guiding personality inspiring organisational culture.',
+			'Provides meaningful guidance and strategic direction supporting long-term vision.',
+			'Champions professional excellence, sustainable growth, and positive social impact.'
+		],
+		location: 'Pune, India'
+	},
 	'deshbhushan-jain': {
 		name: 'Deshbhushan Jain',
 		role: 'Director',
@@ -511,6 +534,12 @@ export default function LeaderProfilePage() {
 											strokeWidth={2.4}
 										/>
 									</div>
+
+									{profile.category && (
+										<div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#ff6817]">
+											<span>{profile.category}</span>
+										</div>
+									)}
 
 									<h1 className="text-[34px] font-black leading-[1.08] tracking-[-0.035em] text-[#09245d] sm:text-[42px] lg:text-[46px] xl:text-[50px]">
 										{profile.name}
