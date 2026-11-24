@@ -1152,7 +1152,7 @@ function LeadershipSection({ isMobile }) {
 						<Link
 							key={leader.id}
 							to={`/leader/${leader.slug}`}
-							className="w-full max-w-[280px] sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(16.666%-20px)] block transition-transform duration-300 hover:scale-102"
+							className="w-full max-w-[280px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[260px] xl:w-[275px] block transition-transform duration-300 hover:scale-102"
 						>
 							<motion.div
 								{...getLeaderAnimProps(i)}
@@ -1174,17 +1174,17 @@ function LeadershipSection({ isMobile }) {
 									<div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
 
 									{/* Leadership Info Overlay */}
-									<div className="absolute bottom-0 left-0 w-full p-4 md:p-5 text-left flex justify-between items-end z-10">
-										<div className="min-w-0 flex-1 pr-2">
-											<h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-0.5 transition-transform duration-300 group-hover:-translate-y-1 whitespace-nowrap truncate">
+									<div className="absolute bottom-0 left-0 w-full p-3.5 sm:p-4 text-left flex justify-between items-end z-10">
+										<div className="min-w-0 flex-1 pr-1.5">
+											<h3 className="text-sm sm:text-[15px] font-bold text-white mb-0.5 leading-snug transition-transform duration-300 group-hover:-translate-y-1 truncate" title={leader.name}>
 												{leader.name}
 											</h3>
-											<p className="text-[9px] sm:text-[10px] font-bold text-blue-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight">
+											<p className="text-[9px] sm:text-[10px] font-bold text-blue-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight truncate">
 												{leader.role}
 											</p>
 										</div>
-										<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white opacity-0 transform translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-											<ArrowRight className="h-4 w-4" />
+										<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white opacity-0 transform translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+											<ArrowRight className="h-3.5 w-3.5" />
 										</div>
 									</div>
 								</div>
@@ -1199,7 +1199,7 @@ function LeadershipSection({ isMobile }) {
 						<Link
 							key={leader.id}
 							to={`/leader/${leader.slug}`}
-							className="w-full max-w-[280px] sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(16.666%-20px)] block transition-transform duration-300 hover:scale-102"
+							className="w-full max-w-[280px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[250px] xl:w-[265px] block transition-transform duration-300 hover:scale-102"
 						>
 							<motion.div
 								{...getLeaderAnimProps(i + 3)}
@@ -1221,17 +1221,17 @@ function LeadershipSection({ isMobile }) {
 									<div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
 
 									{/* Leadership Info Overlay */}
-									<div className="absolute bottom-0 left-0 w-full p-4 md:p-5 text-left flex justify-between items-end z-10">
-										<div className="min-w-0 flex-1 pr-2">
-											<h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-0.5 transition-transform duration-300 group-hover:-translate-y-1 whitespace-nowrap truncate">
+									<div className="absolute bottom-0 left-0 w-full p-3.5 sm:p-4 text-left flex justify-between items-end z-10">
+										<div className="min-w-0 flex-1 pr-1.5">
+											<h3 className="text-sm sm:text-[15px] font-bold text-white mb-0.5 leading-snug transition-transform duration-300 group-hover:-translate-y-1 truncate" title={leader.name}>
 												{leader.name}
 											</h3>
-											<p className="text-[9px] sm:text-[10px] font-bold text-blue-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight">
+											<p className="text-[9px] sm:text-[10px] font-bold text-blue-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight truncate">
 												{leader.role}
 											</p>
 										</div>
-										<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white opacity-0 transform translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-											<ArrowRight className="h-4 w-4" />
+										<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white opacity-0 transform translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+											<ArrowRight className="h-3.5 w-3.5" />
 										</div>
 									</div>
 								</div>
@@ -1342,13 +1342,13 @@ function ManagementSection({ isMobile }) {
 					</p>
 				</div>
 
-				{/* Leaders Flex Container - Wraps into 2 rows (5 on top, 4 centered on bottom) with identical card sizes */}
+				{/* Leaders Flex Container */}
 				<div className="flex flex-wrap justify-center gap-4 lg:gap-6 w-full max-w-[90rem] mx-auto">
 					{keyLeaders.map((leader, i) => (
 						<Link
 							key={leader.id}
 							to={`/leader/${leader.slug}`}
-							className="w-full max-w-[280px] sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(16.666%-20px)] block transition-transform duration-300 hover:scale-102"
+							className="w-full max-w-[280px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-20px)] min-w-[210px] xl:w-[250px] block transition-transform duration-300 hover:scale-102"
 						>
 							<motion.div
 								{...getLeaderAnimProps(i)}
@@ -1375,17 +1375,17 @@ function ManagementSection({ isMobile }) {
 									<div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
 
 									{/* Leadership Info Overlay */}
-									<div className="absolute bottom-0 left-0 w-full p-4 md:p-5 text-left flex justify-between items-end z-10">
-										<div className="min-w-0 flex-1 pr-2">
-											<h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-0.5 transition-transform duration-300 group-hover:-translate-y-1 whitespace-nowrap truncate">
+									<div className="absolute bottom-0 left-0 w-full p-3.5 sm:p-4 text-left flex justify-between items-end z-10">
+										<div className="min-w-0 flex-1 pr-1.5">
+											<h3 className="text-sm sm:text-[15px] font-bold text-white mb-0.5 leading-snug transition-transform duration-300 group-hover:-translate-y-1 truncate" title={leader.name}>
 												{leader.name}
 											</h3>
-											<p className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight">
+											<p className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-wider transition-transform duration-300 group-hover:-translate-y-1 leading-tight truncate">
 												{leader.role}
 											</p>
 										</div>
-										<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-600 text-white opacity-0 transform translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-											<ArrowRight className="h-4 w-4" />
+										<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-600 text-white opacity-0 transform translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+											<ArrowRight className="h-3.5 w-3.5" />
 										</div>
 									</div>
 								</div>
