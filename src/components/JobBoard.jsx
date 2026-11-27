@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, IndianRupee, Clock, ArrowRight, Filter, Briefcase, Car, Cpu, Factory, Share2, Calendar, Phone } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { buildJobCategoryOptions, fetchJobs, getJobCategoryFilterValue, toJobFilterSlug, cleanMarkdown, isJobExpired, parseSkillsAndTags, formatExperience } from '../utils/strapi';
+import { buildJobCategoryOptions, fetchJobs, getJobCategoryFilterValue, toJobFilterSlug, cleanMarkdown, isJobExpired, parseSkillsAndTags, formatExperience, toNumber, formatSalaryFromJob } from '../utils/strapi';
 
 const defaultContacts = [{ name: 'HR Recruiting', phone: '+91 95615 04911' }];
 
@@ -142,32 +142,6 @@ const fallbackJobs = [
 ];
 
 const normalizeType = (value) => String(value || '').trim().toLowerCase();
-
-const toNumber = (value) => {
-  if (value === null || value === undefined || value === '') return null;
-  const numeric = Number(String(value).replace(/,/g, ''));
-  return Number.isFinite(numeric) ? numeric : null;
-};
-
-const formatSalaryFromJob = (job) => {
-  const salaryText = String(job?.salary || '').trim();
-  if (salaryText) return salaryText;
-
-  const min = toNumber(job?.salaryMin ?? job?.minSalary ?? job?.salary_from ?? job?.salaryFrom);
-  const max = toNumber(job?.salaryMax ?? job?.maxSalary ?? job?.salary_to ?? job?.salaryTo);
-
-  if (min !== null && max !== null) {
-    return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
-  }
-  if (min !== null) {
-    return `INR ${min.toLocaleString('en-IN')}+`;
-  }
-  if (max !== null) {
-    return `Up to INR ${max.toLocaleString('en-IN')}`;
-  }
-
-  return 'Salary on request';
-};
 
 const JobCard = ({ job, navigate, index }) => {
   const isOrange = index % 2 !== 0;

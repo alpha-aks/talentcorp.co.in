@@ -4,7 +4,7 @@ import {
   ArrowLeft, MapPin, IndianRupee, Clock, Briefcase, Calendar,
   CheckCircle, Send, Zap, Shield, TrendingUp, Heart, Award, Star, Building2, Phone
 } from 'lucide-react';
-import { fetchJobs, submitApplicant, submitToAdminBackend, parseMarkdown, cleanMarkdown, isJobExpired, parseSkillsAndTags, formatExperience } from '../utils/strapi';
+import { fetchJobs, submitApplicant, submitToAdminBackend, parseMarkdown, cleanMarkdown, isJobExpired, parseSkillsAndTags, formatExperience, formatSalaryFromJob } from '../utils/strapi';
 import useSEO from '../hooks/useSEO';
 import Footer from '../components/Footer';
 import './JobDetailPage.css';
@@ -54,7 +54,7 @@ const getStats = (job) => {
     { icon: Briefcase, label: 'Category', value: job.category || 'General' },
     { icon: Award, label: 'Experience', value: formatExperience(job.experience) },
     { icon: MapPin, label: 'Location', value: job.location },
-    { icon: IndianRupee, label: 'Salary', value: job.salary },
+    { icon: IndianRupee, label: 'Salary', value: job.salary || formatSalary(job) },
     { icon: Clock, label: 'Type', value: job.type },
   ];
 
@@ -78,15 +78,7 @@ const getStats = (job) => {
 };
 
 const formatSalary = (job) => {
-  if (job?.salary) return job.salary;
-  const min = Number(job?.salaryMin);
-  const max = Number(job?.salaryMax);
-  if (Number.isFinite(min) && Number.isFinite(max)) {
-    return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
-  }
-  if (Number.isFinite(min)) return `INR ${min.toLocaleString('en-IN')}+`;
-  if (Number.isFinite(max)) return `Up to INR ${max.toLocaleString('en-IN')}`;
-  return 'Competitive';
+  return formatSalaryFromJob(job);
 };
 
 const getReqs = (job) => {
@@ -290,7 +282,9 @@ const JobDetailPage = () => {
             company: found.company || 'TSPL Group',
             category: found.category || found.type || 'General',
             location: found.location || 'India',
-            salary: found.salary || 'Competitive',
+            salary: formatSalaryFromJob(found),
+            salaryMin: found.salaryMin,
+            salaryMax: found.salaryMax,
             type: found.type || 'Full-time',
             experience: found.experience || found.experienceRequired || '1-2',
             skills: found.skills || '',

@@ -30,7 +30,7 @@ import {
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProgressiveImage from '../components/ProgressiveImage';
-import { extractMediaUrl, fetchJobs, submitLead, submitToAdminBackend, cleanMarkdown, cleanJobTitle, cleanCompany, isJobExpired, parseSkillsAndTags, formatExperience } from '../utils/strapi';
+import { extractMediaUrl, fetchJobs, submitLead, submitToAdminBackend, cleanMarkdown, cleanJobTitle, cleanCompany, isJobExpired, parseSkillsAndTags, formatExperience, formatSalaryFromJob, toNumber } from '../utils/strapi';
 import { uploadResumeToGoogleDrive } from '../utils/googleSheets';
 import { getPageAsset, usePageAssets } from '../hooks/usePageAssets';
 import { buildJobCategoryOptions } from '../utils/strapi';
@@ -172,7 +172,7 @@ const parseSalaryText = (salaryText) => {
 		const amount = Number(digits[0]);
 		return { salaryMin: amount, salaryMax: amount };
 	}
-	return { salaryMin: 15000, salaryMax: 25000 };
+	return { salaryMin: 0, salaryMax: 0 };
 };
 
 const formatDateString = (dateStr) => {
@@ -186,7 +186,13 @@ const formatDateString = (dateStr) => {
 };
 
 const mapApiJobToListing = (job, index, placeholderImages, fallbackImage) => {
-	const { salaryMin, salaryMax } = parseSalaryText(job.salary);
+	const rawMin = toNumber(job.salaryMin ?? job.minSalary ?? job.salary_from ?? job.salaryFrom);
+	const rawMax = toNumber(job.salaryMax ?? job.maxSalary ?? job.salary_to ?? job.salaryTo);
+	const parsed = parseSalaryText(job.salary);
+
+	const salaryMin = rawMin !== null ? rawMin : (parsed.salaryMin || 0);
+	const salaryMax = rawMax !== null ? rawMax : (parsed.salaryMax || salaryMin);
+	const salary = formatSalaryFromJob(job);
 	const normalizedType = String(job.type || job.jobType || 'full-time').toLowerCase();
 	const cleanTitleStr = cleanJobTitle(job.title || `Job ${job.id}`);
 	const cleanCompanyStr = cleanCompany(job.company);
@@ -204,6 +210,7 @@ const mapApiJobToListing = (job, index, placeholderImages, fallbackImage) => {
 		imageMedia,
 		category,
 		location,
+		salary,
 		salaryMin,
 		salaryMax,
 		jobType: normalizedType,
@@ -277,7 +284,13 @@ function parseSalaryRange(range) {
 }
 
 function formatSalary(min, max) {
-	return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
+	if (!min && !max) return 'Salary on request';
+	if (min && max && min !== max) {
+		return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
+	}
+	if (min) return `INR ${min.toLocaleString('en-IN')}`;
+	if (max) return `Up to INR ${max.toLocaleString('en-IN')}`;
+	return 'Salary on request';
 }
 
 function JobsHero({ searchQuery, onSearchChange, onSearchSubmit }) {
@@ -732,7 +745,7 @@ function JobCard({ job, index }) {
 					<div className="rounded-lg bg-blue-50 p-2.5">
 						<div className="flex items-center gap-2 text-sm text-slate-700">
 							<Banknote className="h-4 w-4 text-blue-600" />
-							<span className="font-semibold">{formatSalary(job.salaryMin, job.salaryMax)}</span>
+							<span className="font-semibold">{job.salary || formatSalary(job.salaryMin, job.salaryMax)}</span>
 						</div>
 					</div>
 					<div className="rounded-lg bg-emerald-50 p-2.5">
@@ -853,7 +866,9 @@ function JobsListing({ filters, searchQuery, jobs, loading }) {
 			const range = parseSalaryRange(filters.salary);
 			if (range) {
 				filtered = filtered.filter((job) => {
-					const midpoint = (job.salaryMin + job.salaryMax) / 2;
+					const min = job.salaryMin || 0;
+					const max = job.salaryMax || min;
+					const midpoint = (min + max) / 2;
 					return midpoint >= range.min && midpoint <= range.max;
 				});
 			}

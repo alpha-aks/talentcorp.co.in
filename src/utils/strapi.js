@@ -260,6 +260,35 @@ export const buildJobCategoryOptions = (jobs = []) => {
 
 export const getJobCategoryFilterValue = (job) => String(job?.category || job?.type || '').trim();
 
+export const toNumber = (value) => {
+  if (value === null || value === undefined || value === '') return null;
+  const numeric = Number(String(value).replace(/,/g, ''));
+  return Number.isFinite(numeric) ? numeric : null;
+};
+
+export const formatSalaryFromJob = (job) => {
+  const salaryText = String(job?.salary || '').trim();
+  if (salaryText) return salaryText;
+
+  const min = toNumber(job?.salaryMin ?? job?.minSalary ?? job?.salary_from ?? job?.salaryFrom);
+  const max = toNumber(job?.salaryMax ?? job?.maxSalary ?? job?.salary_to ?? job?.salaryTo);
+
+  if (min !== null && max !== null) {
+    if (min === max) {
+      return `INR ${min.toLocaleString('en-IN')}`;
+    }
+    return `INR ${min.toLocaleString('en-IN')} - INR ${max.toLocaleString('en-IN')}`;
+  }
+  if (min !== null) {
+    return `INR ${min.toLocaleString('en-IN')}+`;
+  }
+  if (max !== null) {
+    return `Up to INR ${max.toLocaleString('en-IN')}`;
+  }
+
+  return 'Salary on request';
+};
+
 export const fetchNews = async () => fetchCollection('/api/news-events?sort=order:asc,date:desc&pagination[pageSize]=100&populate=image');
 export const fetchPageAssets = async () =>
   fetchCollection('/api/page-assets?sort=order:asc,name:asc&pagination[pageSize]=300&populate=image');
